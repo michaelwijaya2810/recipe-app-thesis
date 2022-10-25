@@ -1,102 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="11dp"
     tools:context=".OrderActivity"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="24dp"
         android:text="@string/order"
         android:textColor="@color/black"
         android:textSize="30dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="18dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="21dp"
         android:text="Address"
-        android:layout_marginTop="21dp"
-        android:layout_marginLeft="18dp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pilih jam preorder"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="21dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginBottom="11dp"
-        />
+        android:text="@string/pilih_jam_preorder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
+
 
     <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
         android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:justifyContent="space_around"> <!-- this attribute is from the underlying FlexboxLayout -->
+        android:layout_marginTop="11dp"
+        app:justifyContent="space_around"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
 
         <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
             android:id="@+id/btn1"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            app:toggle_text="5:30PM" />
+            android:layout_height="34dp"
+            app:toggle_text="     Pagi     " />
 
         <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            app:toggle_text="7:30PM" />
+            android:layout_height="34dp"
+            app:toggle_text="     Siang     " />
+        />
 
         <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
             android:id="@+id/btn3"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            app:toggle_text="8:00PM" />
+            android:layout_height="34dp"
+            app:toggle_text="     Sore     " />
 
     </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
 
     <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Summary"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="18dp"
-        />
+        android:text="@string/summary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time" />
 
-    <EditText
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="11dp"
         android:background="@drawable/round_style"
         android:backgroundTint="@color/gray"
-        android:layout_width="match_parent"
-        android:layout_height="206dp"
-        android:gravity="top|left"
-        android:layout_marginTop="11dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTotalPrice2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:justifyContent="space_between">
+
+            <TextView
+                android:id="@+id/tvQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QTY" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price" />
+
+        </com.google.android.flexbox.FlexboxLayout>
+    </ScrollView>
 
     <TextView
+        android:id="@+id/tvTotalPrice2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total price"
-        android:layout_marginTop="21dp"
-        android:layout_marginLeft="18dp"
-        />
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnToPayment"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:background="@drawable/round_style"
-        android:backgroundTint="@color/gray"
+        android:id="@+id/btnToPayment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
+        android:background="@drawable/round_style"
+        android:backgroundTint="@color/gray"
+        android:text="@string/to_payment"
         android:textAllCaps="false"
-        android:text="To payment"
-        android:layout_marginTop="13dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

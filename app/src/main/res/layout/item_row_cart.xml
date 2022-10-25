@@ -1,26 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llRowCart"
     android:layout_width="match_parent"
-    android:layout_height="100px"
+    android:layout_height="wrap_content"
     android:background="@drawable/round_style"
     android:backgroundTint="@color/gray"
     android:layout_marginTop="13px"
     android:layout_marginBottom="13px"
     >
-    <ImageView
-        android:id="@+id/ivIngredient"
-        android:layout_width="100px"
+    <CheckBox
+        android:id="@+id/cbCart"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/tomato"
-        android:layout_marginTop="8px"
-        android:layout_marginBottom="8px"
-        />
-    <TextView
-        android:id="@+id/tvIngredient"
+        android:text="Ingredient"
+        >
+    </CheckBox>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        />
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:layout_marginEnd="12dp"
+        >
+        <TextView
+            android:id="@+id/tvIngredientPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
+            />
+
+        <EditText
+            android:id="@+id/etIngredientQty"
+            android:layout_width="32dp"
+            android:layout_height="25dp"
+            android:text="5"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:background="@drawable/round_style"
+            android:backgroundTint="@color/white"
+            android:layout_marginBottom="12dp"
+            />
+    </LinearLayout>
+
 
 </LinearLayout>

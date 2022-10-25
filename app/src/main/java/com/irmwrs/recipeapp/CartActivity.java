@@ -9,18 +9,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartAdapter.ViewHolder.OnCheckListener {
 
+    List<Ingredient> selected = new ArrayList<>();
+    List<Ingredient> ingredientList = new ArrayList<>();
+    TextView tvTotalPrice;
+    TextView tvSelected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
-        List<Ingredient> ingredientList = new ArrayList<>();
 
 
         // sample data
@@ -28,61 +31,101 @@ public class CartActivity extends AppCompatActivity {
         ingredient.name = "Tomato";
         ingredient.price = 20.0;
         ingredient.image = R.drawable.tomato;
+        ingredient.qty = 1;
 
         Ingredient ingredient2 = new Ingredient();
         ingredient2.name = "Apple";
         ingredient2.price = 30.0;
         ingredient2.image = R.drawable.apple;
+        ingredient2.qty = 2;
 
         ingredientList.add(ingredient);
         ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
+//        ingredientList.add(ingredient);
+//        ingredientList.add(ingredient2);
 
-        CartAdapter adapter = new CartAdapter(this, ingredientList);
+        CartAdapter adapter = new CartAdapter(this, ingredientList, this);
 
+        tvSelected = findViewById(R.id.tvSelected);
         RecyclerView rvCart = findViewById(R.id.rvCart);
-        TextView tvTotalPrice = findViewById(R.id.tvTotalPrice);
+        tvTotalPrice = findViewById(R.id.tvTotalPrice);
         Button btnOrder = findViewById(R.id.btnOrder);
+
+        String selectedItems = selected.size() + "/" + ingredientList.size() + " selected items";
+        tvSelected.setText(selectedItems);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvCart.setLayoutManager(linearLayoutManager);
         rvCart.setAdapter(adapter);
 
-        String totalPrice = "Total price: Rp. " + getTotalPrice(ingredientList);
-
+        String totalPrice = "Total price\nRp. " + getTotalPrice();
         tvTotalPrice.setText(totalPrice);
 
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                setSummaryIntent(intent);
                 startActivity(intent);
             }
         });
     }
 
-    double getTotalPrice(List<Ingredient> ingredientList){
+    double getTotalPrice(){
         double total = 0;
-        for (int i = 0; i < ingredientList.size(); i++){
-            total = total + ingredientList.get(i).price;
+        for (int i = 0; i < selected.size(); i++){
+            total = total + (selected.get(i).price * selected.get(i).qty);
         }
         return total;
+    }
+
+    void setSummaryIntent(Intent intent){
+        String qty = "QTY\n\n";
+        String name = "Name\n\n";
+        String price = "Price\n\n";
+        for (int i = 0; i < selected.size(); i++){
+            qty += selected.get(i).qty + "\n";
+            name += selected.get(i).name + "\n";
+            price += "Rp. " + selected.get(i).price + "\n";
+        }
+        intent.putExtra("qty", qty);
+        intent.putExtra("name", name);
+        intent.putExtra("price", price);
+        intent.putExtra("total", getTotalPrice());
+    }
+
+    @Override
+    public void onCheckClick(int position, boolean isChecked, int qty) {
+        if (qty == 0){
+            if(isChecked){
+                selected.add(ingredientList.get(position));
+            }
+            else {
+                selected.remove(ingredientList.get(position));
+            }
+            String selectedItems = selected.size() + "/" + ingredientList.size() + " selected items";
+            tvSelected.setText(selectedItems);
+        }
+        else {
+            ingredientList.get(position).qty = qty;
+        }
+        String totalPrice = "Total price\nRp. " + getTotalPrice();
+        tvTotalPrice.setText(totalPrice);
     }
 }

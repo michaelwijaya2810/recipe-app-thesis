@@ -41,24 +41,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
 
         ingredientList.add(ingredient);
         ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
-//        ingredientList.add(ingredient);
-//        ingredientList.add(ingredient2);
+        selected.add(ingredient);
+        selected.add(ingredient2);
 
         CartAdapter adapter = new CartAdapter(this, ingredientList, this);
 
@@ -80,9 +64,14 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-                setSummaryIntent(intent);
-                startActivity(intent);
+                if(selected.size() == 0){
+                    Toast.makeText(getApplicationContext(), "Please select one or more ingredients", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                    setSummaryIntent(intent);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -96,18 +85,18 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     }
 
     void setSummaryIntent(Intent intent){
-        String qty = "QTY\n\n";
-        String name = "Name\n\n";
-        String price = "Price\n\n";
+        String qty_name = "";
+        String price = "";
+        double delivery_cost = 11000;
         for (int i = 0; i < selected.size(); i++){
-            qty += selected.get(i).qty + "\n";
-            name += selected.get(i).name + "\n";
-            price += "Rp. " + selected.get(i).price + "\n";
+            qty_name += selected.get(i).qty + "x " + selected.get(i).name + "\n";
+            price += "Rp" + selected.get(i).price + "\n";
         }
-        intent.putExtra("qty", qty);
-        intent.putExtra("name", name);
+        qty_name += "Biaya Kirim";
+        price += "Rp" + delivery_cost;
+        intent.putExtra("qty_name", qty_name);
         intent.putExtra("price", price);
-        intent.putExtra("total", getTotalPrice());
+        intent.putExtra("total", getTotalPrice() + delivery_cost);
     }
 
     @Override

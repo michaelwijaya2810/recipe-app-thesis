@@ -58,6 +58,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView, OnCheckListener onCheckListener) {
             super(itemView);
             cbCart = itemView.findViewById(R.id.cbCart);
+            cbCart.setChecked(true);
+            cbCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onCheckListener.onCheckClick(getAdapterPosition(), cbCart.isChecked(), 0);
+                }
+            });
             tvIngredientPrice = itemView.findViewById(R.id.tvIngredientPrice);
             etIngredientQty = itemView.findViewById(R.id.etIngredientQty);
             etIngredientQty.addTextChangedListener(new TextWatcher() {

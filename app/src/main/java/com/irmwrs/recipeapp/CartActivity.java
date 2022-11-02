@@ -11,8 +11,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.irmwrs.recipeapp.Class.Recipe;
+import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
+import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
+import com.irmwrs.recipeapp.Class.UpdateRecipe;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartAdapter.ViewHolder.OnCheckListener {
 
@@ -20,11 +29,46 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     List<Ingredient> ingredientList = new ArrayList<>();
     TextView tvTotalPrice;
     TextView tvSelected;
+    List<Recipe> recipes = new ArrayList<>();
+    long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        Server server = new Server();
+        server.getList("a").enqueue(new Callback<RecipeListResponse>() {
+            @Override
+            public void onResponse(Call<RecipeListResponse> call, Response<RecipeListResponse> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                recipes = response.body().data;
+                id = recipes.get(0).id;
+                Toast.makeText(getApplicationContext(), recipes.get(0).recipeName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<RecipeListResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+//        server.getSingleRecipe(1).enqueue(new Callback<SingleRecipeResponse>() {
+//            @Override
+//            public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
+//                if (!response.isSuccessful()){
+//                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                Toast.makeText(getApplicationContext(), response.body().recipe.recipeName, Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<SingleRecipeResponse> call, Throwable t) {
+//
+//            }
+//        });
 
         // sample data
         Ingredient ingredient = new Ingredient();

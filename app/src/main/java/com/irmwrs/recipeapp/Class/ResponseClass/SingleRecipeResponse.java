@@ -4,7 +4,6 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.irmwrs.recipeapp.Class.Recipe;
-import com.irmwrs.recipeapp.Class.Response;
 import com.irmwrs.recipeapp.Class.SingleRecipeIngredient;
 import com.irmwrs.recipeapp.Class.Step;
 

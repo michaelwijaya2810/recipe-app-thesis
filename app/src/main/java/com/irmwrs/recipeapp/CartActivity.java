@@ -11,10 +11,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.irmwrs.recipeapp.Class.ChangePassword;
 import com.irmwrs.recipeapp.Class.Recipe;
+import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
+import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
+import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
+import com.irmwrs.recipeapp.Class.UpdateRecipeIngredient;
+import com.irmwrs.recipeapp.Class.UserRegister;
+import com.irmwrs.recipeapp.Class.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +44,69 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
         setContentView(R.layout.activity_cart);
 
         Server server = new Server();
-        server.getList("a").enqueue(new Callback<RecipeListResponse>() {
+        UserRegister userRegister = new UserRegister();
+        userRegister.address = "Baker Street";
+        userRegister.firstName = "Irfan";
+        userRegister.lastName = "Suardhika";
+        userRegister.password = "Password123";
+        userRegister.username = "Ifn";
+        userRegister.phoneNumber = "0811821289";
+        userRegister.email = "irfan@irfan.com";
+
+        String password = "Password1234";
+        ChangePassword changePassword = new ChangePassword();
+        changePassword.userid = "11";
+        changePassword.oldPassword = password;
+        changePassword.newPassword = "Password12345";
+        password = changePassword.newPassword;
+
+        server.postChangePassword(changePassword).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        server.postLogin(userRegister.username, password).enqueue(new Callback<LoginResponse>() {
+//            @Override
+//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//                if (!response.isSuccessful()){
+//                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                server.postUserDetail(response.body().userid).enqueue(new Callback<UserResponse>() {
+//                    @Override
+//                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+//                        if (!response.isSuccessful()){
+//                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//                        Toast.makeText(getApplicationContext(), response.body().user.firstName, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<UserResponse> call, Throwable t) {
+//                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(Call<LoginResponse> call, Throwable t) {
+//                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        server.getRecipeListFromKeyword("a").enqueue(new Callback<RecipeListResponse>() {
             @Override
             public void onResponse(Call<RecipeListResponse> call, Response<RecipeListResponse> response) {
                 if (!response.isSuccessful()){
@@ -54,21 +123,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-//        server.getSingleRecipe(1).enqueue(new Callback<SingleRecipeResponse>() {
-//            @Override
-//            public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
-//                if (!response.isSuccessful()){
-//                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                Toast.makeText(getApplicationContext(), response.body().recipe.recipeName, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<SingleRecipeResponse> call, Throwable t) {
-//
-//            }
-//        });
+
 
         // sample data
         Ingredient ingredient = new Ingredient();

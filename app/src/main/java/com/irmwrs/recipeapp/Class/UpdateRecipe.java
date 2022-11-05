@@ -3,12 +3,11 @@ package com.irmwrs.recipeapp.Class;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.irmwrs.recipeapp.Ingredient;
 
 public class UpdateRecipe {
     @SerializedName("RecipeId")
     @Expose
-    public Long recipeId;
+    public long recipeId;
     @SerializedName("CreatorId")
     @Expose
     public String creatorId;
@@ -26,7 +25,7 @@ public class UpdateRecipe {
     public List<Step> stepList = null;
     @SerializedName("RecipeDifficulty")
     @Expose
-    public Integer recipeDifficulty;
+    public int recipeDifficulty;
     @SerializedName("IngredientList")
     @Expose
     public List<UpdateRecipeIngredient> ingredientList = null;

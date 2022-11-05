@@ -9,7 +9,7 @@ public class LoginResponse {
     public String accessToken;
     @SerializedName("Userid")
     @Expose
-    public Integer userid;
+    public int userid;
     @SerializedName("Response")
     @Expose
     public String response;

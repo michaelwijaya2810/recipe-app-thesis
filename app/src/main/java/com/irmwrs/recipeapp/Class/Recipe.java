@@ -12,7 +12,7 @@ public class Recipe {
     public String recipeName;
     @SerializedName("CreatorID")
     @Expose
-    public Integer creatorID;
+    public int creatorID;
     @SerializedName("IsActive")
     @Expose
     public Boolean isActive;
@@ -21,10 +21,10 @@ public class Recipe {
     public Boolean isHighlighted;
     @SerializedName("RecipeDifficulty")
     @Expose
-    public Integer recipeDifficulty;
+    public int recipeDifficulty;
     @SerializedName("RecipesStatus")
     @Expose
-    public Integer recipesStatus;
+    public int recipesStatus;
     @SerializedName("RecipeImage")
     @Expose
     public String recipeImage;

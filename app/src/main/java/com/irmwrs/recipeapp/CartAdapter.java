@@ -2,21 +2,17 @@ package com.irmwrs.recipeapp;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
@@ -29,24 +25,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Ingredient ingredient = ingredientList.get(position);
-        holder.cbCart.setText(ingredient.name);
-        holder.tvIngredientPrice.setText(ingredient.getStringPrice());
-        holder.etIngredientQty.setText(String.valueOf(ingredient.qty));
+        Ingredients ingredients = ingredientsList.get(position);
+        holder.cbCart.setText(ingredients.name);
+        holder.tvIngredientPrice.setText(ingredients.getStringPrice());
+        holder.etIngredientQty.setText(String.valueOf(ingredients.qty));
     }
 
     @Override
     public int getItemCount() {
-        return ingredientList.size();
+        return ingredientsList.size();
     }
 
     Context ctx;
-    List<Ingredient> ingredientList;
+    List<Ingredients> ingredientsList;
     ViewHolder.OnCheckListener onCheckListener;
 
-    public CartAdapter(Context ctx, List<Ingredient> ingredientList, ViewHolder.OnCheckListener onCheckListener){
+    public CartAdapter(Context ctx, List<Ingredients> ingredientsList, ViewHolder.OnCheckListener onCheckListener){
         this.ctx = ctx;
-        this.ingredientList = ingredientList;
+        this.ingredientsList = ingredientsList;
         this.onCheckListener = onCheckListener;
     }
 

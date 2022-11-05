@@ -12,19 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.ChangePassword;
+import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Recipe;
-import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
-import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
-import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
-import com.irmwrs.recipeapp.Class.Step;
-import com.irmwrs.recipeapp.Class.UpdateRecipe;
-import com.irmwrs.recipeapp.Class.UpdateRecipeIngredient;
 import com.irmwrs.recipeapp.Class.UserRegister;
-import com.irmwrs.recipeapp.Class.Validate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +27,8 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartAdapter.ViewHolder.OnCheckListener {
 
-    List<Ingredient> selected = new ArrayList<>();
-    List<Ingredient> ingredientList = new ArrayList<>();
+    List<Ingredients> selected = new ArrayList<>();
+    List<Ingredients> ingredientsList = new ArrayList<>();
     TextView tvTotalPrice;
     TextView tvSelected;
     List<Recipe> recipes = new ArrayList<>();
@@ -53,58 +48,27 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
         userRegister.phoneNumber = "0811821289";
         userRegister.email = "irfan@irfan.com";
 
-        String password = "Password1234";
+        String password = "Password12345";
         ChangePassword changePassword = new ChangePassword();
         changePassword.userid = "11";
         changePassword.oldPassword = password;
-        changePassword.newPassword = "Password12345";
+        changePassword.newPassword = "Password1234";
         password = changePassword.newPassword;
 
-        server.postChangePassword(changePassword).enqueue(new Callback<LoginResponse>() {
+        server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
                 if (!response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), response.body().get(0).ingredientName, Toast.LENGTH_SHORT).show();
             }
-
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Ingredient>> call, Throwable t) {
+
             }
         });
-
-//        server.postLogin(userRegister.username, password).enqueue(new Callback<LoginResponse>() {
-//            @Override
-//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-//                if (!response.isSuccessful()){
-//                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                server.postUserDetail(response.body().userid).enqueue(new Callback<UserResponse>() {
-//                    @Override
-//                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-//                        if (!response.isSuccessful()){
-//                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//                        Toast.makeText(getApplicationContext(), response.body().user.firstName, Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<UserResponse> call, Throwable t) {
-//                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call<LoginResponse> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         server.getRecipeListFromKeyword("a").enqueue(new Callback<RecipeListResponse>() {
             @Override
@@ -126,31 +90,31 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
 
 
         // sample data
-        Ingredient ingredient = new Ingredient();
-        ingredient.name = "Tomato";
-        ingredient.price = 20.0;
-        ingredient.image = R.drawable.tomato;
-        ingredient.qty = 1;
+        Ingredients ingredients = new Ingredients();
+        ingredients.name = "Tomato";
+        ingredients.price = 20.0;
+        ingredients.image = R.drawable.tomato;
+        ingredients.qty = 1;
 
-        Ingredient ingredient2 = new Ingredient();
-        ingredient2.name = "Apple";
-        ingredient2.price = 30.0;
-        ingredient2.image = R.drawable.apple;
-        ingredient2.qty = 2;
+        Ingredients ingredients2 = new Ingredients();
+        ingredients2.name = "Apple";
+        ingredients2.price = 30.0;
+        ingredients2.image = R.drawable.apple;
+        ingredients2.qty = 2;
 
-        ingredientList.add(ingredient);
-        ingredientList.add(ingredient2);
-        selected.add(ingredient);
-        selected.add(ingredient2);
+        ingredientsList.add(ingredients);
+        ingredientsList.add(ingredients2);
+        selected.add(ingredients);
+        selected.add(ingredients2);
 
-        CartAdapter adapter = new CartAdapter(this, ingredientList, this);
+        CartAdapter adapter = new CartAdapter(this, ingredientsList, this);
 
         tvSelected = findViewById(R.id.tvSelected);
         RecyclerView rvCart = findViewById(R.id.rvCart);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         Button btnOrder = findViewById(R.id.btnOrder);
 
-        String selectedItems = selected.size() + "/" + ingredientList.size() + " selected items";
+        String selectedItems = selected.size() + "/" + ingredientsList.size() + " selected items";
         tvSelected.setText(selectedItems);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -202,16 +166,16 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     public void onCheckClick(int position, boolean isChecked, int qty) {
         if (qty == 0){
             if(isChecked){
-                selected.add(ingredientList.get(position));
+                selected.add(ingredientsList.get(position));
             }
             else {
-                selected.remove(ingredientList.get(position));
+                selected.remove(ingredientsList.get(position));
             }
-            String selectedItems = selected.size() + "/" + ingredientList.size() + " selected items";
+            String selectedItems = selected.size() + "/" + ingredientsList.size() + " selected items";
             tvSelected.setText(selectedItems);
         }
         else {
-            ingredientList.get(position).qty = qty;
+            ingredientsList.get(position).qty = qty;
         }
         String totalPrice = "Total price\nRp. " + getTotalPrice();
         tvTotalPrice.setText(totalPrice);

@@ -1,7 +1,7 @@
 package com.irmwrs.recipeapp;
 
 // sample class
-public class Ingredient {
+public class Ingredients {
     String name;
     int image;
     double price;

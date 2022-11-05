@@ -1,6 +1,8 @@
 package com.irmwrs.recipeapp;
 
 import com.irmwrs.recipeapp.Class.ChangePassword;
+import com.irmwrs.recipeapp.Class.Ingredient;
+import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
@@ -10,7 +12,13 @@ import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
 
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -40,6 +48,17 @@ public class Server {
 
     Call<UpdateRecipe> postCreateOrUpdateRecipe(UpdateRecipe updateRecipe){
         Call<UpdateRecipe> call = outSystemService.postCreateOrUpdateRecipe(updateRecipe);
+        return call;
+    }
+
+    Call<List<Recipe>> getAllRecipe(){
+        Call<List<Recipe>> call = outSystemService.getAllRecipeList();
+        return call;
+    }
+
+    // Ingredient
+    Call<List<Ingredient>> getAllIngredient(){
+        Call<List<Ingredient>> call = outSystemService.getIngredientList();
         return call;
     }
 

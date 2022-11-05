@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class User {
     @SerializedName("Id")
     @Expose
-    public Long id;
+    public long id;
     @SerializedName("UserRole")
     @Expose
     public String userRole;
     @SerializedName("Userid")
     @Expose
-    public Integer userid;
+    public int userid;
     @SerializedName("IsActive")
     @Expose
     public Boolean isActive;

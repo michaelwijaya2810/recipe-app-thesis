@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateRecipeIngredient {
     @SerializedName("Id")
     @Expose
-    public Long id;
+    public long id;
     @SerializedName("RecipesId")
     @Expose
-    public Long recipesId;
+    public long recipesId;
     @SerializedName("IngredientId")
     @Expose
-    public Long ingredientId;
+    public long ingredientId;
     @SerializedName("Qty")
     @Expose
-    public Integer qty;
+    public int qty;
     @SerializedName("IsOptional")
     @Expose
     public Boolean isOptional;

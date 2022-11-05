@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">RecipeAppThesis</string>
+    <string name="cart">Cart</string>
+    <string name="order">Order</string>
+    <string name="pilih_jam_preorder">Pilih jam preorder</string>
+    <string name="summary">Summary</string>
+    <string name="to_payment">To payment</string>
+    <string name="payment_options">Payment Options</string>
+    <string name="total_price">Total Price</string>
 </resources>

@@ -7,4 +7,5 @@
     <string name="to_payment">To payment</string>
     <string name="payment_options">Payment Options</string>
     <string name="total_price">Total Price</string>
+    <string name="back_to_main_menu">Back to main menu</string>
 </resources>

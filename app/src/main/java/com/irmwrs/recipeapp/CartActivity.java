@@ -11,15 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.irmwrs.recipeapp.Class.ChangePassword;
+import com.irmwrs.recipeapp.Class.CartItem;
 import com.irmwrs.recipeapp.Class.Ingredient;
-import com.irmwrs.recipeapp.Class.Recipe;
-import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
-import com.irmwrs.recipeapp.Class.UserRegister;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,33 +23,20 @@ import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity implements CartAdapter.ViewHolder.OnCheckListener {
 
-    List<Ingredients> selected = new ArrayList<>();
-    List<Ingredients> ingredientsList = new ArrayList<>();
+    List<CartItem> selected = new ArrayList<>();
     TextView tvTotalPrice;
     TextView tvSelected;
-    List<Recipe> recipes = new ArrayList<>();
-    long id;
+    List<Ingredient> ingredients;
+    List<CartItem> cartItemList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
+        Intent intent = getIntent();
+        ArrayList<Integer> ids = intent.getIntegerArrayListExtra("ids");
+        ArrayList<Integer> qtys = intent.getIntegerArrayListExtra("qtys");
         Server server = new Server();
-        UserRegister userRegister = new UserRegister();
-        userRegister.address = "Baker Street";
-        userRegister.firstName = "Irfan";
-        userRegister.lastName = "Suardhika";
-        userRegister.password = "Password123";
-        userRegister.username = "Ifn";
-        userRegister.phoneNumber = "0811821289";
-        userRegister.email = "irfan@irfan.com";
-
-        String password = "Password12345";
-        ChangePassword changePassword = new ChangePassword();
-        changePassword.userid = "11";
-        changePassword.oldPassword = password;
-        changePassword.newPassword = "Password1234";
-        password = changePassword.newPassword;
 
         server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
             @Override
@@ -62,79 +45,57 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
                     Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(getApplicationContext(), response.body().get(0).ingredientName, Toast.LENGTH_SHORT).show();
+                ingredients = response.body();
+                // inflate cartItems
+                for (int i = 0; i < ids.size(); i++){
+                    CartItem cartItem = new CartItem();
+                    for (int j = 0; j < ingredients.size(); j++){
+                        if(ingredients.get(j).id == ids.get(i)){
+                            cartItem.name = ingredients.get(j).ingredientName;
+                            cartItem.image = ingredients.get(j).ingredientImage;
+                            cartItem.price = ingredients.get(j).ingredientPrice;
+                        }
+                    }
+                    cartItem.qty = qtys.get(i);
+                    cartItemList.add(cartItem);
+                    selected.add(cartItem);
+                }
+
+                CartAdapter adapter = new CartAdapter(CartActivity.this, cartItemList, CartActivity.this);
+
+                tvSelected = findViewById(R.id.tvSelected);
+                RecyclerView rvCart = findViewById(R.id.rvCart);
+                tvTotalPrice = findViewById(R.id.tvTotalPrice);
+                Button btnOrder = findViewById(R.id.btnOrder);
+
+                String selectedItems = selected.size() + "/" + cartItemList.size() + " selected items";
+                tvSelected.setText(selectedItems);
+
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CartActivity.this);
+                rvCart.setLayoutManager(linearLayoutManager);
+                rvCart.setAdapter(adapter);
+
+                String totalPrice = "Total price\nRp. " + getTotalPrice();
+                tvTotalPrice.setText(totalPrice);
+
+                btnOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(selected.size() == 0){
+                            Toast.makeText(getApplicationContext(), "Please select one or more ingredients", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                            setSummaryIntent(intent);
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
+
             @Override
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
-
-            }
-        });
-
-        server.getRecipeListFromKeyword("a").enqueue(new Callback<RecipeListResponse>() {
-            @Override
-            public void onResponse(Call<RecipeListResponse> call, Response<RecipeListResponse> response) {
-                if (!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                recipes = response.body().data;
-                id = recipes.get(0).id;
-                Toast.makeText(getApplicationContext(), recipes.get(0).recipeName, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<RecipeListResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        // sample data
-        Ingredients ingredients = new Ingredients();
-        ingredients.name = "Tomato";
-        ingredients.price = 20.0;
-        ingredients.image = R.drawable.tomato;
-        ingredients.qty = 1;
-
-        Ingredients ingredients2 = new Ingredients();
-        ingredients2.name = "Apple";
-        ingredients2.price = 30.0;
-        ingredients2.image = R.drawable.apple;
-        ingredients2.qty = 2;
-
-        ingredientsList.add(ingredients);
-        ingredientsList.add(ingredients2);
-        selected.add(ingredients);
-        selected.add(ingredients2);
-
-        CartAdapter adapter = new CartAdapter(this, ingredientsList, this);
-
-        tvSelected = findViewById(R.id.tvSelected);
-        RecyclerView rvCart = findViewById(R.id.rvCart);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice);
-        Button btnOrder = findViewById(R.id.btnOrder);
-
-        String selectedItems = selected.size() + "/" + ingredientsList.size() + " selected items";
-        tvSelected.setText(selectedItems);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvCart.setLayoutManager(linearLayoutManager);
-        rvCart.setAdapter(adapter);
-
-        String totalPrice = "Total price\nRp. " + getTotalPrice();
-        tvTotalPrice.setText(totalPrice);
-
-        btnOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(selected.size() == 0){
-                    Toast.makeText(getApplicationContext(), "Please select one or more ingredients", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Intent intent = new Intent(CartActivity.this, OrderActivity.class);
-                    setSummaryIntent(intent);
-                    startActivity(intent);
-                }
             }
         });
     }
@@ -166,16 +127,16 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     public void onCheckClick(int position, boolean isChecked, int qty) {
         if (qty == 0){
             if(isChecked){
-                selected.add(ingredientsList.get(position));
+                selected.add(cartItemList.get(position));
             }
             else {
-                selected.remove(ingredientsList.get(position));
+                selected.remove(cartItemList.get(position));
             }
-            String selectedItems = selected.size() + "/" + ingredientsList.size() + " selected items";
+            String selectedItems = selected.size() + "/" + cartItemList.size() + " selected items";
             tvSelected.setText(selectedItems);
         }
         else {
-            ingredientsList.get(position).qty = qty;
+            cartItemList.get(position).qty = qty;
         }
         String totalPrice = "Total price\nRp. " + getTotalPrice();
         tvTotalPrice.setText(totalPrice);

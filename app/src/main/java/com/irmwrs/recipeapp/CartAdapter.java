@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.irmwrs.recipeapp.Class.CartItem;
+
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
@@ -25,25 +27,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Ingredients ingredients = ingredientsList.get(position);
-        holder.cbCart.setText(ingredients.name);
-        holder.tvIngredientPrice.setText(ingredients.getStringPrice());
-        holder.etIngredientQty.setText(String.valueOf(ingredients.qty));
+        CartItem cartItem = cartItemList.get(position);
+        holder.cbCart.setText(cartItem.name);
+        holder.tvIngredientPrice.setText(cartItem.getStringPrice());
+        holder.etIngredientQty.setText(String.valueOf(cartItem.qty));
     }
 
     @Override
     public int getItemCount() {
-        return ingredientsList.size();
+        return cartItemList.size();
     }
 
     Context ctx;
-    List<Ingredients> ingredientsList;
+    List<CartItem> cartItemList;
     ViewHolder.OnCheckListener onCheckListener;
 
-    public CartAdapter(Context ctx, List<Ingredients> ingredientsList, ViewHolder.OnCheckListener onCheckListener){
+    public CartAdapter(Context ctx, List<CartItem> cartItemList, ViewHolder.OnCheckListener onCheckListener){
         this.ctx = ctx;
-        this.ingredientsList = ingredientsList;
+        this.cartItemList = cartItemList;
         this.onCheckListener = onCheckListener;
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

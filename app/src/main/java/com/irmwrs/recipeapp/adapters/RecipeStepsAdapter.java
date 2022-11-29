@@ -7,8 +7,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.viewholders.RecipeStepViewHolder;
+
+import java.util.List;
 
 public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepViewHolder>{
     @NonNull
@@ -20,11 +23,18 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
-        holder.checkBoxStep.setText("Recipe Step Value");
+        Step step = steps.get(position);
+        holder.checkBoxStep.setText(step.recipeSteps);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return steps.size();
+    }
+
+    List<Step> steps;
+
+    public RecipeStepsAdapter(List<Step> steps){
+        this.steps = steps;
     }
 }

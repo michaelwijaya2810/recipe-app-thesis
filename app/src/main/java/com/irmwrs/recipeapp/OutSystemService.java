@@ -45,7 +45,7 @@ public interface OutSystemService {
     @POST("User/Register")
     Call<LoginResponse> postRegister(@Body UserRegister userRegister);
     @POST("User/UserDetail")
-    Call<UserResponse> postUserDetail(@Body Integer id);
+    Call<UserResponse> postUserDetail(@Body int id);
     @GET("User/ForgotPassword")
     Call<Response> getForgotPassword(@Query("Username") String username);
     @POST("User/ChangePassword")

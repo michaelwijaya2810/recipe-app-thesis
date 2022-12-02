@@ -78,6 +78,7 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
     int difficulty;
     List<String> recipeIngredientName = new ArrayList<>();
     List<Integer> recipeIngredientQty = new ArrayList<>();
+    long recipesId = 0;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -92,7 +93,8 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
         btnAddIngredient = view.findViewById(R.id.btnAddIngredient);
 
         if(recipe != null){// Edit page
-            if(recipe.recipeImage == ""){
+            recipesId = recipe.id;
+            if(recipe.recipeImage.equals("")){
                 ivRecipeImage.setImageResource(R.drawable.no_image_placeholder);
                 recipeImageBitmap = null;
             }
@@ -102,18 +104,20 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
                 ivRecipeImage.setImageBitmap(bitmap);
                 recipeImageBitmap = bitmap;
             }
-            etRecipeName.setText(recipe.recipeDescription);
+            etRecipeName.setText(recipe.recipeName);
             if (recipe.recipeDifficulty == 1){
+                difficulty = 1;
                 tgDifficulty.check(R.id.tbEasy);
             }
             else if(recipe.recipeDifficulty == 2){
+                difficulty = 2;
                 tgDifficulty.check(R.id.tbMedium);
             }
             else{
+                difficulty = 3;
                 tgDifficulty.check(R.id.tbHard);
             }
-            etRecipeDescription.setText(recipe.recipeName);
-            String ingredientText = "";
+            etRecipeDescription.setText(recipe.recipeDescription);
             for(int i = 0; i < recipeIngredients.size(); i++){
                 createChip(recipeIngredients.get(i).ingredientName, recipeIngredients.get(i).qty, view);
             }
@@ -198,6 +202,7 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
             for (int j = 0; j < ingredients.size(); j++){
                 if(ingredients.get(j).ingredientName.equals(recipeIngredientName.get(i))){
                     UpdateRecipeIngredient updateRecipeIngredient = new UpdateRecipeIngredient();
+                    updateRecipeIngredient.recipesId = recipesId;
                     updateRecipeIngredient.ingredientId = ingredients.get(j).id;
                     updateRecipeIngredient.qty = recipeIngredientQty.get(i);
                     ingredientList.add(updateRecipeIngredient);

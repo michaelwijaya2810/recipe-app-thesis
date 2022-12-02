@@ -13,4 +13,6 @@ public class Step {
     @SerializedName("RecipeSteps")
     @Expose
     public String recipeSteps;
+
+    public int rvId; // RecyclerView id for updating recipe steps
 }

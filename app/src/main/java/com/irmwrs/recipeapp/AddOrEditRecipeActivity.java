@@ -1,8 +1,11 @@
 package com.irmwrs.recipeapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -52,12 +55,17 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         btnCancel = findViewById(R.id.btnCancel);
 
         Intent intent = getIntent();
-        recipeId = intent.getLongExtra("recipeId", -1);
+        recipeId = intent.getLongExtra("recipeId", 0);
         creatorId = intent.getStringExtra("creatorId");
+        // get creatorId from savedInstance or get it from recipeId
+
+        // sample data
+        creatorId = "8";
+        recipeId = 9;
 
         Server server = new Server();
 
-        if(recipeId == -1){ // Add page
+        if(recipeId == 0){ // Add page
             steps = new ArrayList<>();
             server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
                 @Override
@@ -138,19 +146,38 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     UpdateRecipe updateRecipe;
     Gson gson = new Gson();
     boolean isValid;
+    Server server = new Server();
 
     @Override
     public void getIngredientData(UpdateRecipe updateRecipe, boolean saveIsPressed) {
         if(saveIsPressed){
             this.updateRecipe = updateRecipe;
             this.updateRecipe.stepList = steps;
-            if (recipeId != -1){
-                updateRecipe.recipeId = recipeId;
-                updateRecipe.creatorId = creatorId;
-            }
+            this.updateRecipe.recipeId = recipeId;
+            this.updateRecipe.creatorId = creatorId;
             isValid = validate(updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
+                server.postCreateOrUpdateRecipe(updateRecipe).enqueue(new Callback<UpdateRecipe>() {
+                    @Override
+                    public void onResponse(Call<UpdateRecipe> call, Response<UpdateRecipe> response) {
+                        if (!response.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(updateRecipe.recipeId == 0){
+                            Toast.makeText(getApplicationContext(), "Recipe added", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Recipe edited", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpdateRecipe> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             Log.i("recipeTest", gson.toJson(updateRecipe));
             // call server
@@ -163,16 +190,34 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     @Override
     public void getStepData(List<Step> steps, boolean saveIsPressed) {
         if(saveIsPressed){
-            this.updateRecipe.stepList = steps;
-            if (recipeId != -1){
-                updateRecipe.recipeId = recipeId;
-                updateRecipe.creatorId = creatorId;
-            }
+            updateRecipe.stepList = steps;
+            updateRecipe.recipeId = recipeId;
+            updateRecipe.creatorId = creatorId;
             isValid = validate(this.updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
+                server.postCreateOrUpdateRecipe(updateRecipe).enqueue(new Callback<UpdateRecipe>() {
+                    @Override
+                    public void onResponse(Call<UpdateRecipe> call, Response<UpdateRecipe> response) {
+                        if (!response.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(updateRecipe.recipeId == 0){
+                            Toast.makeText(getApplicationContext(), "Recipe added", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Recipe edited", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpdateRecipe> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-            Log.i("recipeTest", gson.toJson(updateRecipe));
+            Log.i("recipeTest", gson.toJson(updateRecipe.stepList));
             // call server
         }
         else {

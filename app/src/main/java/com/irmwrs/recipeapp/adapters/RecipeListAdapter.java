@@ -35,7 +35,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipes.get(position);
         holder.recipeTitle.setText(recipe.recipeName);
-        if(recipe.recipeImage == ""){
+        if(recipe.recipeImage.equals("")){
             holder.recipeImage.setImageResource(R.drawable.no_image_placeholder);
         }
         else {
@@ -64,13 +64,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     public RecipeListAdapter(List<Recipe> recipes, RecipeViewHolder.OnRecipeListener onRecipeListener){
         this.onRecipeListener = onRecipeListener;
         this.recipes = recipes;
-        Recipe recipe = new Recipe();
-        recipe.recipeImage = "";
-        recipe.recipeName = "test Recipe";
-        recipe.recipeRating = "3";
-        recipes.add(recipe);
-        recipes.add(recipe);
-        recipes.add(recipe);
         notifyDataSetChanged();
     }
 }

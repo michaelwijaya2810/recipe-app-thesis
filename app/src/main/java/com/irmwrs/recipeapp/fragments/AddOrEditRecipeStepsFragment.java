@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
+import com.irmwrs.recipeapp.MyItemTouchHelper;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.adapters.AddOrEditRecipeStepsAdapter;
 import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
@@ -24,7 +26,7 @@ import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddOrEditRecipeStepsFragment extends Fragment {
+public class AddOrEditRecipeStepsFragment extends Fragment implements AddOrEditRecipeStepsAdapter.sendData {
     List<Step> recipeSteps;
     getStepForm getData;
     Button btnSave;
@@ -46,6 +48,8 @@ public class AddOrEditRecipeStepsFragment extends Fragment {
     EditText etStepInstruction;
     Button btnAddSteps;
     List<Step> steps = new ArrayList<>();
+    boolean isAddRecipe = true;
+    AddOrEditRecipeStepsAdapter adapter;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -58,8 +62,15 @@ public class AddOrEditRecipeStepsFragment extends Fragment {
 
         if (recipeSteps != null){ // Edit page
             steps = recipeSteps;
+            isAddRecipe = false;
         }
-        AddOrEditRecipeStepsAdapter adapter = new AddOrEditRecipeStepsAdapter(steps);
+        adapter = new AddOrEditRecipeStepsAdapter(steps, this);
+
+        ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        adapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(rvSteps);
+
         rvSteps.setAdapter(adapter);
         btnAddSteps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +79,28 @@ public class AddOrEditRecipeStepsFragment extends Fragment {
                     Toast.makeText(getContext(), "Step instruction can't be empty", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    adapter.addSteps(etStepInstruction.getText().toString());
+                    addStep(etStepInstruction.getText().toString());
+                    etStepInstruction.setText("");
                 }
             }
         });
     }
+
+    void addStep(String stepInstruction){
+        Step step = new Step();
+        step.recipeSteps = stepInstruction;
+        if(!isAddRecipe){
+            step.recipeId = steps.get(0).recipeId;
+        }
+        steps.add(step);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void sendSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
     public interface getStepForm{
         void getStepData(List<Step> steps, boolean saveIsPressed);
     }

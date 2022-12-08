@@ -1,17 +1,27 @@
 package com.irmwrs.recipeapp;
 
+import android.util.JsonReader;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.irmwrs.recipeapp.Class.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
+import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.RecipeListResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
+import com.irmwrs.recipeapp.Class.Review;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
@@ -24,9 +34,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Server {
     String baseUrl = "https://personal-tskklq20.outsystemscloud.com/AdminPanel/rest/";
+    Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
     OutSystemService outSystemService = retrofit.create(OutSystemService.class);
 
@@ -41,8 +54,8 @@ public class Server {
         return call;
     }
 
-    Call<SingleRecipeResponse> getRecipeFromId(long recipeId){
-        Call<SingleRecipeResponse> call = outSystemService.getSingleRecipe(recipeId);
+    Call<SingleRecipeResponse> getRecipeFromId(long recipeId, int userId){
+        Call<SingleRecipeResponse> call = outSystemService.getSingleRecipe(recipeId, userId);
         return call;
     }
 
@@ -53,6 +66,10 @@ public class Server {
 
     Call<List<Recipe>> getAllRecipe(){
         Call<List<Recipe>> call = outSystemService.getAllRecipeList();
+        return call;
+    }
+    Call<String> postRating(long recipeId, int userId, String authToken, Review review){
+        Call<String> call = outSystemService.postRatingRecipe(recipeId, userId, authToken, review);
         return call;
     }
 
@@ -75,6 +92,11 @@ public class Server {
         return call;
     }
 
+    Call<Key> getAuthToken(int userId, List<Key> keys){
+        Call<Key> call = outSystemService.postGenerateAuth(userId, keys);
+        return call;
+    }
+
     // User
     Call<LoginResponse> postRegister(UserRegister userRegister){
         Call<LoginResponse> call = outSystemService.postRegister(userRegister);
@@ -94,6 +116,29 @@ public class Server {
     Call<LoginResponse> postChangePassword(ChangePassword changePassword){
         Call<LoginResponse> call = outSystemService.postChangePassword(changePassword);
         return call;
+    }
+
+    String toMd5(String value){ // md5 converter if string is too long
+        String md5 = "MD5";
+        try {
+            MessageDigest digest = MessageDigest.getInstance(md5);
+            digest.update(value.getBytes());
+            byte valueDigest[] = digest.digest();
+
+            StringBuilder hexString = new StringBuilder();
+
+            for(byte aMsgDigest : valueDigest){
+                String h = Integer.toHexString(0xFF & aMsgDigest);
+
+                while (h.length()<2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

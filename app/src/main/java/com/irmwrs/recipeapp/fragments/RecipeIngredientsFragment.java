@@ -104,7 +104,7 @@ public class RecipeIngredientsFragment extends Fragment {
                         highlightedIngredients.add(ingredients.get(chip.getId()));
                     }
                     else {
-                        highlightedIngredients.remove(chip.getId());
+                        highlightedIngredients.remove(ingredients.get(chip.getId()));
                     }
                 }
             });

@@ -61,7 +61,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
         // sample data
         creatorId = "8";
-        recipeId = 9;
+        recipeId = 2;
 
         Server server = new Server();
 
@@ -96,7 +96,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             });
         }
         else { // Edit page
-            server.getRecipeFromId(recipeId).enqueue(new Callback<SingleRecipeResponse>() {
+            server.getRecipeFromId(recipeId, 8).enqueue(new Callback<SingleRecipeResponse>() {
                 @Override
                 public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                     if (!response.isSuccessful()){

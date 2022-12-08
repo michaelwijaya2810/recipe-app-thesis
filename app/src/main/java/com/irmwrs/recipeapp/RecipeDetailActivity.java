@@ -25,6 +25,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     TabLayoutMediator mediator;
     ViewPager2 recipeDetailPager;
     RecipeDetailAdapter recipeDetailAdapter;
+    boolean isLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +33,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_detail);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", 0);
+        int recipeId = intent.getIntExtra("recipeId", 0);
+        int userId = intent.getIntExtra("userId", 0);
+
+        if (userId == 0){
+            isLogin = false;
+        }
 
         Server server = new Server();
-        server.getRecipeFromId(id).enqueue(new Callback<SingleRecipeResponse>() {
+        server.getRecipeFromId(recipeId, userId).enqueue(new Callback<SingleRecipeResponse>() {
             @Override
             public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                 if (!response.isSuccessful()){

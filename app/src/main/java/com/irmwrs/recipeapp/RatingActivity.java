@@ -2,6 +2,7 @@ package com.irmwrs.recipeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,11 @@ public class RatingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
 
+        Intent intent = getIntent();
+        userId = intent.getIntExtra("userId", 0);
+        recipeId = intent.getIntExtra("recipeId", 0);
+        Log.i("testRecipe", "user " + userId + " recipe " + recipeId);
+
         ImageView ivCancelButton = findViewById(R.id.ivCancelButton);
         RatingBar rbRecipe = findViewById(R.id.rbRecipe);
         EditText etReview = findViewById(R.id.etReview);
@@ -41,7 +47,7 @@ public class RatingActivity extends AppCompatActivity {
         ivCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // pop activity
+                finish();
             }
         });
         rbRecipe.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -71,31 +77,32 @@ public class RatingActivity extends AppCompatActivity {
                     key.value = value;
                     keys.add(key);
 
-                    Log.i("testRecipe", value);
-
                     Server server = new Server();
                     server.getAuthToken(userId, keys).enqueue(new Callback<Key>() {
                         @Override
                         public void onResponse(Call<Key> call, Response<Key> response) {
                             if (!response.isSuccessful()){
-                                Log.i("testRecipe", response.toString());
-                                Toast.makeText(getApplicationContext(), "1" + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             String auth = response.body().value;
+                            Log.i("testRecipe", auth);
                             server.postRating(recipeId, userId, auth, review).enqueue(new Callback<String>() {
                                 @Override
                                 public void onResponse(Call<String> call, Response<String> response) {
                                     if (!response.isSuccessful()){
-                                        Log.i("testRecipe", response.toString());
-                                        Toast.makeText(getApplicationContext(), "1" + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                         return;
                                     }
+                                    Toast.makeText(getApplicationContext(), "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
+                                    Intent intent1 = new Intent(RatingActivity.this, MainActivity.class);
+                                    intent1.putExtra("selectedTab", 3);
+                                    startActivity(intent1);
                                 }
 
                                 @Override
                                 public void onFailure(Call<String> call, Throwable t) {
-                                    Log.i("testRecipe", "rating : " + t.getMessage());
+                                    Log.i("testRecipe", "rating");
                                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -103,47 +110,15 @@ public class RatingActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<Key> call, Throwable t) {
-                            Log.i("testRecipe", "rating : " + t.getMessage());
+                            Log.i("testRecipe", "auth");
                             Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    server.getAuthToken(userId, keys).enqueue(new Callback<Key>() {
-//                        @Override
-//                        public void onResponse(Call<String> call, Response<String> response) {
-//                            if (!response.isSuccessful()){
-//                                Log.i("testRecipe", response.toString());
-//                                Toast.makeText(getApplicationContext(), "1" + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-//                                return;
-//                            }
-//                            String authToken = response.body();
-//                            Log.i("testRecipe", "auth: " + authToken);
-//                            server.postRating(recipeId, userId, authToken, review).enqueue(new Callback<String>() {
-//                                @Override
-//                                public void onResponse(Call<String> call, Response<String> response) {
-//                                    if (!response.isSuccessful()){
-//                                        Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-//                                        return;
-//                                    }
-//                                    Toast.makeText(getApplicationContext(), "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
-//                                    // navigate to wherever
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<String> call, Throwable t) {
-//                                    Log.i("testRecipe", "rating : " + t.getMessage());
-//                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<String> call, Throwable t) {
-//                            Log.i("testRecipe", "auth: " + t.getMessage());
-//                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
                 }
                 else {
+                    Intent intent1 = new Intent(RatingActivity.this, MainActivity.class);
+                    intent1.putExtra("selectedTab", 3);
+                    startActivity(intent1);
                     // navigate to wherever
                 }
             }

@@ -1,5 +1,6 @@
 package com.irmwrs.recipeapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.Step;
+import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
+import com.irmwrs.recipeapp.RatingActivity;
 import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
 
 import java.util.ArrayList;
@@ -26,10 +29,16 @@ public class RecipeStepsFragment extends Fragment {
     private RecyclerView recipeStepsList;
     private Button btnCompleteRecipe;
     List<Step> steps;
+    boolean showRatingPage;
+    int userId;
+    int recipeId;
 
-    public RecipeStepsFragment(List<Step> steps) {
+    public RecipeStepsFragment(List<Step> steps, boolean showRatingPage, int userId, int recipeId) {
         // Required empty public constructor
         this.steps = steps;
+        this.showRatingPage = showRatingPage;
+        this.userId = userId;
+        this.recipeId = recipeId;
     }
 
     @Override
@@ -52,7 +61,17 @@ public class RecipeStepsFragment extends Fragment {
         btnCompleteRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Hooray! Recipe Completed!", Toast.LENGTH_SHORT).show();
+                if(showRatingPage){
+                    Intent intent = new Intent(getContext(), RatingActivity.class);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("recipeId", recipeId);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent1 = new Intent(getContext(), MainActivity.class);
+                    intent1.putExtra("selectedTab", 3);
+                    startActivity(intent1);
+                }
             }
         });
     }

@@ -16,10 +16,14 @@ import com.irmwrs.recipeapp.fragments.RecipeStepsFragment;
 public class RecipeDetailAdapter extends FragmentStateAdapter {
     SingleRecipeResponse singleRecipeResponse;
     String author;
-    public RecipeDetailAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, SingleRecipeResponse singleRecipeResponse, String author) {
+    boolean isLogin;
+    int userId;
+    public RecipeDetailAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, SingleRecipeResponse singleRecipeResponse, String author, boolean isLogin, int userId) {
         super(fragmentManager, lifecycle);
         this.singleRecipeResponse = singleRecipeResponse;
         this.author = author;
+        this.isLogin = isLogin;
+        this.userId = userId;
     }
 
     @NonNull
@@ -31,7 +35,7 @@ public class RecipeDetailAdapter extends FragmentStateAdapter {
                 fragment = new RecipeIngredientsFragment(singleRecipeResponse.recipe, singleRecipeResponse.ingredients, author);
                 return fragment;
             case 1:
-                fragment = new RecipeStepsFragment(singleRecipeResponse.steps);
+                fragment = new RecipeStepsFragment(singleRecipeResponse.steps, showRatingPage(), userId, singleRecipeResponse.recipe.id);
                 return fragment;
         }
         return fragment;
@@ -40,5 +44,12 @@ public class RecipeDetailAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 2;
+    }
+
+    boolean showRatingPage(){
+        if (isLogin && !singleRecipeResponse.isReviewed){
+            return true;
+        }
+        return false;
     }
 }

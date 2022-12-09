@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -27,6 +28,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        Intent intent = getIntent();
+//
+//        int selectedTab = intent.getIntExtra("selectedTab", 3);
+//        if (selectedTab == 1){
+//            bottomNav.setSelectedItemId(R.id.menu_1);
+//        }
+//        else if(selectedTab == 2){
+//            bottomNav.setSelectedItemId(R.id.menu_2);
+//        }
+//        else if(selectedTab == 3){
+//            bottomNav.setSelectedItemId(R.id.menu_3);
+//        }
+//        else if(selectedTab == 4){
+//            bottomNav.setSelectedItemId(R.id.menu_4);
+//        }
+//        else if(selectedTab == 5){
+//            bottomNav.setSelectedItemId(R.id.menu_5);
+//        }
         setContentView(R.layout.activity_main);
 
         bottomNav = findViewById(R.id.bottom_nav);

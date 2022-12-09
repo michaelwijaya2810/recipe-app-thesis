@@ -33,11 +33,11 @@ public interface OutSystemService {
     @GET("Recipe/GetSingleRecipe")
     Call<SingleRecipeResponse> getSingleRecipe(@Query("RecipeId") long recipeId, @Query("UserId") int userId);
     @POST("Recipe/CreateOrUpdateRecipe")
-    Call<UpdateRecipe> postCreateOrUpdateRecipe(@Body UpdateRecipe updateRecipe);
+    Call<Response> postCreateOrUpdateRecipe(@Query("Auth") String auth, @Body UpdateRecipe updateRecipe);
     @GET("Recipe/GetAllRecipeList")
     Call<List<Recipe>> getAllRecipeList();
     @POST("Recipe/RatingRecipe")
-    Call<String> postRatingRecipe(@Query("RecipeId") long recipeId, @Query("UserId") int userId, @Query("AuthToken") String authToken, @Body Review review);
+    Call<Response> postRatingRecipe(@Query("RecipeId") long recipeId, @Query("UserId") int userId, @Query("AuthToken") String authToken, @Body Review review);
 
     // Ingredient
     @GET("Recipe/GetIngredientList")

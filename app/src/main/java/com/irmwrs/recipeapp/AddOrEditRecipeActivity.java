@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.irmwrs.recipeapp.Class.Ingredient;
+import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
 import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
@@ -103,6 +104,10 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                         Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    if(response.body().response.errorReason != null){
+                        Toast.makeText(getApplicationContext(), response.body().response.errorReason, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     singleRecipeResponse = response.body();
                     steps = singleRecipeResponse.steps;
                     server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
@@ -158,29 +163,9 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             isValid = validate(updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
-                server.postCreateOrUpdateRecipe(updateRecipe).enqueue(new Callback<UpdateRecipe>() {
-                    @Override
-                    public void onResponse(Call<UpdateRecipe> call, Response<UpdateRecipe> response) {
-                        if (!response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if(updateRecipe.recipeId == 0){
-                            Toast.makeText(getApplicationContext(), "Recipe added", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Recipe edited", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<UpdateRecipe> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                sendData();
             }
             Log.i("recipeTest", gson.toJson(updateRecipe));
-            // call server
         }
         else {
             this.updateRecipe = updateRecipe;
@@ -196,11 +181,39 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             isValid = validate(this.updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
-                server.postCreateOrUpdateRecipe(updateRecipe).enqueue(new Callback<UpdateRecipe>() {
+                sendData();
+            }
+            Log.i("recipeTest", gson.toJson(updateRecipe.stepList));
+        }
+        else {
+            this.steps = steps;
+        }
+    }
+
+    void sendData(){
+        Server server = new Server();
+        Gson gson = new Gson();
+        List<Key> keys = new ArrayList<>();
+        Key key = new Key();
+        key.value = gson.toJson(updateRecipe);
+        keys.add(key);
+        server.getAuthToken(Integer.parseInt(creatorId), keys).enqueue(new Callback<Key>() {
+            @Override
+            public void onResponse(Call<Key> call, Response<Key> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String auth = response.body().value;
+                server.postCreateOrUpdateRecipe(updateRecipe, auth).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
                     @Override
-                    public void onResponse(Call<UpdateRecipe> call, Response<UpdateRecipe> response) {
+                    public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                         if (!response.isSuccessful()){
                             Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if(response.body().errorReason != null){
+                            Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         if(updateRecipe.recipeId == 0){
@@ -212,17 +225,17 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                     }
 
                     @Override
-                    public void onFailure(Call<UpdateRecipe> call, Throwable t) {
+                    public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
-            Log.i("recipeTest", gson.toJson(updateRecipe.stepList));
-            // call server
-        }
-        else {
-            this.steps = steps;
-        }
+
+            @Override
+            public void onFailure(Call<Key> call, Throwable t) {
+
+            }
+        });
     }
 
     boolean validate(UpdateRecipe updateRecipe){

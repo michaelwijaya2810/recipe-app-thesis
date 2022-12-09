@@ -59,8 +59,8 @@ public class Server {
         return call;
     }
 
-    Call<UpdateRecipe> postCreateOrUpdateRecipe(UpdateRecipe updateRecipe){
-        Call<UpdateRecipe> call = outSystemService.postCreateOrUpdateRecipe(updateRecipe);
+    Call<Response> postCreateOrUpdateRecipe(UpdateRecipe updateRecipe, String auth){
+        Call<Response> call = outSystemService.postCreateOrUpdateRecipe(auth, updateRecipe);
         return call;
     }
 
@@ -68,8 +68,8 @@ public class Server {
         Call<List<Recipe>> call = outSystemService.getAllRecipeList();
         return call;
     }
-    Call<String> postRating(long recipeId, int userId, String authToken, Review review){
-        Call<String> call = outSystemService.postRatingRecipe(recipeId, userId, authToken, review);
+    Call<Response> postRating(long recipeId, int userId, String authToken, Review review){
+        Call<Response> call = outSystemService.postRatingRecipe(recipeId, userId, authToken, review);
         return call;
     }
 
@@ -93,6 +93,7 @@ public class Server {
     }
 
     Call<Key> getAuthToken(int userId, List<Key> keys){
+        keys.get(0).value = toMd5(keys.get(0).value);
         Call<Key> call = outSystemService.postGenerateAuth(userId, keys);
         return call;
     }

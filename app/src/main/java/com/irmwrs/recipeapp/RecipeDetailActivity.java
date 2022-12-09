@@ -38,7 +38,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
 
         // sample data
-        userId = 8;
+        userId = 9;
 
         if (userId == 0){
             isLogin = false;
@@ -50,6 +50,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
             public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                 if (!response.isSuccessful()){
                     Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(response.body().response.errorReason != null){
+                    Toast.makeText(getApplicationContext(), response.body().response.errorReason, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 SingleRecipeResponse singleRecipeResponse = response.body();

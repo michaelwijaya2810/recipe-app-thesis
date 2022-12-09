@@ -87,11 +87,16 @@ public class RatingActivity extends AppCompatActivity {
                             }
                             String auth = response.body().value;
                             Log.i("testRecipe", auth);
-                            server.postRating(recipeId, userId, auth, review).enqueue(new Callback<String>() {
+
+                            server.postRating(recipeId, userId, auth, review).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
                                 @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
+                                public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                                     if (!response.isSuccessful()){
                                         Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    if(response.body().errorReason != null){
+                                        Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
                                         return;
                                     }
                                     Toast.makeText(getApplicationContext(), "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
@@ -101,7 +106,7 @@ public class RatingActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                                public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
                                     Log.i("testRecipe", "rating");
                                     Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }

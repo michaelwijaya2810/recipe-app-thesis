@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.irmwrs.recipeapp.Class.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
+import com.irmwrs.recipeapp.Class.Order;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
@@ -116,6 +117,12 @@ public class Server {
 
     Call<LoginResponse> postChangePassword(ChangePassword changePassword){
         Call<LoginResponse> call = outSystemService.postChangePassword(changePassword);
+        return call;
+    }
+
+    // Order
+    Call<Response> postOrder(int userId, String authKey, Order order){
+        Call<Response> call = outSystemService.postNewOrder(userId, authKey, order);
         return call;
     }
 

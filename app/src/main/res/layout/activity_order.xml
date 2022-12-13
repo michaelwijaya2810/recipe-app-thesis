@@ -49,52 +49,25 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="21dp"
-        android:text="@string/pilih_jam_preorder"
+        android:text="@string/pilih_tanggal_pengiriman"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAddress" />
 
-
-    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
-        android:id="@+id/time"
+    <Button
+        android:id="@+id/btnDatePicker"
+        style="?android:spinnerStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        app:justifyContent="space_around"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:text="November 30 2022"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-
-        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:toggle_text="Pagi (06:00-11:00)"
-            app:toggle_textColor="@color/black"
-            app:toggle_textSize="12dp"
-            app:toggle_padding="5dp"/>
-
-        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/btn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:toggle_text="Siang (11:00-14:00)"
-            app:toggle_textColor="@color/black"
-            app:toggle_textSize="12dp"
-            app:toggle_padding="5dp"/>
-
-        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
-            android:id="@+id/btn3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:toggle_text="Sore (14:00-18:00)"
-            app:toggle_textColor="@color/black"
-            app:toggle_textSize="12dp"
-            app:toggle_padding="5dp" />
-
-    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView4"
@@ -106,7 +79,7 @@
         android:textColor="@color/black"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDatePicker" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -170,7 +143,7 @@
         android:layout_marginBottom="18dp"
         android:background="@drawable/round_style"
         android:backgroundTint="@color/gray"
-        android:text="@string/to_payment"
+        android:text="@string/add_to_cart"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

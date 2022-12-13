@@ -2,9 +2,9 @@
     <string name="app_name">RecipeAppThesis</string>
     <string name="cart">Cart</string>
     <string name="order">Order</string>
-    <string name="pilih_jam_preorder">Pilih jam preorder</string>
+    <string name="pilih_tanggal_pengiriman">Pilih tanggal pengiriman</string>
     <string name="summary">Summary</string>
-    <string name="to_payment">To payment</string>
+    <string name="add_to_cart">Add to cart</string>
     <string name="payment_options">Payment Options</string>
     <string name="total_price">Total Price</string>
     <string name="title_recipe">Recipe</string>

@@ -111,7 +111,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     void setSummaryIntent(Intent intent){
         String qty_name = "";
         String price = "";
-        double delivery_cost = 11000;
+        double delivery_cost = 10000; // default value
         for (int i = 0; i < selected.size(); i++){
             qty_name += selected.get(i).qty + "x " + selected.get(i).name + "\n";
             price += "Rp" + selected.get(i).price + "\n";

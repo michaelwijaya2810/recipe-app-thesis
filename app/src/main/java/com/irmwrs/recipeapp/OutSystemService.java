@@ -5,6 +5,7 @@ import androidx.annotation.Keep;
 import com.irmwrs.recipeapp.Class.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
+import com.irmwrs.recipeapp.Class.Order;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
@@ -58,4 +59,8 @@ public interface OutSystemService {
     Call<Response> getForgotPassword(@Query("Username") String username);
     @POST("User/ChangePassword")
     Call<LoginResponse> postChangePassword(@Body ChangePassword changePassword);
+
+    // Order
+    @POST("Order/NewOrder")
+    Call<Response> postNewOrder(@Query("userid") int userId, @Query("AuthKey") String authKey, @Body Order order);
 }

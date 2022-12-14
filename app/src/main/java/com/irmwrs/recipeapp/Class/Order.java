@@ -13,5 +13,5 @@ public class Order {
     public String requestDeliveryDate;
     @SerializedName("Ingredient")
     @Expose
-    public List<Ingredient> ingredient = null;
+    public List<OrderIngredient> ingredient;
 }

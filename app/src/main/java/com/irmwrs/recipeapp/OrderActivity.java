@@ -11,13 +11,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.irmwrs.recipeapp.Class.Key;
+import com.irmwrs.recipeapp.Class.Order;
+import com.irmwrs.recipeapp.Class.OrderIngredient;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderActivity extends AppCompatActivity {
+
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +51,13 @@ public class OrderActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int userId = intent.getIntExtra("userId", 8); // get user id
+        int recipeId = intent.getIntExtra("recipeId", 1); // get recipe id
+        ArrayList<Integer> ids = intent.getIntegerArrayListExtra("ids");
+        ArrayList<Integer> qtys = intent.getIntegerArrayListExtra("qtys");
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String date = day + "/" + getMonth(month+1) + "/" + year;
+                date = year + "-" + (month+1) + "-" + day;
                 btnDatePicker.setText(date);
             }
         };
@@ -53,7 +70,7 @@ public class OrderActivity extends AppCompatActivity {
         calendar.add(Calendar.DAY_OF_MONTH, 2);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
-        calendar.add(Calendar.DAY_OF_MONTH, 10);
+        calendar.add(Calendar.DAY_OF_MONTH, 8);
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
 
         btnDatePicker.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +88,63 @@ public class OrderActivity extends AppCompatActivity {
         btnToPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // send data to server
-                // navigate to cart
+                if(date == null){
+                    Toast.makeText(getApplicationContext(), "Please pick a delivery date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Order order = new Order();
+                order.requestDeliveryDate = date;
+                order.recipeId = recipeId;
+                List<OrderIngredient> ingredient = new ArrayList<>();
+                for (int i = 0; i < ids.size(); i++){
+                    OrderIngredient orderIngredient = new OrderIngredient();
+                    orderIngredient.ingredientid = ids.get(i);
+                    orderIngredient.qty = qtys.get(i);
+                    ingredient.add(orderIngredient);
+                }
+                order.ingredient = ingredient;
+
+                Server server = new Server();
+                server.getAuthToken(userId, order).enqueue(new Callback<Key>() {
+                    @Override
+                    public void onResponse(Call<Key> call, Response<Key> response) {
+                        if (!response.isSuccessful()){
+                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String authKey = response.body().value;
+                        server.postOrder(userId, authKey, order).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
+                            @Override
+                            public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
+                                if (!response.isSuccessful()){
+                                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if(response.body().errorReason != null){
+                                    Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                // navigate to cart
+                            }
+
+                            @Override
+                            public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<Key> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+    }
+
+    void a(Object a){
+
     }
 
     String getMonth(int month){

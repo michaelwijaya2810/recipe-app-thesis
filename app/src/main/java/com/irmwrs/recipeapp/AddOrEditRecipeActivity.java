@@ -192,12 +192,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
     void sendData(){
         Server server = new Server();
-        Gson gson = new Gson();
-        List<Key> keys = new ArrayList<>();
-        Key key = new Key();
-        key.value = gson.toJson(updateRecipe);
-        keys.add(key);
-        server.getAuthToken(Integer.parseInt(creatorId), keys).enqueue(new Callback<Key>() {
+        server.getAuthToken(Integer.parseInt(creatorId), updateRecipe).enqueue(new Callback<Key>() {
             @Override
             public void onResponse(Call<Key> call, Response<Key> response) {
                 if (!response.isSuccessful()){

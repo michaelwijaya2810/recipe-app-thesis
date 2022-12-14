@@ -16,6 +16,7 @@ import com.irmwrs.recipeapp.Class.Review;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
+import com.irmwrs.recipeapp.cart.CartOrderResponse;
 
 import java.util.List;
 
@@ -63,4 +64,6 @@ public interface OutSystemService {
     // Order
     @POST("Order/NewOrder")
     Call<Response> postNewOrder(@Query("userid") int userId, @Query("AuthKey") String authKey, @Body Order order);
+    @GET("Order/GetCartOrder")
+    Call<List<CartOrderResponse>> getCartOrder(@Query("Userid") int userId);
 }

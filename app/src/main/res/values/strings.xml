@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">RecipeAppThesis</string>
     <string name="cart">Cart</string>
+    <string name="ingredient_cart">Ingredient Cart</string>
     <string name="order">Order</string>
     <string name="pilih_tanggal_pengiriman">Pilih tanggal pengiriman</string>
     <string name="summary">Summary</string>

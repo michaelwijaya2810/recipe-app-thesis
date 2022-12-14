@@ -70,15 +70,8 @@ public class RatingActivity extends AppCompatActivity {
                     review.recipeRating = (int) rbRecipe.getRating();
                     review.recipesId = recipeId;
 
-                    Gson gson = new Gson();
-                    String value = gson.toJson(review);
-                    List<Key> keys = new ArrayList<>();
-                    Key key = new Key();
-                    key.value = value;
-                    keys.add(key);
-
                     Server server = new Server();
-                    server.getAuthToken(userId, keys).enqueue(new Callback<Key>() {
+                    server.getAuthToken(userId, review).enqueue(new Callback<Key>() {
                         @Override
                         public void onResponse(Call<Key> call, Response<Key> response) {
                             if (!response.isSuccessful()){

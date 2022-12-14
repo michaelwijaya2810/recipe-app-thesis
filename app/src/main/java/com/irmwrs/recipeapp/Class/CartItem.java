@@ -5,6 +5,7 @@ public class CartItem {
     public String image;
     public double price;
     public int qty;
+    public long ingredientId;
 
     public String getStringPrice(){
         return "Rp. " + price;

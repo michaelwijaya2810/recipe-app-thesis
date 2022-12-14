@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/llRowCart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_style"
     android:backgroundTint="@color/gray"
-    android:layout_marginTop="13px"
-    android:layout_marginBottom="13px"
-    >
+    android:orientation="vertical"
+    android:layout_marginVertical="13dp"
+    android:padding="5dp">
+
     <CheckBox
         android:id="@+id/cbCart"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Ingredient"
+        android:text="Recipe 1"
         >
     </CheckBox>
-    <LinearLayout
+    <com.google.android.flexbox.FlexboxLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
-        android:layout_marginEnd="12dp"
+        app:justifyContent="space_between"
         >
         <TextView
-            android:id="@+id/tvIngredientPrice"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvQtyAndName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello"
+            android:text="Test123"
             android:textColor="@color/black"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="16dp"
+            android:textSize="16dp"
             />
-
-        <EditText
-            android:id="@+id/etIngredientQty"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
-            android:text="5"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:background="@drawable/round_style"
-            android:backgroundTint="@color/white"
-            android:layout_marginBottom="12dp"
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="Rp.100000"
+            android:textColor="@color/black"
+            android:textSize="16dp"
             />
-    </LinearLayout>
-
+    </com.google.android.flexbox.FlexboxLayout>
 
 </LinearLayout>

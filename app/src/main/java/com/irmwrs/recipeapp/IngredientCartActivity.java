@@ -21,21 +21,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CartActivity extends AppCompatActivity implements CartAdapter.ViewHolder.OnCheckListener {
+public class IngredientCartActivity extends AppCompatActivity implements IngredientCartAdapter.ViewHolder.OnCheckListener {
 
     List<CartItem> selected = new ArrayList<>();
     TextView tvTotalPrice;
     TextView tvSelected;
     List<Ingredient> ingredients;
     List<CartItem> cartItemList = new ArrayList<>();
+    ArrayList<Integer> ids;
+    ArrayList<Integer> qtys;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_ingredient_cart);
 
         Intent intent = getIntent();
-        ArrayList<Integer> ids = intent.getIntegerArrayListExtra("ids");
-        ArrayList<Integer> qtys = intent.getIntegerArrayListExtra("qtys");
+        ids = intent.getIntegerArrayListExtra("ids");
+        qtys = intent.getIntegerArrayListExtra("qtys");
         Server server = new Server();
 
         server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
@@ -56,12 +58,13 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
                             cartItem.price = ingredients.get(j).ingredientPrice;
                         }
                     }
+                    cartItem.ingredientId = ids.get(i);
                     cartItem.qty = qtys.get(i);
                     cartItemList.add(cartItem);
                     selected.add(cartItem);
                 }
 
-                CartAdapter adapter = new CartAdapter(CartActivity.this, cartItemList, CartActivity.this);
+                IngredientCartAdapter adapter = new IngredientCartAdapter(IngredientCartActivity.this, cartItemList, IngredientCartActivity.this);
 
                 tvSelected = findViewById(R.id.tvSelected);
                 RecyclerView rvCart = findViewById(R.id.rvCart);
@@ -71,7 +74,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
                 String selectedItems = selected.size() + "/" + cartItemList.size() + " selected items";
                 tvSelected.setText(selectedItems);
 
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CartActivity.this);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(IngredientCartActivity.this);
                 rvCart.setLayoutManager(linearLayoutManager);
                 rvCart.setAdapter(adapter);
 
@@ -85,7 +88,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
                             Toast.makeText(getApplicationContext(), "Please select one or more ingredients", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Intent intent = new Intent(CartActivity.this, OrderActivity.class);
+                            Intent intent = new Intent(IngredientCartActivity.this, OrderActivity.class);
                             setSummaryIntent(intent);
                             startActivity(intent);
                         }
@@ -111,16 +114,22 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
     void setSummaryIntent(Intent intent){
         String qty_name = "";
         String price = "";
+        ids = new ArrayList<>();
+        qtys = new ArrayList<>();
         double delivery_cost = 10000; // default value
         for (int i = 0; i < selected.size(); i++){
             qty_name += selected.get(i).qty + "x " + selected.get(i).name + "\n";
             price += "Rp" + selected.get(i).price + "\n";
+            ids.add((int) selected.get(i).ingredientId);
+            qtys.add(selected.get(i).qty);
         }
         qty_name += "Biaya Kirim";
         price += "Rp" + delivery_cost;
         intent.putExtra("qty_name", qty_name);
         intent.putExtra("price", price);
         intent.putExtra("total", getTotalPrice() + delivery_cost);
+        intent.putIntegerArrayListExtra("ids", ids);
+        intent.putIntegerArrayListExtra("qtys", qtys);
     }
 
     @Override
@@ -131,6 +140,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.ViewH
             }
             else {
                 selected.remove(cartItemList.get(position));
+
             }
             String selectedItems = selected.size() + "/" + cartItemList.size() + " selected items";
             tvSelected.setText(selectedItems);

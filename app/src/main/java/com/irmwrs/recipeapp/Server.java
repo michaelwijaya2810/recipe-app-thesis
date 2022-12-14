@@ -19,9 +19,11 @@ import com.irmwrs.recipeapp.Class.Review;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
+import com.irmwrs.recipeapp.cart.CartOrderResponse;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -93,7 +95,8 @@ public class Server {
         return call;
     }
 
-    Call<Key> getAuthToken(int userId, List<Key> keys){
+    Call<Key> getAuthToken(int userId, Object object){
+        List<Key> keys = generateKeysObject(object);
         keys.get(0).value = toMd5(keys.get(0).value);
         Call<Key> call = outSystemService.postGenerateAuth(userId, keys);
         return call;
@@ -126,6 +129,11 @@ public class Server {
         return call;
     }
 
+    Call<List<CartOrderResponse>> getCart(int userId){
+        Call<List<CartOrderResponse>> call = outSystemService.getCartOrder(userId);
+        return call;
+    }
+
     String toMd5(String value){ // md5 converter if string is too long
         String md5 = "MD5";
         try {
@@ -147,6 +155,17 @@ public class Server {
             e.printStackTrace();
         }
         return "";
+    }
+
+    List<Key> generateKeysObject(Object object){ // generate keys object with json in it
+        Gson gson = new Gson();
+        String value = gson.toJson(object);
+        Log.i("testRecipe", value);
+        List<Key> keys = new ArrayList<>();
+        Key key = new Key();
+        key.value = value;
+        keys.add(key);
+        return keys;
     }
 
 }

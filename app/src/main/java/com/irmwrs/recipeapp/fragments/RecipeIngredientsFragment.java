@@ -1,10 +1,8 @@
 package com.irmwrs.recipeapp.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,15 +16,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.irmwrs.recipeapp.CartActivity;
+import com.irmwrs.recipeapp.IngredientCartActivity;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.SingleRecipeIngredient;
 import com.irmwrs.recipeapp.R;
-import com.irmwrs.recipeapp.Server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +110,7 @@ public class RecipeIngredientsFragment extends Fragment {
         btn_order_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CartActivity.class);
+                Intent intent = new Intent(getActivity(), IngredientCartActivity.class);
                 ArrayList<Integer> ids = new ArrayList<>();
                 ArrayList<Integer> qtys = new ArrayList<>();
                 for (int i = 0; i < highlightedIngredients.size(); i++){

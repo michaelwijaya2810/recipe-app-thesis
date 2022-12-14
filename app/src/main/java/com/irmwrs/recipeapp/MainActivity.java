@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.irmwrs.recipeapp.Class.Recipe;
+import com.irmwrs.recipeapp.cart.CartFragment;
+import com.irmwrs.recipeapp.cart.CartOrderResponse;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
 
 import java.util.List;
@@ -25,28 +28,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     Server server = new Server();
     Fragment fragment = null;
 
+    int userId = 8; // todo get user id
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Intent intent = getIntent();
-//
-//        int selectedTab = intent.getIntExtra("selectedTab", 3);
-//        if (selectedTab == 1){
-//            bottomNav.setSelectedItemId(R.id.menu_1);
-//        }
-//        else if(selectedTab == 2){
-//            bottomNav.setSelectedItemId(R.id.menu_2);
-//        }
-//        else if(selectedTab == 3){
-//            bottomNav.setSelectedItemId(R.id.menu_3);
-//        }
-//        else if(selectedTab == 4){
-//            bottomNav.setSelectedItemId(R.id.menu_4);
-//        }
-//        else if(selectedTab == 5){
-//            bottomNav.setSelectedItemId(R.id.menu_5);
-//        }
         setContentView(R.layout.activity_main);
 
         bottomNav = findViewById(R.id.bottom_nav);
@@ -81,6 +68,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 });
                 return true;
             case R.id.menu_2:
+                server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
+                    @Override
+                    public void onResponse(Call<List<CartOrderResponse>> call, Response<List<CartOrderResponse>> response) {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        fragment = new CartFragment(response.body());
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<CartOrderResponse>> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 //Go to Order
 //                getSupportFragmentManager()
 //                        .beginTransaction()

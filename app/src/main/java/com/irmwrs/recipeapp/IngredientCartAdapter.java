@@ -17,11 +17,11 @@ import com.irmwrs.recipeapp.Class.CartItem;
 
 import java.util.List;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
+public class IngredientCartAdapter extends RecyclerView.Adapter<IngredientCartAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(ctx).inflate(R.layout.item_row_cart, parent, false);
+        View v = LayoutInflater.from(ctx).inflate(R.layout.item_row_ingredient_cart, parent, false);
         return new ViewHolder(v, onCheckListener);
     }
 
@@ -42,7 +42,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<CartItem> cartItemList;
     ViewHolder.OnCheckListener onCheckListener;
 
-    public CartAdapter(Context ctx, List<CartItem> cartItemList, ViewHolder.OnCheckListener onCheckListener){
+    public IngredientCartAdapter(Context ctx, List<CartItem> cartItemList, ViewHolder.OnCheckListener onCheckListener){
         this.ctx = ctx;
         this.cartItemList = cartItemList;
         this.onCheckListener = onCheckListener;

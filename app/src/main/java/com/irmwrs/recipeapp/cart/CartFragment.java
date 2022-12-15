@@ -1,5 +1,6 @@
 package com.irmwrs.recipeapp.cart;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,13 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.PaymentActivity;
 import com.irmwrs.recipeapp.R;
 
+import java.text.Format;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnCheckListener {
 
     TextView tvSelected;
     RecyclerView rvCart;
@@ -31,12 +40,13 @@ public class CartFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
 
     List<CartOrderResponse> cartItems;
-    List<CartOrderResponse> selected;
+    List<CartOrderResponse> selected = new ArrayList<>();
     int deliveryFee = 10000;
+    double totalPrice;
 
     public CartFragment(List<CartOrderResponse> cartItems) {
         this.cartItems = cartItems;
-        this.selected = cartItems;
+        selected.addAll(cartItems);
     }
 
     @Override
@@ -59,32 +69,55 @@ public class CartFragment extends Fragment {
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
         btnCheckout = view.findViewById(R.id.btnOrder);
 
-        // texts init
-        String selectedItems = selected.size() + "/" + cartItems.size() + " selected items";
-        tvSelected.setText(selectedItems);
-        String totalPrice = "Total price + Delivery Fee\nRp. " + getTotalPrice();
-        tvTotalPrice.setText(totalPrice);
-
         // buttons init
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (selected.size() == 0){
+                    Toast.makeText(getContext(), "Please select an item to checkout", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(getContext(), PaymentActivity.class);
+                    intent.putExtra("total_price", totalPrice + deliveryFee);
+                    startActivity(intent);
+                }
             }
         });
 
         // recyclerview init
         linearLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new CartAdapter(getContext(), cartItems);
+        adapter = new CartAdapter(getContext(), cartItems, this);
         rvCart.setLayoutManager(linearLayoutManager);
         rvCart.setAdapter(adapter);
+
+        // texts init
+        updateText();
+    }
+
+    void updateText(){
+        String selectedItems = selected.size() + "/" + cartItems.size() + " selected items";
+        tvSelected.setText(selectedItems);
+        String totalPrice = "Total price + Delivery Fee\n" + getTotalPrice();
+        tvTotalPrice.setText(totalPrice);
     }
 
     String getTotalPrice(){
-        int totalPrice = 0;
+        totalPrice = 0;
         for (int i = 0; i < selected.size(); i++){
             totalPrice = totalPrice + selected.get(i).totalPrice;
         }
-        return totalPrice + " + " + deliveryFee;
+        Functions functions = new Functions();
+        return functions.toRupiah(totalPrice) + " + " + functions.toRupiah((double) deliveryFee);
+    }
+
+    @Override
+    public void onCheckClick(int position, boolean isChecked) {
+        if(isChecked){
+            selected.add(cartItems.get(position));
+        }
+        else {
+            selected.remove(cartItems.get(position));
+        }
+        updateText();
     }
 }

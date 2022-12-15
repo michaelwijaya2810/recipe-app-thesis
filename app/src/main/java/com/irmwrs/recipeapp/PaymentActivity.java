@@ -4,54 +4,70 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Objects;
+
 public class PaymentActivity extends AppCompatActivity {
+    MaterialButtonToggleGroup tbPaymentOption;
+    TextView tvTotalPrice3;
+    Button btnPay;
+
+    String paymentMethod = "";
+
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+        init();
+    }
 
-        MaterialButtonToggleGroup tbPaymentOption = findViewById(R.id.tbPaymentOption);
-        int buttonId = tbPaymentOption.getCheckedButtonId();
-        MaterialButton button = tbPaymentOption.findViewById(buttonId);
-        TextView tvPaymentOptionBalance = findViewById(R.id.tvPaymentOptionBalance);
-        TextView tvBalance = findViewById(R.id.tvBalance);
-        TextView tvTotalPrice3 = findViewById(R.id.tvTotalPrice3);
+    void init(){
+        intent = getIntent();
 
-        Intent intent = getIntent();
+        // widget init
+        tbPaymentOption = findViewById(R.id.tbPaymentOption);
+        tvTotalPrice3 = findViewById(R.id.tvTotalPrice3);
+        btnPay = findViewById(R.id.btnPay);
 
-        //sample data
-        double gopaySaldo = 1000000;
-        double ovoSaldo = 500000;
+        // text init
+        String totalPrice = "Rp" + intent.getDoubleExtra("total_price", 0);
+        tvTotalPrice3.setText(totalPrice);
 
+        // button init
         tbPaymentOption.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked){
-                    if (checkedId == R.id.btnGopay){
-                        String balance = "Rp" + gopaySaldo;
-                        tvPaymentOptionBalance.setText("Gopay Saldo");
-                        tvBalance.setText(balance);
-                    }
-                    else if(checkedId == R.id.btnOvo){
-                        String balance = "Rp" + ovoSaldo;
-                        tvPaymentOptionBalance.setText("Ovo Saldo");
-                        tvBalance.setText(balance);
+                    if (checkedId == R.id.btnBcaVA){
+                        paymentMethod = "BCA";
                     }
                 }
                 else {
-                    tvPaymentOptionBalance.setText("");
-                    tvBalance.setText("");
+                    paymentMethod = "";
                 }
             }
         });
-
-        String totalPrice = "Rp" + intent.getDoubleExtra("total_price", 0);
-        tvTotalPrice3.setText(totalPrice);
+        btnPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(paymentMethod.equals("")){
+                    Toast.makeText(getApplicationContext(), "Please select a payment method", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // todo navigate to next page base on payment method
+                }
+            }
+        });
     }
 }

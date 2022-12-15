@@ -3,6 +3,7 @@ package com.irmwrs.recipeapp.cart;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.irmwrs.recipeapp.Functions;
 
 public class CartOrderResponse {
     @SerializedName("OrderId")
@@ -32,10 +33,11 @@ public class CartOrderResponse {
 
     public String getPriceSummary(){
         String price = "";
+        Functions functions = new Functions();
         for (int i = 0; i < orderDetail.size(); i++){
-            price += "Rp" + orderDetail.get(i).ingredientPrice + "\n";
+            price +=  functions.toRupiah((double) orderDetail.get(i).ingredientPrice*orderDetail.get(i).ingredientQty) + "\n";
         }
-        price += "\n" + "Rp" + totalPrice;
+        price += "\n" + functions.toRupiah((double) totalPrice);
         return price;
     }
 }

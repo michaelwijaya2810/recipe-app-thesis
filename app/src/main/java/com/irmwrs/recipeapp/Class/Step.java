@@ -14,5 +14,5 @@ public class Step {
     @Expose
     public String recipeSteps;
 
-    public int rvId; // RecyclerView id for updating recipe steps
+    public String rvId = ""; // RecyclerView id for updating recipe steps
 }

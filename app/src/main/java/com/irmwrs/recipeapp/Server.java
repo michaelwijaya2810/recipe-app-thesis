@@ -1,5 +1,7 @@
 package com.irmwrs.recipeapp;
 
+import android.app.Activity;
+import android.os.StrictMode;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -20,7 +22,9 @@ import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
 import com.irmwrs.recipeapp.cart.CartOrderResponse;
+import com.irmwrs.recipeapp.payment.PaymentResponse;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -46,56 +50,62 @@ public class Server {
             .build();
     OutSystemService outSystemService = retrofit.create(OutSystemService.class);
 
+    public Server(){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }
+
     // Recipe
-    Call<RecipeListResponse> getRecipeListFromKeyword(String keyword){
+    public Call<RecipeListResponse> getRecipeListFromKeyword(String keyword){
         Call<RecipeListResponse> call = outSystemService.getList(keyword);
         return call;
     }
 
-    Call<RecipeListResponse> getHighlightedList(){
+    public Call<RecipeListResponse> getHighlightedList(){
         Call<RecipeListResponse> call = outSystemService.getHighlightedList();
         return call;
     }
 
-    Call<SingleRecipeResponse> getRecipeFromId(long recipeId, int userId){
+    public Call<SingleRecipeResponse> getRecipeFromId(long recipeId, int userId){
         Call<SingleRecipeResponse> call = outSystemService.getSingleRecipe(recipeId, userId);
         return call;
     }
 
-    Call<Response> postCreateOrUpdateRecipe(UpdateRecipe updateRecipe, String auth){
+    public Call<Response> postCreateOrUpdateRecipe(UpdateRecipe updateRecipe, String auth){
+        List<Key> result = generateKeysObject(updateRecipe);
         Call<Response> call = outSystemService.postCreateOrUpdateRecipe(auth, updateRecipe);
         return call;
     }
 
-    Call<List<Recipe>> getAllRecipe(){
+    public Call<List<Recipe>> getAllRecipe(){
         Call<List<Recipe>> call = outSystemService.getAllRecipeList();
         return call;
     }
-    Call<Response> postRating(long recipeId, int userId, String authToken, Review review){
+    public Call<Response> postRating(long recipeId, int userId, String authToken, Review review){
         Call<Response> call = outSystemService.postRatingRecipe(recipeId, userId, authToken, review);
         return call;
     }
 
     // Ingredient
-    Call<List<Ingredient>> getAllIngredient(){
+    public Call<List<Ingredient>> getAllIngredient(){
         Call<List<Ingredient>> call = outSystemService.getIngredientList();
         return call;
     }
 
     // Validate user
-    Call<LoginResponse> postValidateUser(String username, Validate validate){
+    public Call<LoginResponse> postValidateUser(String username, Validate validate){
         Call<LoginResponse> call = outSystemService.postValidateOrLogin(username, validate);
         return call;
     }
 
-    Call<LoginResponse> postLogin(String username, String password){
+    public Call<LoginResponse> postLogin(String username, String password){
         Validate validate = new Validate();
         validate.password = password;
         Call<LoginResponse> call = outSystemService.postValidateOrLogin(username, validate);
         return call;
     }
 
-    Call<Key> getAuthToken(int userId, Object object){
+    public Call<Key> getAuthToken(int userId, Object object){
         List<Key> keys = generateKeysObject(object);
         keys.get(0).value = toMd5(keys.get(0).value);
         Call<Key> call = outSystemService.postGenerateAuth(userId, keys);
@@ -103,34 +113,45 @@ public class Server {
     }
 
     // User
-    Call<LoginResponse> postRegister(UserRegister userRegister){
+    public Call<LoginResponse> postRegister(UserRegister userRegister){
         Call<LoginResponse> call = outSystemService.postRegister(userRegister);
         return call;
     }
 
-    Call<UserResponse> postUserDetail(int id){
+    public Call<UserResponse> postUserDetail(int id){
         Call<UserResponse> call = outSystemService.postUserDetail(id);
         return call;
     }
 
-    Call<Response> getForgotPassword(String username){
+    public Call<Response> getForgotPassword(String username){
         Call<Response> call = outSystemService.getForgotPassword(username);
         return call;
     }
 
-    Call<LoginResponse> postChangePassword(ChangePassword changePassword){
+    public Call<LoginResponse> postChangePassword(ChangePassword changePassword){
         Call<LoginResponse> call = outSystemService.postChangePassword(changePassword);
         return call;
     }
 
     // Order
-    Call<Response> postOrder(int userId, String authKey, Order order){
+    public Call<Response> postOrder(int userId, String authKey, Order order){
         Call<Response> call = outSystemService.postNewOrder(userId, authKey, order);
         return call;
     }
 
-    Call<List<CartOrderResponse>> getCart(int userId){
+    public Call<List<CartOrderResponse>> getCart(int userId){
         Call<List<CartOrderResponse>> call = outSystemService.getCartOrder(userId);
+        return call;
+    }
+
+    // Payment
+    public Call<PaymentResponse> postCheckout(long userId, String authKey, int totalPrice, List<Integer> orderListInt){
+        List<Long> orderList = new ArrayList<>();
+        for (int i = 0; i < orderListInt.size(); i++){ // change int to long because intent can't send an array of Long
+            orderList.add(Long.valueOf(orderListInt.get(i)));
+        }
+
+        Call<PaymentResponse> call = outSystemService.postProccessCheckout(userId, authKey, totalPrice, orderList);
         return call;
     }
 
@@ -150,6 +171,7 @@ public class Server {
                     h = "0" + h;
                 hexString.append(h);
             }
+            Log.i("testRecipe", hexString.toString());
             return hexString.toString();
         } catch (NoSuchAlgorithmException e){
             e.printStackTrace();

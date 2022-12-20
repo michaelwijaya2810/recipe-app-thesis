@@ -17,6 +17,7 @@ import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
 import com.irmwrs.recipeapp.cart.CartOrderResponse;
+import com.irmwrs.recipeapp.payment.PaymentResponse;
 
 import java.util.List;
 
@@ -66,4 +67,8 @@ public interface OutSystemService {
     Call<Response> postNewOrder(@Query("userid") int userId, @Query("AuthKey") String authKey, @Body Order order);
     @GET("Order/GetCartOrder")
     Call<List<CartOrderResponse>> getCartOrder(@Query("Userid") int userId);
+
+    // Payment
+    @POST("Payment/ProccessCheckout")
+    Call<PaymentResponse> postProccessCheckout(@Query("UserId") long userId, @Query("Authkey") String authKey, @Query("TotalPrice") int totalPrice, @Body List<Long> orderList);
 }

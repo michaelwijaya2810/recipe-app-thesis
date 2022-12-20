@@ -94,6 +94,7 @@ public class AddOrEditRecipeStepsFragment extends Fragment implements AddOrEditR
         }
         steps.add(step);
         adapter.notifyDataSetChanged();
+        adapter.setRvIds();
     }
 
     @Override

@@ -14,7 +14,7 @@ public class UpdateRecipe {
     public long recipeId;
     @SerializedName("CreatorId")
     @Expose
-    public String creatorId;
+    public int creatorId;
     @SerializedName("RecipeDescription")
     @Expose
     public String recipeDescription;

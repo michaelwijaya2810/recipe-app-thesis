@@ -62,7 +62,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
         // sample data
         creatorId = "8";
-        recipeId = 2;
+        recipeId = 0;
 
         Server server = new Server();
 
@@ -147,7 +147,6 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
     }
 
-
     UpdateRecipe updateRecipe;
     Gson gson = new Gson();
     boolean isValid;
@@ -159,7 +158,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             this.updateRecipe = updateRecipe;
             this.updateRecipe.stepList = steps;
             this.updateRecipe.recipeId = recipeId;
-            this.updateRecipe.creatorId = creatorId;
+            this.updateRecipe.creatorId = Integer.parseInt(creatorId);
             isValid = validate(updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
@@ -177,7 +176,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         if(saveIsPressed){
             updateRecipe.stepList = steps;
             updateRecipe.recipeId = recipeId;
-            updateRecipe.creatorId = creatorId;
+            updateRecipe.creatorId = Integer.parseInt(creatorId);
             isValid = validate(this.updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
@@ -190,7 +189,14 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
     }
 
+    String imageRecipe = "";
+
     void sendData(){
+        imageRecipe = updateRecipe.recipeImage;
+        updateRecipe.recipeImage = "";
+        for (int i = 0; i < updateRecipe.stepList.size(); i++){
+            updateRecipe.stepList.get(i).rvId = null;
+        }
         Server server = new Server();
         server.getAuthToken(Integer.parseInt(creatorId), updateRecipe).enqueue(new Callback<Key>() {
             @Override
@@ -200,6 +206,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                     return;
                 }
                 String auth = response.body().value;
+                updateRecipe.recipeImage = imageRecipe;
                 server.postCreateOrUpdateRecipe(updateRecipe, auth).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
                     @Override
                     public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {

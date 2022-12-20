@@ -2,6 +2,7 @@ package com.irmwrs.recipeapp.adapters;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ public class AddOrEditRecipeStepsAdapter extends RecyclerView.Adapter<AddOrEditR
 
     @Override
     public void onBindViewHolder(@NonNull AddOrEditRecipeStepViewHolder holder, int position) {
-        int currPosition = position;
         Step step = steps.get(position);
         holder.etSteps.setText(step.recipeSteps);
         holder.etSteps.addTextChangedListener(new TextWatcher() {
@@ -44,7 +44,7 @@ public class AddOrEditRecipeStepsAdapter extends RecyclerView.Adapter<AddOrEditR
             public void afterTextChanged(Editable editable) {
                 if (editable.length() != 0){
                     for (int i = 0; i < steps.size(); i++){
-                        if(steps.get(i).rvId == step.rvId){
+                        if(steps.get(i).rvId.equals(step.rvId)){
                             steps.get(i).recipeSteps = editable.toString();
                             data.sendSteps(steps);
                         }
@@ -67,7 +67,13 @@ public class AddOrEditRecipeStepsAdapter extends RecyclerView.Adapter<AddOrEditR
         this.steps = steps;
         this.data = data;
         for (int i = 0; i < steps.size(); i++){ // set rvId
-            steps.get(i).rvId = i;
+            steps.get(i).rvId = String.valueOf(i);
+        }
+    }
+
+    public void setRvIds(){
+        for (int i = 0; i < steps.size(); i++){ // set rvId
+            steps.get(i).rvId = String.valueOf(i);
         }
     }
 

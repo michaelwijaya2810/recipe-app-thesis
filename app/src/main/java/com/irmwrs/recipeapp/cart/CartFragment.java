@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +16,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.irmwrs.recipeapp.Functions;
-import com.irmwrs.recipeapp.PaymentActivity;
+import com.irmwrs.recipeapp.payment.PaymentActivity;
 import com.irmwrs.recipeapp.R;
 
-import java.text.Format;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
 
 public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnCheckListener {
 
@@ -77,8 +71,13 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
                     Toast.makeText(getContext(), "Please select an item to checkout", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    ArrayList<Integer> orderList = new ArrayList<>();
+                    for (int i = 0; i < selected.size(); i++){
+                        orderList.add((int) selected.get(i).orderId);
+                    }
                     Intent intent = new Intent(getContext(), PaymentActivity.class);
                     intent.putExtra("total_price", totalPrice + deliveryFee);
+                    intent.putIntegerArrayListExtra("order_list", orderList);
                     startActivity(intent);
                 }
             }

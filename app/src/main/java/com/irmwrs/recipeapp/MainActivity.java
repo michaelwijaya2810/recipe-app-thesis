@@ -16,6 +16,8 @@ import com.irmwrs.recipeapp.cart.CartFragment;
 import com.irmwrs.recipeapp.cart.CartOrderResponse;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     NavigationBarView bottomNav;
     Server server = new Server();
     Fragment fragment = null;
+    Functions functions;
 
     int userId = 8; // todo get user id
 
@@ -46,10 +49,14 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_1:
+                functions = new Functions();
+                functions.showLoading(MainActivity.this);
+                //Go to Recipe
                 server.getAllRecipe().enqueue(new Callback<List<Recipe>>() {
                     @Override
                     public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                         if (!response.isSuccessful()){
+                            functions.dismissLoading();
                             Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -59,15 +66,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                                 .beginTransaction()
                                 .replace(R.id.fragment_container, fragment)
                                 .commit();
+                        functions.dismissLoading();
                     }
 
                     @Override
                     public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                        functions.dismissLoading();
                         Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 return true;
             case R.id.menu_2:
+                functions = new Functions();
+                functions.showLoading(MainActivity.this);
                 server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
                     @Override
                     public void onResponse(Call<List<CartOrderResponse>> call, Response<List<CartOrderResponse>> response) {
@@ -80,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                                 .beginTransaction()
                                 .replace(R.id.fragment_container, fragment)
                                 .commit();
+                        functions.dismissLoading();
                     }
 
                     @Override

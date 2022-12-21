@@ -88,7 +88,7 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
                             Toast.makeText(getApplicationContext(), "Please select one or more ingredients", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Intent intent = new Intent(IngredientCartActivity.this, OrderActivity.class);
+                            Intent intent = new Intent(IngredientCartActivity.this, AddToCartActivity.class);
                             setSummaryIntent(intent);
                             startActivity(intent);
                         }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.gson.Gson;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Functions;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.Server;
+import com.irmwrs.recipeapp.waiting_for_payment.WaitingForPaymentActivity;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -84,6 +87,7 @@ public class PaymentActivity extends AppCompatActivity {
                 }
                 else {
                     Server server = new Server();
+                    functions.showLoading(PaymentActivity.this);
                     server.getAuthToken((int) userId, orderList).enqueue(new Callback<Key>() {
                         @Override
                         public void onResponse(Call<Key> call, Response<Key> response) {
@@ -99,12 +103,12 @@ public class PaymentActivity extends AppCompatActivity {
                                         functions.showToast(getApplicationContext(), String.valueOf(response.code()));
                                         return;
                                     }
-                                    if(response.body().response.errorReason != null){
-                                        functions.showToast(getApplicationContext(), response.body().response.errorReason);
-                                        return;
-                                    }
-                                    functions.showToast(getApplicationContext(), "Success");
-                                    // todo navigate to next page base on payment method
+                                    Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
+                                    intent.putExtra("amount", totalPrice);
+                                    intent.putExtra("bankName", response.body().paymentInfo.bankName);
+                                    intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
+                                    functions.dismissLoading();
+                                    startActivity(intent);
                                 }
 
                                 @Override

@@ -2,7 +2,6 @@ package com.irmwrs.recipeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -13,30 +12,26 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.Order;
 import com.irmwrs.recipeapp.Class.OrderIngredient;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderActivity extends AppCompatActivity {
+public class AddToCartActivity extends AppCompatActivity {
 
     String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_add_to_cart);
 
         TextView tvAddress = findViewById(R.id.tvAddress);
         tvAddress.setPaintFlags(tvAddress.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -105,6 +100,8 @@ public class OrderActivity extends AppCompatActivity {
                 order.ingredient = ingredient;
 
                 Server server = new Server();
+                Functions functions = new Functions();
+                functions.showLoading(AddToCartActivity.this);
                 server.getAuthToken(userId, order).enqueue(new Callback<Key>() {
                     @Override
                     public void onResponse(Call<Key> call, Response<Key> response) {
@@ -124,7 +121,9 @@ public class OrderActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                // navigate to cart
+                                Intent intent = new Intent(AddToCartActivity.this, MainActivity.class);
+                                functions.dismissLoading();
+                                startActivity(intent);
                             }
 
                             @Override
@@ -141,10 +140,6 @@ public class OrderActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    void a(Object a){
-
     }
 
     String getMonth(int month){

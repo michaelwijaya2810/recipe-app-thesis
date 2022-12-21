@@ -144,6 +144,11 @@ public class Server {
         return call;
     }
 
+    public Call<List<com.irmwrs.recipeapp.order.models.Order>> getOrderHistory(int userId){
+        Call<List<com.irmwrs.recipeapp.order.models.Order>> call = outSystemService.getOrderHistory(userId);
+        return call;
+    }
+
     // Payment
     public Call<PaymentResponse> postCheckout(long userId, String authKey, int totalPrice, List<Integer> orderListInt){
         List<Long> orderList = new ArrayList<>();

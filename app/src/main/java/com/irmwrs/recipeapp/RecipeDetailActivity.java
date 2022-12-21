@@ -14,6 +14,7 @@ import com.irmwrs.recipeapp.Class.ResponseClass.SingleRecipeResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
 import com.irmwrs.recipeapp.adapters.RecipeDetailAdapter;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
+import com.irmwrs.recipeapp.order.adapters.OrderAdapter;
 
 import retrofit2.Call;
 import retrofit2.Callback;

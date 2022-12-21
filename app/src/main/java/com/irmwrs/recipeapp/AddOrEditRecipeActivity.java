@@ -62,7 +62,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
         // sample data
         creatorId = "8";
-        recipeId = 0;
+        recipeId = 10;
 
         Server server = new Server();
 

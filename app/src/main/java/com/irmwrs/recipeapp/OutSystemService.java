@@ -67,6 +67,8 @@ public interface OutSystemService {
     Call<Response> postNewOrder(@Query("userid") int userId, @Query("AuthKey") String authKey, @Body Order order);
     @GET("Order/GetCartOrder")
     Call<List<CartOrderResponse>> getCartOrder(@Query("Userid") int userId);
+    @GET("Order/OrderHistory")
+    Call<List<com.irmwrs.recipeapp.order.models.Order>> getOrderHistory(@Query("userid") int userId);
 
     // Payment
     @POST("Payment/ProccessCheckout")

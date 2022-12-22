@@ -105,7 +105,7 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
         for (int i = 0; i < selected.size(); i++){
             totalPrice = totalPrice + selected.get(i).totalPrice;
         }
-        Functions functions = new Functions();
+        Functions functions = new Functions(null);
         return functions.toRupiah(totalPrice) + " + " + functions.toRupiah((double) deliveryFee);
     }
 

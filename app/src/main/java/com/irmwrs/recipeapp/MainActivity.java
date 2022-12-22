@@ -15,6 +15,9 @@ import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.cart.CartFragment;
 import com.irmwrs.recipeapp.cart.CartOrderResponse;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
+import com.irmwrs.recipeapp.order.models.Order;
+import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
+import com.irmwrs.recipeapp.order.views.OrderFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
             case R.id.menu_1:
-                functions = new Functions();
-                functions.showLoading(MainActivity.this);
-                //Go to Recipe
+                // Recipe
+                functions = new Functions(MainActivity.this);
+                functions.showLoading();
                 server.getAllRecipe().enqueue(new Callback<List<Recipe>>() {
                     @Override
                     public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
@@ -77,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 });
                 return true;
             case R.id.menu_2:
-                functions = new Functions();
-                functions.showLoading(MainActivity.this);
+                // Cart
+                functions = new Functions(MainActivity.this);
+                functions.showLoading();
                 server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
                     @Override
                     public void onResponse(Call<List<CartOrderResponse>> call, Response<List<CartOrderResponse>> response) {
@@ -99,25 +103,37 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                         Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-                //Go to Order
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, fragment)
-//                        .commit();
                 return true;
             case R.id.menu_3:
+                // Home
                 //Go to Home
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, fragment)
-//                        .commit();
                 return true;
             case R.id.menu_4:
-                //Go to History
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, fragment)
-//                        .commit();
+                // Order
+                functions = new Functions(MainActivity.this);
+                functions.showLoading();
+                server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
+                    @Override
+                    public void onResponse(Call<List<OrderHistoryResponse>> call, Response<List<OrderHistoryResponse>> response) {
+                        if (!response.isSuccessful()) {
+                            functions.dismissLoading();
+                            functions.showToast(String.valueOf(response.code()));
+                            return;
+                        }
+                        fragment = new OrderFragment(response.body());
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                        functions.dismissLoading();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<OrderHistoryResponse>> call, Throwable t) {
+                        functions.dismissLoading();
+                        functions.showToast(t.getMessage());
+                    }
+                });
                 return true;
             case R.id.menu_5:
                 //Go to Settings

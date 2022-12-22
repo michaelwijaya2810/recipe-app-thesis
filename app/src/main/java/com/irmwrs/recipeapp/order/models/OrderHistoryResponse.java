@@ -29,4 +29,12 @@ public class OrderHistoryResponse {
     @SerializedName("OrderDetail")
     @Expose
     public List<OrderDetail> orderDetail = null;
+
+    public String getQtyAndNameSummary(){
+        String qty_name = "";
+        for (int i = 0; i < orderDetail.size(); i++){
+            qty_name += orderDetail.get(i).ingredientQty + "x " + orderDetail.get(i).ingredientName + "\n";
+        }
+        return qty_name;
+    }
 }

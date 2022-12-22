@@ -68,7 +68,7 @@ public interface OutSystemService {
     @GET("Order/GetCartOrder")
     Call<List<CartOrderResponse>> getCartOrder(@Query("Userid") int userId);
     @GET("Order/OrderHistory")
-    Call<List<com.irmwrs.recipeapp.order.models.Order>> getOrderHistory(@Query("userid") int userId);
+    Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> getOrderHistory(@Query("userid") int userId);
 
     // Payment
     @POST("Payment/ProccessCheckout")

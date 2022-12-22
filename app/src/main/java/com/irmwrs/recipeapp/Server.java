@@ -144,8 +144,8 @@ public class Server {
         return call;
     }
 
-    public Call<List<com.irmwrs.recipeapp.order.models.Order>> getOrderHistory(int userId){
-        Call<List<com.irmwrs.recipeapp.order.models.Order>> call = outSystemService.getOrderHistory(userId);
+    public Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> getOrderHistory(int userId){
+        Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> call = outSystemService.getOrderHistory(userId);
         return call;
     }
 

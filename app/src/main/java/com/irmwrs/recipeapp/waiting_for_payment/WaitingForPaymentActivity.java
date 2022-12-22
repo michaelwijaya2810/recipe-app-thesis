@@ -35,7 +35,7 @@ public class WaitingForPaymentActivity extends AppCompatActivity {
     void init(){
         // variable init
         intent = getIntent();
-        functions = new Functions();
+        functions = new Functions(WaitingForPaymentActivity.this);
         amount = "Please pay " + functions.toRupiah((double) intent.getIntExtra("amount", 0)) + " to:";
         bankName = intent.getStringExtra("bankName");
         accNumber = intent.getStringExtra("accNumber");

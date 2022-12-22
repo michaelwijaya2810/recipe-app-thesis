@@ -27,11 +27,14 @@ import retrofit2.Response;
 public class AddToCartActivity extends AppCompatActivity {
 
     String date;
+    Functions functions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_cart);
+
+        functions = new Functions(AddToCartActivity.this);
 
         TextView tvAddress = findViewById(R.id.tvAddress);
         tvAddress.setPaintFlags(tvAddress.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -84,7 +87,7 @@ public class AddToCartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(date == null){
-                    Toast.makeText(getApplicationContext(), "Please pick a delivery date", Toast.LENGTH_SHORT).show();
+                    functions.showToast("Please pick a delivery date");
                     return;
                 }
                 Order order = new Order();
@@ -100,12 +103,12 @@ public class AddToCartActivity extends AppCompatActivity {
                 order.ingredient = ingredient;
 
                 Server server = new Server();
-                Functions functions = new Functions();
-                functions.showLoading(AddToCartActivity.this);
+                functions.showLoading();
                 server.getAuthToken(userId, order).enqueue(new Callback<Key>() {
                     @Override
                     public void onResponse(Call<Key> call, Response<Key> response) {
                         if (!response.isSuccessful()){
+                            functions.dismissLoading();
                             Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -114,10 +117,12 @@ public class AddToCartActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                                 if (!response.isSuccessful()){
+                                    functions.dismissLoading();
                                     Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 if(response.body().errorReason != null){
+                                    functions.dismissLoading();
                                     Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
                                     return;
                                 }
@@ -128,6 +133,7 @@ public class AddToCartActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
+                                functions.dismissLoading();
                                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });

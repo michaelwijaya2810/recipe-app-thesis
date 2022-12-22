@@ -33,7 +33,7 @@ public class CartOrderResponse {
 
     public String getPriceSummary(){
         String price = "";
-        Functions functions = new Functions();
+        Functions functions = new Functions(null);
         for (int i = 0; i < orderDetail.size(); i++){
             price +=  functions.toRupiah((double) orderDetail.get(i).ingredientPrice*orderDetail.get(i).ingredientQty) + "\n";
         }

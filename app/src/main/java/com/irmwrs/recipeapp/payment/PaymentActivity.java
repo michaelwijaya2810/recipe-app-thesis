@@ -50,7 +50,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     void init(){
-        functions = new Functions();
+        functions = new Functions(PaymentActivity.this);
 
         // variable init
         intent = getIntent();
@@ -83,16 +83,16 @@ public class PaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(paymentMethod.equals("")){
-                    functions.showToast(getApplicationContext(), "Please select a payment method");
+                    functions.showToast("Please select a payment method");
                 }
                 else {
                     Server server = new Server();
-                    functions.showLoading(PaymentActivity.this);
+                    functions.showLoading();
                     server.getAuthToken((int) userId, orderList).enqueue(new Callback<Key>() {
                         @Override
                         public void onResponse(Call<Key> call, Response<Key> response) {
                             if (!response.isSuccessful()){
-                                functions.showToast(getApplicationContext(), String.valueOf(response.code()));
+                                functions.showToast(String.valueOf(response.code()));
                                 return;
                             }
                             String auth = response.body().value;
@@ -100,7 +100,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                                     if (!response.isSuccessful()){
-                                        functions.showToast(getApplicationContext(), String.valueOf(response.code()));
+                                        functions.showToast(String.valueOf(response.code()));
                                         return;
                                     }
                                     Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
@@ -113,14 +113,14 @@ public class PaymentActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call<PaymentResponse> call, Throwable t) {
-                                    functions.showToast(getApplicationContext(), t.getMessage());
+                                    functions.showToast(t.getMessage());
                                 }
                             });
                         }
 
                         @Override
                         public void onFailure(Call<Key> call, Throwable t) {
-                            functions.showToast(getApplicationContext(), t.getMessage());
+                            functions.showToast(t.getMessage());
                         }
                     });
                 }

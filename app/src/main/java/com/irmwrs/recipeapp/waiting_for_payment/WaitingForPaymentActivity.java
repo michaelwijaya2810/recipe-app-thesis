@@ -56,6 +56,7 @@ public class WaitingForPaymentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WaitingForPaymentActivity.this, MainActivity.class);
+                intent.putExtra("pageNumber", 4);
                 startActivity(intent);
             }
         });

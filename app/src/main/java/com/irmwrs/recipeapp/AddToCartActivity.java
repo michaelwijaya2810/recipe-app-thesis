@@ -127,6 +127,7 @@ public class AddToCartActivity extends AppCompatActivity {
                                     return;
                                 }
                                 Intent intent = new Intent(AddToCartActivity.this, MainActivity.class);
+                                intent.putExtra("pageNumber", 2);
                                 functions.dismissLoading();
                                 startActivity(intent);
                             }

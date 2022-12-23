@@ -22,7 +22,7 @@
         android:id="@+id/menu_4"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="@string/title_history"/>
+        android:title="Order"/>
 
     <item
         android:id="@+id/menu_5"

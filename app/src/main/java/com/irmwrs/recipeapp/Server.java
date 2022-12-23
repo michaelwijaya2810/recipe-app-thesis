@@ -1,13 +1,11 @@
 package com.irmwrs.recipeapp;
 
-import android.app.Activity;
 import android.os.StrictMode;
-import android.util.JsonReader;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.irmwrs.recipeapp.Class.ChangePassword;
+import com.irmwrs.recipeapp.settings.models.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.Order;
@@ -24,18 +22,12 @@ import com.irmwrs.recipeapp.Class.Validate;
 import com.irmwrs.recipeapp.cart.CartOrderResponse;
 import com.irmwrs.recipeapp.payment.PaymentResponse;
 
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -128,8 +120,8 @@ public class Server {
         return call;
     }
 
-    public Call<LoginResponse> postChangePassword(ChangePassword changePassword){
-        Call<LoginResponse> call = outSystemService.postChangePassword(changePassword);
+    public Call<Response> postChangePassword(ChangePassword changePassword){
+        Call<Response> call = outSystemService.postChangePassword(changePassword);
         return call;
     }
 
@@ -146,6 +138,11 @@ public class Server {
 
     public Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> getOrderHistory(int userId){
         Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> call = outSystemService.getOrderHistory(userId);
+        return call;
+    }
+
+    public Call<Response> getConfirmDelivery(int userId, String orderId){
+        Call<Response> call = outSystemService.getConfirmDelivery(userId, orderId);
         return call;
     }
 

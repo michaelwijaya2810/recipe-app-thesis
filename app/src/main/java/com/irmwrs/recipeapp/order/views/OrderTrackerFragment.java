@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.cart.CartAdapter;
 import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
@@ -56,26 +58,23 @@ public class OrderTrackerFragment extends Fragment implements OrderTrackerAdapte
 
         // recycler view init
         linearLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new OrderTrackerAdapter(getContext(), orderTrackerList, this);
+        adapter = new OrderTrackerAdapter(getContext(), orderTrackerList, this, getActivity());
         rvOrderTracker.setLayoutManager(linearLayoutManager);
         rvOrderTracker.setAdapter(adapter);
     }
 
     @Override
-    public void onOrderTrackerClick(int position) {
+    public void onOrderTrackerClick(int position, boolean isDelivered) {
         OrderHistoryResponse orderTracker = orderTrackerList.get(position);
-        if(orderTracker.status.equals("Checkout")){
+        if(orderTracker.status.equals("Checkout") && !isDelivered){
             Intent intent = new Intent(getActivity(), WaitingForPaymentActivity.class);
             intent.putExtra("amount", orderTracker.order.totalPrice + deliveryFee);
             intent.putExtra("bankName", "BCA Virtual Account");
             intent.putExtra("accNumber", orderTracker.virtualNumber);
             startActivity(intent);
         }
-        else if(orderTracker.status.equals("Delivering")){
-            Intent intent = new Intent(getActivity(), WaitingForPaymentActivity.class);
-            startActivity(intent);
-            // todo make 2 inits for waiting for payment page
+        if(isDelivered){
+            ((MainActivity)getActivity()).OrderFragment(); // refreshes history page
         }
-
     }
 }

@@ -1,8 +1,6 @@
 package com.irmwrs.recipeapp;
 
-import androidx.annotation.Keep;
-
-import com.irmwrs.recipeapp.Class.ChangePassword;
+import com.irmwrs.recipeapp.settings.models.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.Order;
@@ -60,7 +58,7 @@ public interface OutSystemService {
     @GET("User/ForgotPassword")
     Call<Response> getForgotPassword(@Query("Username") String username);
     @POST("User/ChangePassword")
-    Call<LoginResponse> postChangePassword(@Body ChangePassword changePassword);
+    Call<Response> postChangePassword(@Body ChangePassword changePassword);
 
     // Order
     @POST("Order/NewOrder")
@@ -69,6 +67,8 @@ public interface OutSystemService {
     Call<List<CartOrderResponse>> getCartOrder(@Query("Userid") int userId);
     @GET("Order/OrderHistory")
     Call<List<com.irmwrs.recipeapp.order.models.OrderHistoryResponse>> getOrderHistory(@Query("userid") int userId);
+    @GET("Order/ConfirmDelivery")
+    Call<Response> getConfirmDelivery(@Query("userid") int userId, @Query("orderid") String orderId);
 
     // Payment
     @POST("Payment/ProccessCheckout")

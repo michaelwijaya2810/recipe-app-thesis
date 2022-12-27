@@ -72,4 +72,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvSummary = itemView.findViewById(R.id.tvSummary);
         }
     }
+
+    public void updateList(List<OrderHistoryResponse> historyList){
+        this.historyList = historyList;
+        notifyDataSetChanged();
+    }
 }

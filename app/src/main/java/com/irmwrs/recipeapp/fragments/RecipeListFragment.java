@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.Recipe;
@@ -29,7 +31,11 @@ import java.util.List;
 public class RecipeListFragment extends Fragment implements RecipeViewHolder.OnRecipeListener {
 
     private RecyclerView rvRecipeList;
+    private SearchView svRecipeList;
+    private TextView tvNoMatches;
     List<Recipe> recipes = new ArrayList<>();
+    List<Recipe> searches = new ArrayList<>();
+    RecipeListAdapter adapter;
     Context ctx;
 
     public RecipeListFragment(List<Recipe> recipes, Context ctx) {
@@ -47,11 +53,51 @@ public class RecipeListFragment extends Fragment implements RecipeViewHolder.OnR
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init(view);
+    }
 
+    void init(View view){
+        // widget init
+        svRecipeList = view.findViewById(R.id.svRecipeList);
         rvRecipeList = view.findViewById(R.id.rv_recipe_list);
+        tvNoMatches = view.findViewById(R.id.tvNoMatches);
+        svRecipeList.clearFocus();
+
+        // recyclerview init
         rvRecipeList.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        RecipeListAdapter adapter = new RecipeListAdapter(recipes, this);
+        adapter = new RecipeListAdapter(recipes, this);
         rvRecipeList.setAdapter(adapter);
+
+        // button init
+        svRecipeList.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchList(newText);
+                return true;
+            }
+        });
+    }
+
+    void searchList(String text){
+        searches.clear();
+        for(int i = 0; i < recipes.size(); i++){
+            Recipe recipe = recipes.get(i);
+            if(recipe.recipeName.toLowerCase().contains(text.toLowerCase())){
+                searches.add(recipe);
+            }
+        }
+        adapter.updateList(searches);
+        if (searches.size() == 0){
+            tvNoMatches.setVisibility(View.VISIBLE);
+        }
+        else {
+            tvNoMatches.setVisibility(View.GONE);
+        }
     }
 
     @Override

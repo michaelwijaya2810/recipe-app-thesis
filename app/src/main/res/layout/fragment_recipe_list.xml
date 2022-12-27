@@ -6,15 +6,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.RecipeListFragment">
 
+    <TextView
+        android:id="@+id/tvNoMatches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No matches found"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/svRecipeList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/round_style"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Search Recipe..." />
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/svRecipeList">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recipe_list"

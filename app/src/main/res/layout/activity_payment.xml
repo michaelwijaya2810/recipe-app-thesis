@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".payment.PaymentActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/payment_options"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginBottom="30dp"
+        />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/tbPaymentOption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:singleSelection="true"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+        <Button
+            android:id="@+id/btnBcaVA"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:backgroundTint="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bca Virtual Account"
+            android:textAllCaps="false"
+            />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total_price"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:layout_marginLeft="22dp"
+        />
+    <TextView
+        android:id="@+id/tvTotalPrice3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginBottom="30dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPay"
+        android:background="@drawable/round_style"
+        android:backgroundTint="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Pay"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+</LinearLayout>

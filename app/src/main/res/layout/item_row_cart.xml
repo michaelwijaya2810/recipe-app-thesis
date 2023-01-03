@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/round_style"
+    android:backgroundTint="@color/gray"
+    android:orientation="vertical"
+    android:layout_marginVertical="13dp"
+    android:padding="5dp">
+
+    <CheckBox
+        android:id="@+id/cbCart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Recipe 1"
+        >
+    </CheckBox>
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:justifyContent="space_between"
+        >
+        <TextView
+            android:id="@+id/tvQtyAndName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Test123"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            />
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:text="Rp.100000"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            />
+    </com.google.android.flexbox.FlexboxLayout>
+
+</LinearLayout>

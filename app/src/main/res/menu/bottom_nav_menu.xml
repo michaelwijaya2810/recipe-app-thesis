@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_1"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/title_recipe"/>
+
+    <item
+        android:id="@+id/menu_2"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/cart"/>
+
+    <item
+        android:id="@+id/menu_3"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/title_home"/>
+
+    <item
+        android:id="@+id/menu_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Order"/>
+
+    <item
+        android:id="@+id/menu_5"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/title_settings"/>
+</menu>

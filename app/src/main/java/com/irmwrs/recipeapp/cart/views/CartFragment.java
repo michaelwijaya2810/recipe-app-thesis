@@ -1,5 +1,6 @@
-package com.irmwrs.recipeapp.cart;
+package com.irmwrs.recipeapp.cart.views;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Functions;
-import com.irmwrs.recipeapp.payment.PaymentActivity;
+import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
+import com.irmwrs.recipeapp.cart.adapters.CartAdapter;
+import com.irmwrs.recipeapp.payment.views.PaymentActivity;
 import com.irmwrs.recipeapp.R;
 
 import java.util.ArrayList;
@@ -34,12 +37,15 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     LinearLayoutManager linearLayoutManager;
 
     List<CartOrderResponse> cartItems;
+    Activity activity;
+    Functions functions;
     List<CartOrderResponse> selected = new ArrayList<>();
     int deliveryFee = 10000;
     double totalPrice;
 
-    public CartFragment(List<CartOrderResponse> cartItems) {
+    public CartFragment(List<CartOrderResponse> cartItems, Activity activity) {
         this.cartItems = cartItems;
+        this.activity = activity;
         selected.addAll(cartItems);
     }
 
@@ -53,6 +59,7 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        functions = new Functions(activity);
         init(view);
     }
 
@@ -68,7 +75,7 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
             @Override
             public void onClick(View view) {
                 if (selected.size() == 0){
-                    Toast.makeText(getContext(), "Please select an item to checkout", Toast.LENGTH_SHORT).show();
+                    functions.showToast("Please select an item to checkout");
                 }
                 else {
                     ArrayList<Integer> orderList = new ArrayList<>();

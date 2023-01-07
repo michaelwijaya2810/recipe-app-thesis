@@ -19,8 +19,8 @@ import com.irmwrs.recipeapp.Class.Review;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UserRegister;
 import com.irmwrs.recipeapp.Class.Validate;
-import com.irmwrs.recipeapp.cart.CartOrderResponse;
-import com.irmwrs.recipeapp.payment.PaymentResponse;
+import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
+import com.irmwrs.recipeapp.payment.models.PaymentResponse;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,10 +15,8 @@ import android.view.ViewGroup;
 
 import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
-import com.irmwrs.recipeapp.cart.CartAdapter;
 import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
-import com.irmwrs.recipeapp.payment.PaymentActivity;
 import com.irmwrs.recipeapp.waiting_for_payment.WaitingForPaymentActivity;
 
 import java.util.List;

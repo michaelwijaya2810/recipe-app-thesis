@@ -1,4 +1,4 @@
-package com.irmwrs.recipeapp.cart;
+package com.irmwrs.recipeapp.cart.models;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

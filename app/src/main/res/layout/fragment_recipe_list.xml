@@ -31,17 +31,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Search Recipe..." />
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/svRecipeList"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        tools:layout_editor_absoluteX="20dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipNewToOld"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:clickable="true"
+            android:text="Newest To Oldest" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipHighlighted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:clickable="true"
+            android:text="Highlighted" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTopRated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:clickable="true"
+            android:text="Top Rated" />
+    </com.google.android.material.chip.ChipGroup>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svRecipeList">
+        app:layout_constraintTop_toBottomOf="@+id/cgFilter">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recipe_list"

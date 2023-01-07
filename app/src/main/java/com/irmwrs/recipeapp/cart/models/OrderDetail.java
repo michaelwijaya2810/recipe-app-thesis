@@ -1,4 +1,4 @@
-package com.irmwrs.recipeapp.cart;
+package com.irmwrs.recipeapp.cart.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

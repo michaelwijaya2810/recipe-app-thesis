@@ -1,29 +1,22 @@
-package com.irmwrs.recipeapp.payment;
+package com.irmwrs.recipeapp.payment.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.gson.Gson;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Functions;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.Server;
+import com.irmwrs.recipeapp.payment.models.PaymentResponse;
 import com.irmwrs.recipeapp.waiting_for_payment.WaitingForPaymentActivity;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;

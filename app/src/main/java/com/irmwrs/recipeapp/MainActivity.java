@@ -141,11 +141,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     void CartFragment(){
         functions.showLoading();
+        // todo get user id
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
             public void onResponse(Call<List<CartOrderResponse>> call, Response<List<CartOrderResponse>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
                     return;
                 }
                 fragment = new CartFragment(response.body(), MainActivity.this);
@@ -158,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
             @Override
             public void onFailure(Call<List<CartOrderResponse>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
             }
         });
     }
@@ -202,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     public void OrderFragment(){
         functions.showLoading();
+        // todo get user id
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
             @Override
             public void onResponse(Call<List<OrderHistoryResponse>> call, Response<List<OrderHistoryResponse>> response) {

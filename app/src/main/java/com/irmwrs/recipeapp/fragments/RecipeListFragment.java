@@ -24,7 +24,6 @@ import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RecipeDetailActivity;
-import com.irmwrs.recipeapp.Server;
 import com.irmwrs.recipeapp.adapters.RecipeListAdapter;
 import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 

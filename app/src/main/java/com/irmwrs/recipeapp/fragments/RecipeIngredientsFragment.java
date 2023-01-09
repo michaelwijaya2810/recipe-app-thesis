@@ -119,6 +119,7 @@ public class RecipeIngredientsFragment extends Fragment {
                 }
                 intent.putIntegerArrayListExtra("ids", ids);
                 intent.putIntegerArrayListExtra("qtys", qtys);
+                intent.putExtra("recipeId", Long.valueOf(recipe.id));
                 startActivity(intent);
             }
         });

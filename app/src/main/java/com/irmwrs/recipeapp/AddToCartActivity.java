@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -48,8 +49,8 @@ public class AddToCartActivity extends AppCompatActivity {
         Button btnToPayment = findViewById(R.id.btnToPayment);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra("userId", 8); // get user id
-        int recipeId = intent.getIntExtra("recipeId", 1); // get recipe id
+        int userId = intent.getIntExtra("userId", 8); // todo get user id
+        long recipeId = intent.getLongExtra("recipeId", 0);
         ArrayList<Integer> ids = intent.getIntegerArrayListExtra("ids");
         ArrayList<Integer> qtys = intent.getIntegerArrayListExtra("qtys");
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -79,8 +80,8 @@ public class AddToCartActivity extends AppCompatActivity {
         });
         tvQtyAndName.setText(intent.getStringExtra("qty_name"));
         tvPrice.setText(intent.getStringExtra("price"));
-        double price = intent.getDoubleExtra("total", 0);
-        String totalPrice = "Total price\nRp. " + price;
+        String price = intent.getStringExtra("total");
+        String totalPrice = "Total price\n" + price;
         tvTotalPrice2.setText(totalPrice);
 
         btnToPayment.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +110,7 @@ public class AddToCartActivity extends AppCompatActivity {
                     public void onResponse(Call<Key> call, Response<Key> response) {
                         if (!response.isSuccessful()){
                             functions.dismissLoading();
-                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            functions.showToast(String.valueOf(response.code()));
                             return;
                         }
                         String authKey = response.body().value;
@@ -118,12 +119,12 @@ public class AddToCartActivity extends AppCompatActivity {
                             public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                                 if (!response.isSuccessful()){
                                     functions.dismissLoading();
-                                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                    functions.showToast(String.valueOf(response.code()));
                                     return;
                                 }
                                 if(response.body().errorReason != null){
                                     functions.dismissLoading();
-                                    Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
+                                    functions.showToast(response.body().errorReason);
                                     return;
                                 }
                                 Intent intent = new Intent(AddToCartActivity.this, MainActivity.class);
@@ -135,57 +136,18 @@ public class AddToCartActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
                                 functions.dismissLoading();
-                                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                functions.showToast(t.getMessage());
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(Call<Key> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(t.getMessage());
                     }
                 });
             }
         });
-    }
-
-    String getMonth(int month){
-        if(month == 1){
-            return "January";
-        }
-        if(month == 2){
-            return "February";
-        }
-        if(month == 3){
-            return "March";
-        }
-        if(month == 4){
-            return "April";
-        }
-        if(month == 5){
-            return "May";
-        }
-        if(month == 6){
-            return "June";
-        }
-        if(month == 7){
-            return "July";
-        }
-        if(month == 8){
-            return "August";
-        }
-        if(month == 9){
-            return "September";
-        }
-        if(month == 10){
-            return "October";
-        }
-        if(month == 11){
-            return "November";
-        }
-        if(month == 12){
-            return "December";
-        }
-        return "January";
     }
 }

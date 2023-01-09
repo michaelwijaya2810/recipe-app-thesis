@@ -27,7 +27,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     ViewPager2 recipeDetailPager;
     RecipeDetailAdapter recipeDetailAdapter;
     boolean isLogin = true;
-    int userId;
+    int userId; // todo get user id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,19 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
 
         Server server = new Server();
+        Functions functions = new Functions(RecipeDetailActivity.this);
+        functions.showLoading();
         server.getRecipeFromId(recipeId, userId).enqueue(new Callback<SingleRecipeResponse>() {
             @Override
             public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                 if (!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
                     return;
                 }
                 if(response.body().response.errorReason != null){
-                    Toast.makeText(getApplicationContext(), response.body().response.errorReason, Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(response.body().response.errorReason);
                     return;
                 }
                 SingleRecipeResponse singleRecipeResponse = response.body();
@@ -62,7 +66,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
                         if (!response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
+                            functions.showToast(String.valueOf(response.code()));
                             return;
                         }
                         tabLayout = findViewById(R.id.tab_layout);
@@ -78,18 +83,21 @@ public class RecipeDetailActivity extends AppCompatActivity {
                                     }
                                 });
                         mediator.attach();
+                        functions.dismissLoading();
                     }
 
                     @Override
                     public void onFailure(Call<UserResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(t.getMessage());
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<SingleRecipeResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
             }
         });
     }

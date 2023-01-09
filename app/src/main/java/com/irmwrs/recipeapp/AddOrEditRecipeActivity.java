@@ -46,11 +46,14 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     long recipeId;
     String creatorId;
     List<Step> steps;
+    Functions functions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_or_edit_recipe);
+
+        functions = new Functions(AddOrEditRecipeActivity.this);
 
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
@@ -68,11 +71,13 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
         if(recipeId == 0){ // Add page
             steps = new ArrayList<>();
+            functions.showLoading();
             server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
                 @Override
                 public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
                     if (!response.isSuccessful()){
-                        Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.code()));
                         return;
                     }
                     tabLayout = findViewById(R.id.tlAddOrEdit);
@@ -88,24 +93,29 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                                 }
                             });
                     mediator.attach();
+                    functions.dismissLoading();
                 }
 
                 @Override
                 public void onFailure(Call<List<Ingredient>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(t.getMessage());
                 }
             });
         }
         else { // Edit page
+            functions.showLoading();
             server.getRecipeFromId(recipeId, 8).enqueue(new Callback<SingleRecipeResponse>() {
                 @Override
                 public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                     if (!response.isSuccessful()){
-                        Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.code()));
                         return;
                     }
                     if(response.body().response.errorReason != null){
-                        Toast.makeText(getApplicationContext(), response.body().response.errorReason, Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.body().response.errorReason));
                         return;
                     }
                     singleRecipeResponse = response.body();
@@ -114,7 +124,8 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                         @Override
                         public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
                             if (!response.isSuccessful()){
-                                Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                functions.dismissLoading();
+                                functions.showToast(String.valueOf(response.code()));
                                 return;
                             }
                             tabLayout = findViewById(R.id.tlAddOrEdit);
@@ -130,18 +141,21 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                                         }
                                     });
                             mediator.attach();
+                            functions.dismissLoading();
                         }
 
                         @Override
                         public void onFailure(Call<List<Ingredient>> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
+                            functions.showToast(t.getMessage());
                         }
                     });
                 }
 
                 @Override
                 public void onFailure(Call<SingleRecipeResponse> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(t.getMessage());
                 }
             });
         }
@@ -198,11 +212,13 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             updateRecipe.stepList.get(i).rvId = null;
         }
         Server server = new Server();
+        functions.showLoading();
         server.getAuthToken(Integer.parseInt(creatorId), updateRecipe).enqueue(new Callback<Key>() {
             @Override
             public void onResponse(Call<Key> call, Response<Key> response) {
                 if (!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
                     return;
                 }
                 String auth = response.body().value;
@@ -211,31 +227,38 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                     @Override
                     public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                         if (!response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
+                            functions.showToast(String.valueOf(response.code()));
                             return;
                         }
                         if(response.body().errorReason != null){
-                            Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
+                            functions.showToast(response.body().errorReason);
                             return;
                         }
+                        functions.dismissLoading();
                         if(updateRecipe.recipeId == 0){
-                            Toast.makeText(getApplicationContext(), "Recipe added", Toast.LENGTH_SHORT).show();
+                            functions.showToast("Recipe added");
                         }
                         else {
-                            Toast.makeText(getApplicationContext(), "Recipe edited", Toast.LENGTH_SHORT).show();
+                            functions.showToast("Recipe edited");
                         }
+                        Intent intent = new Intent(AddOrEditRecipeActivity.this, MainActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
                     public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        functions.dismissLoading();
+                        functions.showToast(t.getMessage());
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<Key> call, Throwable t) {
-
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
             }
         });
     }
@@ -269,6 +292,6 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     }
 
     void showErrorToast(String errorMsg){
-        Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        functions.showToast(errorMsg);
     }
 }

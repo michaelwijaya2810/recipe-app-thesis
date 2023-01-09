@@ -1,5 +1,10 @@
 package com.irmwrs.recipeapp.Class;
 
+import com.irmwrs.recipeapp.Functions;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class CartItem {
     public String name;
     public String image;
@@ -8,6 +13,8 @@ public class CartItem {
     public long ingredientId;
 
     public String getStringPrice(){
-        return "Rp. " + price;
+        Locale localeId = new Locale("in", "ID");
+        NumberFormat format = NumberFormat.getCurrencyInstance(localeId);
+        return format.format(price);
     }
 }

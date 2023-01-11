@@ -152,6 +152,7 @@ public class SettingsFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<Response> call, Throwable t) {
+                            functions.dismissLoading();
                             functions.showToast(t.getMessage());
                         }
                     });

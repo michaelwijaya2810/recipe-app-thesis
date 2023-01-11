@@ -1,4 +1,4 @@
-package com.irmwrs.recipeapp.cart;
+package com.irmwrs.recipeapp.cart.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.irmwrs.recipeapp.IngredientCartAdapter;
 import com.irmwrs.recipeapp.R;
+import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 
 import java.util.List;
 
@@ -49,7 +49,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return cartItems.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CheckBox cbRecipeName;
         TextView tvQtyAndName;
         TextView tvPrice;

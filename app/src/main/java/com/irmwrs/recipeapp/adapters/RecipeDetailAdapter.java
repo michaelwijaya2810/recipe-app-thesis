@@ -17,7 +17,7 @@ public class RecipeDetailAdapter extends FragmentStateAdapter {
     SingleRecipeResponse singleRecipeResponse;
     String author;
     boolean isLogin;
-    int userId;
+    int userId; // todo get user id
     public RecipeDetailAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, SingleRecipeResponse singleRecipeResponse, String author, boolean isLogin, int userId) {
         super(fragmentManager, lifecycle);
         this.singleRecipeResponse = singleRecipeResponse;

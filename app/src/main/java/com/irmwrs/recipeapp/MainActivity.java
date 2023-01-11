@@ -6,23 +6,22 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
-import com.irmwrs.recipeapp.cart.CartFragment;
-import com.irmwrs.recipeapp.cart.CartOrderResponse;
+import com.irmwrs.recipeapp.cart.views.CartFragment;
+import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
-import com.irmwrs.recipeapp.order.models.Order;
+import com.irmwrs.recipeapp.home.views.HomeFragment;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.order.views.OrderFragment;
 import com.irmwrs.recipeapp.settings.views.SettingsFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,7 +30,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{
 
-    NavigationBarView bottomNav;
+    List<Recipe> recipes = new ArrayList<>();
+    public NavigationBarView bottomNav;
     Server server = new Server();
     Fragment fragment = null;
     Functions functions = new Functions(MainActivity.this);
@@ -49,23 +49,24 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
         bottomNav = findViewById(R.id.bottom_nav);
         if(pageNumber == 1){
-            RecipeFragment();
             bottomNav.setSelectedItemId(R.id.menu_1);
+            RecipeFragment(false, 1);
         }
         else if(pageNumber == 2){
-            CartFragment();
             bottomNav.setSelectedItemId(R.id.menu_2);
+            CartFragment();
         }
         else if(pageNumber == 3){
             bottomNav.setSelectedItemId(R.id.menu_3);
+            HomeFragment();
         }
         else if(pageNumber == 4){
-            OrderFragment();
             bottomNav.setSelectedItemId(R.id.menu_4);
+            OrderFragment();
         }
         else if(pageNumber == 5){
-            SettingsFragment();
             bottomNav.setSelectedItemId(R.id.menu_5);
+            SettingsFragment();
         }
 
         bottomNav.setOnItemSelectedListener(this);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         switch(item.getItemId()) {
             case R.id.menu_1:
                 // Recipe
-                RecipeFragment();
+                RecipeFragment(false, 1);
                 return true;
             case R.id.menu_2:
                 // Cart
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             case R.id.menu_3:
                 // Home
                 //Go to Home
+                HomeFragment();
                 return true;
             case R.id.menu_4:
                 // Order
@@ -98,43 +100,57 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         return false;
     }
 
-    void RecipeFragment(){
-        functions.showLoading();
-        server.getAllRecipe().enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                if (!response.isSuccessful()){
+    public void RecipeFragment(boolean isSearch, int filter){
+        if(recipes.size() == 0){
+            functions.showLoading();
+            server.getAllRecipe().enqueue(new Callback<List<Recipe>>() {
+                @Override
+                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                    if (!response.isSuccessful()){
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.code()));
+                        return;
+                    }
+                    recipes = response.body();
+                    Collections.reverse(recipes);
+                    fragment = new RecipeListFragment(response.body(), MainActivity.this, isSearch, filter);
+                    //Go to Recipe
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
                     functions.dismissLoading();
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                    return;
                 }
-                fragment = new RecipeListFragment(response.body(), MainActivity.this);
-                //Go to Recipe
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .commit();
-                functions.dismissLoading();
-            }
 
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                functions.dismissLoading();
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                    functions.dismissLoading();
+                    functions.showToast(t.getMessage());
+                }
+            });
+        }
+        else {
+            fragment = new RecipeListFragment(recipes, MainActivity.this, isSearch, filter);
+            //Go to Recipe
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
     void CartFragment(){
         functions.showLoading();
+        // todo get user id
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
             public void onResponse(Call<List<CartOrderResponse>> call, Response<List<CartOrderResponse>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
                     return;
                 }
-                fragment = new CartFragment(response.body());
+                fragment = new CartFragment(response.body(), MainActivity.this);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, fragment)
@@ -144,13 +160,52 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
             @Override
             public void onFailure(Call<List<CartOrderResponse>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
             }
         });
     }
 
+    public void HomeFragment(){
+        if(recipes.size() == 0){
+            functions.showLoading();
+            server.getAllRecipe().enqueue(new Callback<List<Recipe>>() {
+                @Override
+                public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                    if (!response.isSuccessful()){
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.code()));
+                        return;
+                    }
+                    recipes = response.body();
+                    Collections.reverse(recipes);
+                    fragment = new HomeFragment(response.body());
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                    functions.dismissLoading();
+                }
+
+                @Override
+                public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                    functions.dismissLoading();
+                    functions.showToast(t.getMessage());
+                }
+            });
+        }
+        else {
+            fragment = new HomeFragment(recipes);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        }
+    }
+
     public void OrderFragment(){
         functions.showLoading();
+        // todo get user id
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
             @Override
             public void onResponse(Call<List<OrderHistoryResponse>> call, Response<List<OrderHistoryResponse>> response) {

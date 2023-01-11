@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,21 +31,29 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
     List<CartItem> cartItemList = new ArrayList<>();
     ArrayList<Integer> ids;
     ArrayList<Integer> qtys;
+    long recipeId;
+    Functions functions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_cart);
 
+        functions = new Functions(IngredientCartActivity.this);
+
         Intent intent = getIntent();
         ids = intent.getIntegerArrayListExtra("ids");
         qtys = intent.getIntegerArrayListExtra("qtys");
+        recipeId = intent.getLongExtra("recipeId", 0);
         Server server = new Server();
+        Functions functions = new Functions(IngredientCartActivity.this);
 
+        functions.showLoading();
         server.getAllIngredient().enqueue(new Callback<List<Ingredient>>() {
             @Override
             public void onResponse(Call<List<Ingredient>> call, Response<List<Ingredient>> response) {
                 if (!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
                     return;
                 }
                 ingredients = response.body();
@@ -78,7 +87,7 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
                 rvCart.setLayoutManager(linearLayoutManager);
                 rvCart.setAdapter(adapter);
 
-                String totalPrice = "Total price\nRp. " + getTotalPrice();
+                String totalPrice = "Total price\n" + functions.toRupiah(getTotalPrice());
                 tvTotalPrice.setText(totalPrice);
 
                 btnOrder.setOnClickListener(new View.OnClickListener() {
@@ -89,16 +98,20 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
                         }
                         else {
                             Intent intent = new Intent(IngredientCartActivity.this, AddToCartActivity.class);
+                            intent.putExtra("recipeId", recipeId);
+                            Log.i("testRecipe", String.valueOf(recipeId));
                             setSummaryIntent(intent);
                             startActivity(intent);
                         }
                     }
                 });
+                functions.dismissLoading();
             }
 
             @Override
             public void onFailure(Call<List<Ingredient>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
             }
         });
     }
@@ -119,15 +132,15 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
         double delivery_cost = 10000; // default value
         for (int i = 0; i < selected.size(); i++){
             qty_name += selected.get(i).qty + "x " + selected.get(i).name + "\n";
-            price += "Rp" + selected.get(i).price + "\n";
+            price += selected.get(i).getStringPrice() + "\n";
             ids.add((int) selected.get(i).ingredientId);
             qtys.add(selected.get(i).qty);
         }
         qty_name += "Biaya Kirim";
-        price += "Rp" + delivery_cost;
+        price += functions.toRupiah(delivery_cost);
         intent.putExtra("qty_name", qty_name);
         intent.putExtra("price", price);
-        intent.putExtra("total", getTotalPrice() + delivery_cost);
+        intent.putExtra("total", functions.toRupiah(getTotalPrice() + delivery_cost));
         intent.putIntegerArrayListExtra("ids", ids);
         intent.putIntegerArrayListExtra("qtys", qtys);
     }
@@ -148,7 +161,7 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
         else {
             cartItemList.get(position).qty = qty;
         }
-        String totalPrice = "Total price\nRp. " + getTotalPrice();
+        String totalPrice = "Total price\n" + functions.toRupiah(getTotalPrice());
         tvTotalPrice.setText(totalPrice);
     }
 }

@@ -26,8 +26,8 @@ import retrofit2.Response;
 
 public class RatingActivity extends AppCompatActivity {
     boolean isRated = false;
-    int userId = 8; // get user id
-    long recipeId = 2; // get recipe id
+    int userId = 8; // todo get user id
+    long recipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,53 +71,55 @@ public class RatingActivity extends AppCompatActivity {
                     review.recipesId = recipeId;
 
                     Server server = new Server();
+                    Functions functions = new Functions(RatingActivity.this);
+                    functions.showLoading();
                     server.getAuthToken(userId, review).enqueue(new Callback<Key>() {
                         @Override
                         public void onResponse(Call<Key> call, Response<Key> response) {
                             if (!response.isSuccessful()){
-                                Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                functions.dismissLoading();
+                                functions.showToast(String.valueOf(response.code()));
                                 return;
                             }
                             String auth = response.body().value;
-                            Log.i("testRecipe", auth);
 
                             server.postRating(recipeId, userId, auth, review).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
                                 @Override
                                 public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
                                     if (!response.isSuccessful()){
-                                        Toast.makeText(getApplicationContext(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                        functions.dismissLoading();
+                                        functions.showToast(String.valueOf(response.code()));
                                         return;
                                     }
                                     if(response.body().errorReason != null){
-                                        Toast.makeText(getApplicationContext(), response.body().errorReason, Toast.LENGTH_SHORT).show();
+                                        functions.dismissLoading();
+                                        functions.showToast(response.body().errorReason);
                                         return;
                                     }
                                     Toast.makeText(getApplicationContext(), "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
                                     Intent intent1 = new Intent(RatingActivity.this, MainActivity.class);
-                                    intent1.putExtra("selectedTab", 3);
+                                    functions.dismissLoading();
                                     startActivity(intent1);
                                 }
 
                                 @Override
                                 public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
-                                    Log.i("testRecipe", "rating");
-                                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    functions.dismissLoading();
+                                    functions.showToast(t.getMessage());
                                 }
                             });
                         }
 
                         @Override
                         public void onFailure(Call<Key> call, Throwable t) {
-                            Log.i("testRecipe", "auth");
-                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
+                            functions.showToast(t.getMessage());
                         }
                     });
                 }
                 else {
                     Intent intent1 = new Intent(RatingActivity.this, MainActivity.class);
-                    intent1.putExtra("selectedTab", 3);
                     startActivity(intent1);
-                    // navigate to wherever
                 }
             }
         });

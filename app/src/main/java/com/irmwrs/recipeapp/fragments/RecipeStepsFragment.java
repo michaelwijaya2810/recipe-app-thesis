@@ -30,7 +30,7 @@ public class RecipeStepsFragment extends Fragment {
     private Button btnCompleteRecipe;
     List<Step> steps;
     boolean showRatingPage;
-    int userId;
+    int userId; // todo get user id
     int recipeId;
 
     public RecipeStepsFragment(List<Step> steps, boolean showRatingPage, int userId, int recipeId) {

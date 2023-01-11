@@ -73,4 +73,6 @@ public interface OutSystemService {
     // Payment
     @POST("Payment/ProccessCheckout")
     Call<PaymentResponse> postProccessCheckout(@Query("UserId") long userId, @Query("Authkey") String authKey, @Query("TotalPrice") int totalPrice, @Body List<Long> orderList);
+
+
 }

@@ -1,6 +1,9 @@
 package com.irmwrs.recipeapp.settings.views;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +19,7 @@ import android.widget.EditText;
 
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.Server;
@@ -156,6 +160,22 @@ public class SettingsFragment extends Fragment {
                         }
                     });
                 }
+            }
+        });
+
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = getContext();
+                SharedPreferences sharedPref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+
+                editor.putInt("Userid",0);
+                editor.putString("Username","");
+                editor.apply();
+                Intent intent = new Intent(getContext(), Login.class);
+                startActivity(intent);
+
             }
         });
     }

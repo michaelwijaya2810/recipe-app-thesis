@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
-    @SerializedName("AccessToken")
+    @SerializedName("userid")
     @Expose
-    public String accessToken;
-    @SerializedName("Userid")
+    public Integer userid;
+    @SerializedName("Errorreason")
     @Expose
-    public int userid;
-    @SerializedName("Response")
+    public String errorreason;
+    @SerializedName("username")
     @Expose
-    public String response;
+    public String username;
 }

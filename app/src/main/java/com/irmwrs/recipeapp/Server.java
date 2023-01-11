@@ -92,7 +92,7 @@ public class Server {
 
     public Call<LoginResponse> postLogin(String username, String password){
         Validate validate = new Validate();
-        validate.password = password;
+        validate.Password = password;
         Call<LoginResponse> call = outSystemService.postValidateOrLogin(username, validate);
         return call;
     }

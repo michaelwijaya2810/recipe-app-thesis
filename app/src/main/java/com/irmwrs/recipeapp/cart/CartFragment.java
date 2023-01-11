@@ -1,6 +1,8 @@
 package com.irmwrs.recipeapp.cart;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.payment.PaymentActivity;
 import com.irmwrs.recipeapp.R;
 
@@ -53,6 +56,7 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         init(view);
     }
 

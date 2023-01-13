@@ -1,6 +1,8 @@
 package com.irmwrs.recipeapp.home.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -54,13 +56,20 @@ public class HomeFragment extends Fragment implements HomeAdapter.ViewHolder.OnR
     LinearLayoutManager linearLayoutManager2;
     LinearLayoutManager linearLayoutManager3;
 
-    // todo get username
-    String username = "Irfan";
+    SharedPreferences sp;
+    String username;
     boolean isLogin = true;
 
     public HomeFragment(List<Recipe> recipes) {
         // Required empty public constructor
         newestList = recipes;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        sp = this.getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+        username = sp.getString("Username", "");
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.MainActivity;
+import com.irmwrs.recipeapp.OnAllStepsChecked;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RatingActivity;
 import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
@@ -24,13 +25,13 @@ import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeStepsFragment extends Fragment {
+public class RecipeStepsFragment extends Fragment implements OnAllStepsChecked {
 
     private RecyclerView recipeStepsList;
     private Button btnCompleteRecipe;
     List<Step> steps;
     boolean showRatingPage;
-    int userId; // todo get user id
+    int userId;
     int recipeId;
 
     public RecipeStepsFragment(List<Step> steps, boolean showRatingPage, int userId, int recipeId) {
@@ -55,7 +56,7 @@ public class RecipeStepsFragment extends Fragment {
         btnCompleteRecipe = view.findViewById(R.id.btn_complete_recipe);
 
         recipeStepsList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        RecipeStepsAdapter adapter = new RecipeStepsAdapter(steps);
+        RecipeStepsAdapter adapter = new RecipeStepsAdapter(steps, this);
         recipeStepsList.setAdapter(adapter);
 
         btnCompleteRecipe.setOnClickListener(new View.OnClickListener() {
@@ -74,5 +75,14 @@ public class RecipeStepsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onAllChecked(int checkCount) {
+        if (checkCount == recipeStepsList.getAdapter().getItemCount()) {
+            btnCompleteRecipe.setVisibility(View.VISIBLE);
+        } else {
+            btnCompleteRecipe.setVisibility(View.GONE);
+        }
     }
 }

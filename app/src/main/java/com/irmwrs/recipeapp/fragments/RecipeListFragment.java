@@ -222,6 +222,7 @@ public class RecipeListFragment extends Fragment implements RecipeViewHolder.OnR
     @Override
     public void onRecipeClick(int position) {
         Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
+        intent.putExtra("recipeId", currList.get(position).id);
         startActivity(intent);
     }
 }

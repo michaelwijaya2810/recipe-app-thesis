@@ -87,10 +87,13 @@ public class Register extends AppCompatActivity {
                         if(response.body().errorreason == null)
                         {
                             Toast.makeText(getApplicationContext(),"Register Success",Toast.LENGTH_SHORT).show();
-                            finish();
                         }
-                        Toast.makeText(Register.this, response.body().errorreason, Toast.LENGTH_SHORT).show();
-
+                        else
+                        {
+                            Toast.makeText(Register.this, response.body().errorreason, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        finish();
                     }
 
                     @Override

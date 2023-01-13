@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
     Functions functions;
     Server server = new Server();
 
-    int userId; //todo get user id
+    int userId;
     String address;
     Activity activity;
 

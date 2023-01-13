@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class RatingActivity extends AppCompatActivity {
     boolean isRated = false;
-    int userId = 8; // todo get user id
+    int userId;
     long recipeId;
 
     @Override

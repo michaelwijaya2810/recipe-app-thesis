@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.irmwrs.recipeapp.Class.Key;
@@ -45,7 +46,7 @@ public class PaymentActivity extends AppCompatActivity {
         Context context = PaymentActivity.this;
         SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
 
-        userId = sharepref.getInt("Userid",0); // todo get userId from local
+        userId = sharepref.getInt("Userid",0);
 
         if(userId == 0)
         {

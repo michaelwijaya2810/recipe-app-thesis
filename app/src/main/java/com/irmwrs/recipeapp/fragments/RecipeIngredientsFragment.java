@@ -60,6 +60,7 @@ public class RecipeIngredientsFragment extends Fragment {
         TextView recipe_rating_value = view.findViewById(R.id.recipe_rating_value);
         TextView recipe_desc = view.findViewById(R.id.recipe_desc);
         recipe_ingredients_group = view.findViewById(R.id.recipe_ingredients_group);
+        TextView order_ingredients_title = view.findViewById(R.id.order_ingredients_title);
         Button btn_order_ingredients = view.findViewById(R.id.btn_order_ingredients);
 
         if(recipe.recipeImage == ""){
@@ -98,9 +99,17 @@ public class RecipeIngredientsFragment extends Fragment {
                 public void onClick(View view) {
                     if(chip.isChecked()){
                         highlightedIngredients.add(ingredients.get(chip.getId()));
+                        if (highlightedIngredients.size() > 0) {
+                            order_ingredients_title.setVisibility(View.VISIBLE);
+                            btn_order_ingredients.setVisibility(View.VISIBLE);
+                        }
                     }
                     else {
                         highlightedIngredients.remove(ingredients.get(chip.getId()));
+                        if (highlightedIngredients.isEmpty()) {
+                            order_ingredients_title.setVisibility(View.GONE);
+                            btn_order_ingredients.setVisibility(View.GONE);
+                        }
                     }
                 }
             });

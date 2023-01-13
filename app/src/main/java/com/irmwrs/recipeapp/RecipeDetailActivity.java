@@ -29,7 +29,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     ViewPager2 recipeDetailPager;
     RecipeDetailAdapter recipeDetailAdapter;
     boolean isLogin = true;
-    int userId; // todo get user id
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         int recipeId = intent.getIntExtra("recipeId", 0);
-        userId = intent.getIntExtra("userId", 0);
 
         // sample data
         Context context = getApplicationContext();
@@ -63,47 +62,54 @@ public class RecipeDetailActivity extends AppCompatActivity {
         server.getRecipeFromId(recipeId, userId).enqueue(new Callback<SingleRecipeResponse>() {
             @Override
             public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
-                if (!response.isSuccessful()){
-                    functions.dismissLoading();
-                    functions.showToast(String.valueOf(response.code()));
-                    return;
-                }
-                if(response.body().response.errorReason != null){
-                    functions.dismissLoading();
-                    functions.showToast(response.body().response.errorReason);
-                    return;
-                }
-                SingleRecipeResponse singleRecipeResponse = response.body();
-                server.postUserDetail(response.body().recipe.creatorId).enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (!response.isSuccessful()){
+                try {
+                    if (!response.isSuccessful()){
+                        functions.dismissLoading();
+                        functions.showToast(String.valueOf(response.code()));
+                        return;
+                    }
+                    if(response.body().response.errorReason != null){
+                        functions.dismissLoading();
+                        functions.showToast(response.body().response.errorReason);
+                        return;
+                    }
+                    SingleRecipeResponse singleRecipeResponse = response.body();
+                    server.postUserDetail(response.body().recipe.creatorId).enqueue(new Callback<UserResponse>() {
+                        @Override
+                        public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                            if (!response.isSuccessful()){
+                                functions.dismissLoading();
+                                functions.showToast(String.valueOf(response.code()));
+                                return;
+                            }
+                            tabLayout = findViewById(R.id.tab_layout);
+                            recipeDetailPager = findViewById(R.id.recipe_detail_pager);
+                            recipeDetailAdapter = new RecipeDetailAdapter(getSupportFragmentManager(), getLifecycle(), singleRecipeResponse, response.body().username, isLogin, userId);
+                            recipeDetailPager.setAdapter(recipeDetailAdapter);
+                            mediator = new TabLayoutMediator(tabLayout, recipeDetailPager,
+                                    (tab, position) -> {
+                                        if (position == 0) {
+                                            tab.setText("Ingredients");
+                                        } else if (position == 1) {
+                                            tab.setText("Steps");
+                                        }
+                                    });
+                            mediator.attach();
                             functions.dismissLoading();
-                            functions.showToast(String.valueOf(response.code()));
-                            return;
                         }
-                        tabLayout = findViewById(R.id.tab_layout);
-                        recipeDetailPager = findViewById(R.id.recipe_detail_pager);
-                        recipeDetailAdapter = new RecipeDetailAdapter(getSupportFragmentManager(), getLifecycle(), singleRecipeResponse, response.body().username, isLogin, userId);
-                        recipeDetailPager.setAdapter(recipeDetailAdapter);
-                        mediator = new TabLayoutMediator(tabLayout, recipeDetailPager,
-                                (tab, position) -> {
-                                    if (position == 0) {
-                                        tab.setText("Ingredients");
-                                    } else if (position == 1) {
-                                        tab.setText("Steps");
-                                    }
-                                });
-                        mediator.attach();
-                        functions.dismissLoading();
-                    }
 
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        functions.dismissLoading();
-                        functions.showToast(t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<UserResponse> call, Throwable t) {
+                            functions.dismissLoading();
+                            functions.showToast(t.getMessage());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    functions.dismissLoading();
+                }
+
             }
 
             @Override

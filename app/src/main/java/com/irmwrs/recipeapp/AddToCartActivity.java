@@ -3,10 +3,11 @@ package com.irmwrs.recipeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,7 +50,11 @@ public class AddToCartActivity extends AppCompatActivity {
         Button btnToPayment = findViewById(R.id.btnToPayment);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra("userId", 8); // todo get user id
+        Context context = getApplicationContext();
+        SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+
+        int userId;
+        userId = sharepref.getInt("Userid",0);
         long recipeId = intent.getLongExtra("recipeId", 0);
         ArrayList<Integer> ids = intent.getIntegerArrayListExtra("ids");
         ArrayList<Integer> qtys = intent.getIntegerArrayListExtra("qtys");
@@ -60,6 +65,19 @@ public class AddToCartActivity extends AppCompatActivity {
                 btnDatePicker.setText(date);
             }
         };
+
+
+
+
+
+        if(userId == 0)
+        {
+            Toast.makeText(this, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, Login.class);
+            startActivity(intent);
+        }
+
+
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -36,11 +38,18 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     Fragment fragment = null;
     Functions functions = new Functions(MainActivity.this);
 
-    int userId = 8; // todo get user id
+    int userId; // todo get user id
+
+
+
+    Context context;
+    SharedPreferences sharepref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
+        sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
 
@@ -140,6 +149,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void CartFragment(){
+        userId = sharepref.getInt("Userid",0);
+        if(userId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            startActivity(intentlogin);
+
+        }
         functions.showLoading();
         // todo get user id
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
@@ -204,6 +222,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     public void OrderFragment(){
+        userId = sharepref.getInt("Userid",0);
+        if(userId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            startActivity(intentlogin);
+
+        }
         functions.showLoading();
         // todo get user id
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
@@ -231,7 +258,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void SettingsFragment(){
-        int userId = 14; // todo get userid
+        userId = sharepref.getInt("Userid",0);
+        if(userId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            startActivity(intentlogin);
+
+        }
         functions.showLoading();
         server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
             @Override

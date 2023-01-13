@@ -2,7 +2,9 @@ package com.irmwrs.recipeapp.payment.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.Server;
 import com.irmwrs.recipeapp.payment.models.PaymentResponse;
@@ -29,16 +32,29 @@ public class PaymentActivity extends AppCompatActivity {
 
     String paymentMethod = "";
     int totalPrice;
-    long userId = 8; // todo get userId from local
-    ArrayList<Integer> orderList  = new ArrayList<>();
 
+    long userId;
     Intent intent;
     Functions functions;
-
+    ArrayList<Integer> orderList  = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_payment);
+        Context context = PaymentActivity.this;
+        SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+
+        userId = sharepref.getInt("Userid",0); // todo get userId from local
+
+        if(userId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            startActivity(intentlogin);
+            finish();
+        }
         init();
     }
 
@@ -110,6 +126,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 public void onFailure(Call<PaymentResponse> call, Throwable t) {
                                     functions.dismissLoading();
                                     functions.showToast(t.getMessage());
+
                                 }
                             });
                         }

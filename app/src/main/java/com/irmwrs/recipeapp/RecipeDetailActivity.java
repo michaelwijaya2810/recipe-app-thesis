@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -39,7 +41,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
         userId = intent.getIntExtra("userId", 0);
 
         // sample data
-        userId = 9;
+        Context context = getApplicationContext();
+        SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+        userId = 0;
+        try {
+            userId = sharepref.getInt("Userid",0);
+        }
+        catch (Exception e)
+        {
+            userId = 0;
+        }
+
 
         if (userId == 0){
             isLogin = false;

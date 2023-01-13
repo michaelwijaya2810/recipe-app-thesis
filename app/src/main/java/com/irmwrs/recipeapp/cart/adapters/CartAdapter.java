@@ -1,15 +1,19 @@
 package com.irmwrs.recipeapp.cart.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 
@@ -31,6 +35,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.item_row_cart, parent, false);
+        long userId;
+        Context context = parent.getContext();
+        SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+
+        userId = sharepref.getInt("Userid",0);
+        if(userId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            context.startActivity(intentlogin);
+
+        }
         return new ViewHolder(v, onCheckListener);
     }
 

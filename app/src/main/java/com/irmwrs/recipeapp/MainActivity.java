@@ -3,6 +3,7 @@ package com.irmwrs.recipeapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     Server server = new Server();
     Fragment fragment = null;
     Functions functions = new Functions(MainActivity.this);
-
+    int pageNumber;
+    SwipeRefreshLayout refresh;
     int userId;
     Context context;
     SharedPreferences sharepref;
@@ -45,23 +47,63 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        pageNumber = intent.getIntExtra("pageNumber", 3);
         context = getApplicationContext();
         sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
-
         userId = sharepref.getInt("Userid",0);
-        if(userId == 0)
-        {
-            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
 
-            Intent intentlogin = new Intent(context, Login.class);
-            startActivity(intentlogin);
 
-        }
+        refresh = findViewById(R.id.refresh);
 
-        setContentView(R.layout.activity_main);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                recipes.removeAll(recipes);
 
-        Intent intent = getIntent();
-        int pageNumber = intent.getIntExtra("pageNumber", 3);
+//                finish();
+//
+//                startActivity(getIntent());
+
+                if(pageNumber == 1){
+
+                    RecipeFragment(false, 1);
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 2){
+
+                    CartFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 3){
+
+                    HomeFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 4){
+
+                    OrderFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 5){
+
+                    SettingsFragment();
+                    refresh.setRefreshing(false);
+
+                }
+
+
+
+
+            }
+        });
+
+
 
         bottomNav = findViewById(R.id.bottom_nav);
         if(pageNumber == 1){
@@ -93,23 +135,28 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         switch(item.getItemId()) {
             case R.id.menu_1:
                 // Recipe
+                pageNumber=1;
                 RecipeFragment(false, 1);
                 return true;
             case R.id.menu_2:
                 // Cart
+                pageNumber =2;
                 CartFragment();
                 return true;
             case R.id.menu_3:
                 // Home
                 //Go to Home
+                pageNumber = 3;
                 HomeFragment();
                 return true;
             case R.id.menu_4:
                 // Order
+                pageNumber = 4;
                 OrderFragment();
                 return true;
             case R.id.menu_5:
                 //Settings
+                pageNumber = 5;
                 SettingsFragment();
                 return true;
         }
@@ -254,7 +301,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                     functions.showToast(String.valueOf(response.code()));
                     return;
                 }
-                String address = response.body().user.address;
+                String address;
+                try {
+                    address = response.body().user.address;
+                }
+                catch (Exception e)
+                {
+                    address = "";
+                }
+
                 fragment = new SettingsFragment(userId, address, MainActivity.this);
                 getSupportFragmentManager()
                         .beginTransaction()

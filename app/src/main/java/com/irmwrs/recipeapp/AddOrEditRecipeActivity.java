@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,13 +46,27 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     Button btnSave;
     Button btnCancel;
     long recipeId;
-    String creatorId;
+    int creatorId;
     List<Step> steps;
     Functions functions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context;
+        SharedPreferences sharepref;
+        context = getApplicationContext();
+        sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+
+        creatorId = sharepref.getInt("Userid",0);
+        if(creatorId == 0)
+        {
+            Toast.makeText(context, "Invalid Login Session", Toast.LENGTH_SHORT).show();
+
+            Intent intentlogin = new Intent(context, Login.class);
+            startActivity(intentlogin);
+
+        }
         setContentView(R.layout.activity_add_or_edit_recipe);
 
         functions = new Functions(AddOrEditRecipeActivity.this);
@@ -60,14 +76,24 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
         Intent intent = getIntent();
         recipeId = intent.getLongExtra("recipeId", 0);
-        creatorId = intent.getStringExtra("creatorId");
+        //creatorId = intent.getStringExtra("creatorId");
         // get creatorId from savedInstance or get it from recipeId
 
         // sample data
-        creatorId = "8";
+        //creatorId = "8";
+
+
+
 //        recipeId = 10;
 
         Server server = new Server();
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         if(recipeId == 0){ // Add page
             steps = new ArrayList<>();
@@ -172,7 +198,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             this.updateRecipe = updateRecipe;
             this.updateRecipe.stepList = steps;
             this.updateRecipe.recipeId = recipeId;
-            this.updateRecipe.creatorId = Integer.parseInt(creatorId);
+            this.updateRecipe.creatorId =creatorId;
             isValid = validate(updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
@@ -190,7 +216,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         if(saveIsPressed){
             updateRecipe.stepList = steps;
             updateRecipe.recipeId = recipeId;
-            updateRecipe.creatorId = Integer.parseInt(creatorId);
+            updateRecipe.creatorId = creatorId;
             isValid = validate(this.updateRecipe);
             if(isValid){
                 showErrorToast("Sending data...");
@@ -203,6 +229,8 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
     }
 
+
+
     String imageRecipe = "";
 
     void sendData(){
@@ -213,7 +241,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
         Server server = new Server();
         functions.showLoading();
-        server.getAuthToken(Integer.parseInt(creatorId), updateRecipe).enqueue(new Callback<Key>() {
+        server.getAuthToken(creatorId, updateRecipe).enqueue(new Callback<Key>() {
             @Override
             public void onResponse(Call<Key> call, Response<Key> response) {
                 if (!response.isSuccessful()){
@@ -290,6 +318,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
         return true;
     }
+
 
     void showErrorToast(String errorMsg){
         functions.showToast(errorMsg);

@@ -205,6 +205,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void CartFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
+
         functions.showLoading();
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
@@ -268,6 +275,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     public void OrderFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
         functions.showLoading();
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
             @Override
@@ -294,6 +307,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void SettingsFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
         functions.showLoading();
         server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
             @Override

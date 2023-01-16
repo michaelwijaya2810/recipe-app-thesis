@@ -131,7 +131,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
         }
         else { // Edit page
             functions.showLoading();
-            server.getRecipeFromId(recipeId, 8).enqueue(new Callback<SingleRecipeResponse>() {
+            server.getRecipeFromId(recipeId, creatorId).enqueue(new Callback<SingleRecipeResponse>() {
                 @Override
                 public void onResponse(Call<SingleRecipeResponse> call, Response<SingleRecipeResponse> response) {
                     if (!response.isSuccessful()){

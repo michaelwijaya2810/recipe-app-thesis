@@ -44,7 +44,7 @@
         android:backgroundTint="@color/gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_main_menu"
+        android:text="Back To Cart"
         android:textAllCaps="false"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"

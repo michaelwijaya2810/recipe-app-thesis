@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentActivity"
+    tools:context=".payment.views.PaymentActivity"
     android:orientation="vertical">
 
     <TextView
@@ -28,42 +28,17 @@
         android:paddingRight="20dp"
         >
         <Button
-            android:id="@+id/btnGopay"
+            android:id="@+id/btnBcaVA"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:backgroundTint="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GOPAY"
-            />
-        <Button
-            android:id="@+id/btnOvo"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:backgroundTint="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="OVO"
-            android:layout_marginTop="5dp"
+            android:text="Bca Virtual Account"
+            android:textAllCaps="false"
             />
     </com.google.android.material.button.MaterialButtonToggleGroup>
     <LinearLayout android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1" />
-    <TextView
-        android:id="@+id/tvPaymentOptionBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:layout_marginLeft="22dp"
-        />
-    <TextView
-        android:id="@+id/tvBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="24dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginBottom="30dp"
-        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

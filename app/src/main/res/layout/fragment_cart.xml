@@ -51,7 +51,12 @@
         android:textColor="@color/black"
         android:textSize="24dp"
         app:layout_constraintBottom_toTopOf="@+id/btnOrder"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+
+
+
+        />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:background="@drawable/round_style"

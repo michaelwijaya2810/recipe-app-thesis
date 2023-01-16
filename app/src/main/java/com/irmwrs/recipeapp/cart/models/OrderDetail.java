@@ -7,10 +7,16 @@ public class OrderDetail {
     @SerializedName("IngredientName")
     @Expose
     public String ingredientName;
+
     @SerializedName("IngredientPrice")
     @Expose
     public int ingredientPrice;
+
     @SerializedName("IngredientQty")
     @Expose
     public int ingredientQty;
+
+    @SerializedName("IngredientImage")
+    @Expose
+    public String IngredientImage;
 }

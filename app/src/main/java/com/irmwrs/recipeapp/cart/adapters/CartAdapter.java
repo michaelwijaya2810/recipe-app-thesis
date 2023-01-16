@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,6 +61,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.cbRecipeName.setText(curr.recipeName);
         holder.tvQtyAndName.setText(curr.getQtyAndNameSummary());
         holder.tvPrice.setText(curr.getPriceSummary());
+
+
+
     }
 
     @Override
@@ -71,6 +76,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         TextView tvQtyAndName;
         TextView tvPrice;
         OnCheckListener onCheckListener;
+        ImageView IngredientImage;
 
         public ViewHolder(@NonNull View itemView, OnCheckListener onCheckListener) {
             super(itemView);
@@ -78,6 +84,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             cbRecipeName = itemView.findViewById(R.id.cbCart);
             tvQtyAndName = itemView.findViewById(R.id.tvQtyAndName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+
 
             // onclick init
             this.onCheckListener = onCheckListener;

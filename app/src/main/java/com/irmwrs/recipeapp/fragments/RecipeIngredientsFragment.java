@@ -23,6 +23,7 @@ import com.irmwrs.recipeapp.IngredientCartActivity;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.Class.SingleRecipeIngredient;
 import com.irmwrs.recipeapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +68,11 @@ public class RecipeIngredientsFragment extends Fragment {
             recipe_image.setImageResource(R.drawable.no_image_placeholder);
         }
         else {
-            byte[] decodedBytes = Base64.decode(recipe.recipeImage, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            recipe_image.setImageBitmap(bitmap);
+            Picasso.get().load(recipe.recipeImage).into(recipe_image);
+
+//            byte[] decodedBytes = Base64.decode(recipe.recipeImage, Base64.DEFAULT);
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+//            recipe_image.setImageBitmap(bitmap);
         }
         recipe_title_text.setText(recipe.recipeName);
         if (recipe.recipeDifficulty == 1){

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.Server;
 import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 import com.irmwrs.recipeapp.cart.adapters.CartAdapter;
 import com.irmwrs.recipeapp.payment.views.PaymentActivity;
@@ -25,6 +28,9 @@ import com.irmwrs.recipeapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnCheckListener {
 
@@ -61,7 +67,47 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
         super.onViewCreated(view, savedInstanceState);
         functions = new Functions(activity);
         init(view);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(rvCart);
+
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Server server = new Server();
+            int position = viewHolder.getAdapterPosition();
+            if(direction == ItemTouchHelper.RIGHT)
+            {
+                functions.showLoading();
+                server.RemoveOrder(cartItems.get(position).orderId).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                            cartItems.remove(position);
+                            adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+
+                    }
+                });
+                selected.remove(position);
+                getTotalPrice();
+                updateText();
+                functions.dismissLoading();
+
+            }
+
+        }
+    };
 
     void init(View view){
         // widgets init

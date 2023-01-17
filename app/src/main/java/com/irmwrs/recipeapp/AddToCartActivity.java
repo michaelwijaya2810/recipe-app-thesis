@@ -30,7 +30,6 @@ public class AddToCartActivity extends AppCompatActivity {
 
     String date;
     Functions functions;
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +37,11 @@ public class AddToCartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_to_cart);
 
         functions = new Functions(AddToCartActivity.this);
-        sharedPreferences = getApplicationContext().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
-        String address = sharedPreferences.getString("Address", "");
 
         TextView tvAddress = findViewById(R.id.tvAddress);
         tvAddress.setPaintFlags(tvAddress.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         //sample data
-        tvAddress.setText(address);
+        tvAddress.setText("Gulag street 123");
 
         Button btnDatePicker = findViewById(R.id.btnDatePicker);
         TextView tvQtyAndName = findViewById(R.id.tvQtyAndName);

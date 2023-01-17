@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     int userId;
     Context context;
     SharedPreferences sharepref;
-    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,46 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refresh();
+                recipes.removeAll(recipes);
+
+//                finish();
+//
+//                startActivity(getIntent());
+
+                if(pageNumber == 1){
+
+                    RecipeFragment(false, 1);
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 2){
+
+                    CartFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 3){
+
+                    HomeFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 4){
+
+                    OrderFragment();
+                    refresh.setRefreshing(false);
+
+                }
+                else if(pageNumber == 5){
+
+                    SettingsFragment();
+                    refresh.setRefreshing(false);
+
+                }
+
+
+
+
             }
         });
 
@@ -165,10 +203,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void CartFragment(){
-        if(!isLogin()){
-            navigateToLogin();
-            return;
-        }
         functions.showLoading();
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
@@ -232,10 +266,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     public void OrderFragment(){
-        if(!isLogin()){
-            navigateToLogin();
-            return;
-        }
         functions.showLoading();
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
             @Override
@@ -261,62 +291,39 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         });
     }
 
-    public void SettingsFragment(){
-        if(!isLogin()){
-            navigateToLogin();
-            return;
-        }
-        fragment = new SettingsFragment(userId, address, MainActivity.this);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-    }
+    void SettingsFragment(){
+        functions.showLoading();
+        server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (!response.isSuccessful()) {
+                    functions.dismissLoading();
+                    functions.showToast(String.valueOf(response.code()));
+                    return;
+                }
+                String address;
+                try {
+                    address = response.body().user.address;
+                }
+                catch (Exception e)
+                {
+                    address = "";
+                }
 
-    boolean isLogin(){
-        return userId != 0;
-    }
+                fragment = new SettingsFragment(userId, address, MainActivity.this);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                functions.dismissLoading();
+            }
 
-    void navigateToLogin(){
-        functions.showToast("Invalid Login Session");
-        Intent intent = new Intent(MainActivity.this, Login.class);
-        startActivity(intent);
-    }
-
-    public void refresh(){
-        recipes.removeAll(recipes);
-        address = sharepref.getString("Address", "");
-
-        if(pageNumber == 1){
-
-            RecipeFragment(false, 1);
-            refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 2){
-
-            CartFragment();
-            refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 3){
-
-            HomeFragment();
-            refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 4){
-
-            OrderFragment();
-            refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 5){
-
-            SettingsFragment();
-            refresh.setRefreshing(false);
-
-        }
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                functions.dismissLoading();
+                functions.showToast(t.getMessage());
+            }
+        });
     }
 
 }

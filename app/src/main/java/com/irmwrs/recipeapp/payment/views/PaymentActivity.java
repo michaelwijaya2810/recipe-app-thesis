@@ -31,7 +31,7 @@ public class PaymentActivity extends AppCompatActivity {
     TextView tvTotalPrice3;
     Button btnPay;
 
-    String paymentMethod = "";
+    int paymentMethod = 0;
     int totalPrice;
 
     long userId;
@@ -81,18 +81,23 @@ public class PaymentActivity extends AppCompatActivity {
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked){
                     if (checkedId == R.id.btnBcaVA){
-                        paymentMethod = "BCA";
+                        paymentMethod = 1;
                     }
+                    else if(checkedId == R.id.btnMandiriVA)
+                    {
+                        paymentMethod = 2;
+                    }
+
                 }
                 else {
-                    paymentMethod = "";
+                    paymentMethod = 0;
                 }
             }
         });
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(paymentMethod.equals("")){
+                if(paymentMethod == 0){
                     functions.showToast("Please select a payment method");
                 }
                 else {
@@ -107,7 +112,7 @@ public class PaymentActivity extends AppCompatActivity {
                                 return;
                             }
                             String auth = response.body().value;
-                            server.postCheckout(userId, auth, totalPrice, orderList).enqueue(new Callback<PaymentResponse>() {
+                            server.postCheckout(userId, auth, totalPrice,paymentMethod, orderList).enqueue(new Callback<PaymentResponse>() {
                                 @Override
                                 public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                                     if (!response.isSuccessful()){

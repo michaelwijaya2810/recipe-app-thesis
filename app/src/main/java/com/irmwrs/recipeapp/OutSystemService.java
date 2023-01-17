@@ -1,6 +1,5 @@
 package com.irmwrs.recipeapp;
 
-import com.irmwrs.recipeapp.settings.models.ChangeAddress;
 import com.irmwrs.recipeapp.settings.models.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
@@ -60,8 +59,6 @@ public interface OutSystemService {
     Call<Response> getForgotPassword(@Query("Username") String username);
     @POST("User/ChangePassword")
     Call<Response> postChangePassword(@Body ChangePassword changePassword);
-    @POST("User/ChangeAddress")
-    Call<Boolean> postChangeAddress(@Query("userid") int userId, @Body ChangeAddress changeAddress);
 
     // Order
     @POST("Order/NewOrder")

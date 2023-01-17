@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -29,7 +27,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     TabLayout tabLayout;
     TabLayoutMediator mediator;
     ViewPager2 recipeDetailPager;
-    Button btn_edit;
     RecipeDetailAdapter recipeDetailAdapter;
     boolean isLogin = true;
     int userId;
@@ -42,11 +39,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int recipeId = intent.getIntExtra("recipeId", 0);
 
-        btn_edit = findViewById(R.id.btn_edit);
-
         // sample data
         Context context = getApplicationContext();
         SharedPreferences sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+        userId = 0;
         try {
             userId = sharepref.getInt("Userid",0);
         }
@@ -55,18 +51,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
             userId = 0;
         }
 
+
         if (userId == 0){
             isLogin = false;
         }
-
-        btn_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(RecipeDetailActivity.this, AddOrEditRecipeActivity.class);
-                intent1.putExtra("recipeId", Long.valueOf(recipeId));
-                startActivity(intent1);
-            }
-        });
 
         Server server = new Server();
         Functions functions = new Functions(RecipeDetailActivity.this);
@@ -107,9 +95,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                                         }
                                     });
                             mediator.attach();
-                            if(singleRecipeResponse.recipe.creatorId == userId){
-                                btn_edit.setVisibility(View.VISIBLE);
-                            }
                             functions.dismissLoading();
                         }
 

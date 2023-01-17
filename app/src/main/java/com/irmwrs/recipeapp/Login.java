@@ -13,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
+import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
 import com.irmwrs.recipeapp.Class.Validate;
+import com.irmwrs.recipeapp.settings.views.SettingsFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,6 +23,7 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
+    int userId;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class Login extends AppCompatActivity {
             Context context = getApplicationContext();
             SharedPreferences sharedPref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
+            Functions functions = new Functions(Login.this);
 
             int Userid = 0;
             Userid = sharedPref.getInt("Userid",Userid);
@@ -68,6 +72,7 @@ public class Login extends AppCompatActivity {
             loginbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    functions.showLoading();
                     server.postLogin(usernamefield.getText().toString(),passwordfield.getText().toString()).enqueue(new Callback<LoginResponse>(){
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -77,19 +82,38 @@ public class Login extends AppCompatActivity {
                             }
                             else
                             {
-
+                                userId = response.body().userid;
                                 editor.putInt("Userid", response.body().userid);
                                 editor.putString("Username",response.body().username);
-                                editor.apply();
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                startActivity(intent);
+                                server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
+                                    @Override
+                                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                                        if (!response.isSuccessful()) {
+                                            functions.dismissLoading();
+                                            functions.showToast(String.valueOf(response.code()));
+                                            return;
+                                        }
+                                        editor.putString("Address", response.body().user.address);
+                                        editor.apply();
+                                        functions.dismissLoading();
+                                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                        startActivity(intent);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                                        functions.dismissLoading();
+                                        functions.showToast(t.getMessage());
+                                    }
+                                });
                             }
 
                         }
 
                         @Override
                         public void onFailure(Call<LoginResponse> call, Throwable t) {
-
+                            functions.dismissLoading();
+                            functions.showToast(t.getMessage());
                         }
                     });
                 }

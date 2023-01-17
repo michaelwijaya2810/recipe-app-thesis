@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.irmwrs.recipeapp.settings.models.ChangeAddress;
 import com.irmwrs.recipeapp.settings.models.ChangePassword;
 import com.irmwrs.recipeapp.Class.Ingredient;
 import com.irmwrs.recipeapp.Class.Key;
@@ -122,6 +123,11 @@ public class Server {
 
     public Call<Response> postChangePassword(ChangePassword changePassword){
         Call<Response> call = outSystemService.postChangePassword(changePassword);
+        return call;
+    }
+
+    public Call<Boolean> postChangeAddress(int userId, ChangeAddress changeAddress){
+        Call<Boolean> call = outSystemService.postChangeAddress(userId, changeAddress);
         return call;
     }
 

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,11 @@ import com.irmwrs.recipeapp.Login;
 import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.Server;
+import com.irmwrs.recipeapp.settings.models.ChangeAddress;
 import com.irmwrs.recipeapp.settings.models.ChangePassword;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +45,9 @@ public class SettingsFragment extends Fragment {
     Button btnLogOut;
 
     Functions functions;
-    Server server = new Server();
+    Server server;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     int userId;
     String address;
@@ -63,11 +70,16 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        functions = new Functions(activity);
         init(view);
     }
 
     void init(View view){
+        // objects init
+        functions = new Functions(activity);
+        server = new Server();
+        sharedPreferences = activity.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         // widget init
         btnChangeAddress = view.findViewById(R.id.btnChangeAddress);
         etAddress = view.findViewById(R.id.etAddress);
@@ -103,7 +115,30 @@ public class SettingsFragment extends Fragment {
                     functions.showToast("Address can't be empty!");
                 }
                 else {
-                    // todo call api
+                    ChangeAddress changeAddress = new ChangeAddress();
+                    changeAddress.address = etAddress.getText().toString();
+                    functions.showLoading();
+                    server.postChangeAddress(userId, changeAddress).enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, retrofit2.Response<Boolean> response) {
+                            if (!response.isSuccessful()) {
+                                functions.dismissLoading();
+                                functions.showToast(String.valueOf(response.code()));
+                                return;
+                            }
+                            editor.putString("Address", changeAddress.address);
+                            editor.apply();
+                            functions.dismissLoading();
+                            functions.showToast("Password changed successfully!");
+                            refreshSettings();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+                            functions.dismissLoading();
+                            functions.showToast(t.getMessage());
+                        }
+                    });
                 }
             }
         });
@@ -152,6 +187,7 @@ public class SettingsFragment extends Fragment {
                             }
                             functions.dismissLoading();
                             functions.showToast("Password changed successfully!");
+                            refreshSettings();
                         }
 
                         @Override
@@ -179,5 +215,9 @@ public class SettingsFragment extends Fragment {
 
             }
         });
+    }
+
+    void refreshSettings(){
+        ((MainActivity)getActivity()).refresh();
     }
 }

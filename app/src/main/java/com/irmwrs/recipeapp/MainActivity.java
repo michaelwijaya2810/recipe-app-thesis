@@ -22,6 +22,7 @@ import com.irmwrs.recipeapp.home.views.HomeFragment;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.order.views.OrderFragment;
 import com.irmwrs.recipeapp.settings.views.SettingsFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         context = getApplicationContext();
         sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
         userId = sharepref.getInt("Userid",0);
+
 
 
         refresh = findViewById(R.id.refresh);
@@ -203,6 +205,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void CartFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
+
         functions.showLoading();
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
@@ -266,6 +275,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     public void OrderFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
         functions.showLoading();
         server.getOrderHistory(userId).enqueue(new Callback<List<OrderHistoryResponse>>() {
             @Override
@@ -292,6 +307,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void SettingsFragment(){
+        if (userId==0)
+        {
+            functions.showToast("Invalid Login Session");
+            finish();
+            return;
+        }
         functions.showLoading();
         server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
             @Override

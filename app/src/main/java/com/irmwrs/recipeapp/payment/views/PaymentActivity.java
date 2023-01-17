@@ -112,15 +112,21 @@ public class PaymentActivity extends AppCompatActivity {
                                 public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
                                     if (!response.isSuccessful()){
                                         functions.dismissLoading();
-                                        functions.showToast(String.valueOf(response.code()));
+                                        functions.showToast(String.valueOf(response.body().response.errorReason));
                                         return;
                                     }
-                                    Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
-                                    intent.putExtra("amount", totalPrice);
-                                    intent.putExtra("bankName", response.body().paymentInfo.bankName);
-                                    intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
-                                    functions.dismissLoading();
-                                    startActivity(intent);
+
+                                    if(response.body().response.errorReason.equals(""))
+                                    {
+                                        Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
+                                        intent.putExtra("amount", totalPrice);
+                                        intent.putExtra("bankName", response.body().paymentInfo.bankName);
+                                        intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
+                                        functions.dismissLoading();
+                                        startActivity(intent);
+                                    }
+                                    functions.showToast(String.valueOf(response.body().response.errorReason));
+
                                 }
 
                                 @Override

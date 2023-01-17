@@ -70,6 +70,9 @@ public interface OutSystemService {
     @GET("Order/ConfirmDelivery")
     Call<Response> getConfirmDelivery(@Query("userid") int userId, @Query("orderid") String orderId);
 
+    @GET("Order/RemoveOrder")
+    Call<Response> RemoveOrder(@Query("orderid") Long orderid);
+
     // Payment
     @POST("Payment/ProccessCheckout")
     Call<PaymentResponse> postProccessCheckout(@Query("UserId") long userId, @Query("Authkey") String authKey, @Query("TotalPrice") int totalPrice, @Body List<Long> orderList);

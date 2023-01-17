@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +37,20 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
     Functions functions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_cart);
+        Context context = getApplicationContext();
+
+        SharedPreferences sp = context.getSharedPreferences("userinfo",context.MODE_PRIVATE);
+        int userId =  sp.getInt("Userid",0);
+
+        if (userId==0)
+        {
+            Toast.makeText(getApplicationContext(),"Invalid Login Session",Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         functions = new Functions(IngredientCartActivity.this);
 

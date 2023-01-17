@@ -146,6 +146,11 @@ public class Server {
         return call;
     }
 
+    public Call<Response> RemoveOrder(Long Orderid){
+        Call<Response> call = outSystemService.RemoveOrder(Orderid);
+        return call;
+    }
+
     // Payment
     public Call<PaymentResponse> postCheckout(long userId, String authKey, int totalPrice, List<Integer> orderListInt){
         List<Long> orderList = new ArrayList<>();

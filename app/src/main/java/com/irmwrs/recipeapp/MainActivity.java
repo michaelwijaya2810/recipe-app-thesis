@@ -10,11 +10,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.irmwrs.recipeapp.Class.Recipe;
-import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
 import com.irmwrs.recipeapp.cart.views.CartFragment;
 import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 import com.irmwrs.recipeapp.fragments.RecipeListFragment;
@@ -22,7 +20,6 @@ import com.irmwrs.recipeapp.home.views.HomeFragment;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.order.views.OrderFragment;
 import com.irmwrs.recipeapp.settings.views.SettingsFragment;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;

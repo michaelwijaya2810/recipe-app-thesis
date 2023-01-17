@@ -20,6 +20,7 @@ import com.irmwrs.recipeapp.home.views.HomeFragment;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.order.views.OrderFragment;
 import com.irmwrs.recipeapp.settings.views.SettingsFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;

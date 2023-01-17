@@ -87,7 +87,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             tvQtyAndName = itemView.findViewById(R.id.tvQtyAndName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
 
-
             // onclick init
             this.onCheckListener = onCheckListener;
             itemView.setOnClickListener(this);

@@ -53,6 +53,13 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
         }
 
         functions = new Functions(IngredientCartActivity.this);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("Userid",0);
+        if(userId == 0){
+            functions.showToast("Invalid Login Session");
+            Intent intent = new Intent(IngredientCartActivity.this, Login.class);
+            startActivity(intent);
+        }
 
         Intent intent = getIntent();
         ids = intent.getIntegerArrayListExtra("ids");

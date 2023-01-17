@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     int userId;
     Context context;
     SharedPreferences sharepref;
+    String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,46 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                recipes.removeAll(recipes);
-
-//                finish();
-//
-//                startActivity(getIntent());
-
-                if(pageNumber == 1){
-
-                    RecipeFragment(false, 1);
-                    refresh.setRefreshing(false);
-
-                }
-                else if(pageNumber == 2){
-
-                    CartFragment();
-                    refresh.setRefreshing(false);
-
-                }
-                else if(pageNumber == 3){
-
-                    HomeFragment();
-                    refresh.setRefreshing(false);
-
-                }
-                else if(pageNumber == 4){
-
-                    OrderFragment();
-                    refresh.setRefreshing(false);
-
-                }
-                else if(pageNumber == 5){
-
-                    SettingsFragment();
-                    refresh.setRefreshing(false);
-
-                }
-
-
-
-
+                refresh();
             }
         });
 
@@ -205,13 +167,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     void CartFragment(){
-        if (userId==0)
-        {
-            functions.showToast("Invalid Login Session");
-            finish();
+        if(!isLogin()){
+            navigateToLogin();
             return;
         }
-
         functions.showLoading();
         server.getCart(userId).enqueue(new Callback<List<CartOrderResponse>>() {
             @Override
@@ -275,10 +234,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     }
 
     public void OrderFragment(){
-        if (userId==0)
-        {
-            functions.showToast("Invalid Login Session");
-            finish();
+        if(!isLogin()){
+            navigateToLogin();
             return;
         }
         functions.showLoading();
@@ -306,45 +263,62 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         });
     }
 
-    void SettingsFragment(){
-        if (userId==0)
-        {
-            functions.showToast("Invalid Login Session");
-            finish();
+    public void SettingsFragment(){
+        if(!isLogin()){
+            navigateToLogin();
             return;
         }
-        functions.showLoading();
-        server.postUserDetail(userId).enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if (!response.isSuccessful()) {
-                    functions.dismissLoading();
-                    functions.showToast(String.valueOf(response.code()));
-                    return;
-                }
-                String address;
-                try {
-                    address = response.body().user.address;
-                }
-                catch (Exception e)
-                {
-                    address = "";
-                }
+        fragment = new SettingsFragment(userId, address, MainActivity.this);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
 
-                fragment = new SettingsFragment(userId, address, MainActivity.this);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .commit();
-                functions.dismissLoading();
-            }
+    boolean isLogin(){
+        return userId != 0;
+    }
 
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-                functions.dismissLoading();
-                functions.showToast(t.getMessage());
-            }
-        });
+    void navigateToLogin(){
+        functions.showToast("Invalid Login Session");
+        Intent intent = new Intent(MainActivity.this, Login.class);
+        startActivity(intent);
+    }
+
+    public void refresh(){
+        recipes.removeAll(recipes);
+        address = sharepref.getString("Address", "");
+
+        if(pageNumber == 1){
+
+            RecipeFragment(false, 1);
+            refresh.setRefreshing(false);
+
+        }
+        else if(pageNumber == 2){
+
+            CartFragment();
+            refresh.setRefreshing(false);
+
+        }
+        else if(pageNumber == 3){
+
+            HomeFragment();
+            refresh.setRefreshing(false);
+
+        }
+        else if(pageNumber == 4){
+
+            OrderFragment();
+            refresh.setRefreshing(false);
+
+        }
+        else if(pageNumber == 5){
+
+            SettingsFragment();
+            refresh.setRefreshing(false);
+
+        }
     }
 
 }

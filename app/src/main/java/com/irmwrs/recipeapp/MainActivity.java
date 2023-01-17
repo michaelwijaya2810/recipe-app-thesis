@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         context = getApplicationContext();
         sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
         userId = sharepref.getInt("Userid",0);
-
+        bottomNav = findViewById(R.id.bottom_nav);
 
 
         refresh = findViewById(R.id.refresh);
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
 
 
-        bottomNav = findViewById(R.id.bottom_nav);
+
         if(pageNumber == 1){
             bottomNav.setSelectedItemId(R.id.menu_1);
             RecipeFragment(false, 1);

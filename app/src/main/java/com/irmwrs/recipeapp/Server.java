@@ -158,13 +158,13 @@ public class Server {
     }
 
     // Payment
-    public Call<PaymentResponse> postCheckout(long userId, String authKey, int totalPrice, List<Integer> orderListInt){
+    public Call<PaymentResponse> postCheckout(long userId, String authKey, int totalPrice,int method, List<Integer> orderListInt){
         List<Long> orderList = new ArrayList<>();
         for (int i = 0; i < orderListInt.size(); i++){ // change int to long because intent can't send an array of Long
             orderList.add(Long.valueOf(orderListInt.get(i)));
         }
 
-        Call<PaymentResponse> call = outSystemService.postProccessCheckout(userId, authKey, totalPrice, orderList);
+        Call<PaymentResponse> call = outSystemService.postProccessCheckout(userId, authKey, totalPrice,method, orderList);
         return call;
     }
 

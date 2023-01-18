@@ -23,17 +23,14 @@
         app:justifyContent="space_between"
         android:layout_gravity="center"
         >
-
-
-
             <TextView
                 android:id="@+id/tvQtyAndName"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Test123"
                 android:textColor="@color/black"
                 android:textSize="16dp"
-                android:gravity="center"
+                android:gravity="left"
 
 
 
@@ -41,11 +38,11 @@
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Rp.100000"
                 android:textColor="@color/black"
                 android:textSize="16dp"
-                android:gravity="center"
+                android:gravity="right"
                 />
 
 

@@ -91,7 +91,6 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                             cartItems.remove(position);
                             adapter.notifyDataSetChanged();
-
                     }
 
                     @Override

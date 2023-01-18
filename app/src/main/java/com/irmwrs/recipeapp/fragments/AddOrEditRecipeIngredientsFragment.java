@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -36,6 +37,8 @@ import com.irmwrs.recipeapp.Class.SingleRecipeIngredient;
 import com.irmwrs.recipeapp.Class.UpdateRecipe;
 import com.irmwrs.recipeapp.Class.UpdateRecipeIngredient;
 import com.irmwrs.recipeapp.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,6 +51,7 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
     List<SingleRecipeIngredient> recipeIngredients;
     Button btnSave;
     getIngredientForm getData;
+
 
 
     public AddOrEditRecipeIngredientsFragment(List<Ingredient> ingredients, Recipe recipe, List<SingleRecipeIngredient> recipeIngredients, Button btnSave, getIngredientForm getData) {
@@ -92,6 +96,7 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
         etQty = view.findViewById(R.id.etQty);
         btnAddIngredient = view.findViewById(R.id.btnAddIngredient);
 
+        //Initialize Image
         if(recipe != null){// Edit page
             recipesId = recipe.id;
             if(recipe.recipeImage.equals("")){
@@ -99,11 +104,12 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
                 recipeImageBitmap = null;
             }
             else {
-                byte[] decodedBytes = Base64.decode(recipe.recipeImage, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                ivRecipeImage.setImageBitmap(bitmap);
-                recipeImageBitmap = bitmap;
+                //get image from URL and set it to Bitmap
+                Picasso.get().load(recipe.recipeImage).into(target);
             }
+
+
+
             etRecipeName.setText(recipe.recipeName);
             if (recipe.recipeDifficulty == 1){
                 difficulty = 1;
@@ -188,6 +194,7 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
     }
 
     Bitmap uriToBitmap(Uri imageUri) throws IOException {
+
         return MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), imageUri);
     }
 
@@ -212,6 +219,24 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
         updateRecipe.ingredientList = ingredientList;
         return updateRecipe;
     }
+
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            ivRecipeImage.setImageBitmap(bitmap);
+            recipeImageBitmap = bitmap;
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
 
     void createChip(String ingredientName, int ingredientQty, View view){
         Chip chip = new Chip(view.getContext());

@@ -29,16 +29,17 @@ public class Register extends AppCompatActivity {
         EditText Confirmfield = findViewById(R.id.RegisterConfirmField);
         EditText Addressfield = findViewById(R.id.RegisterAddressField);
         EditText Phonefield = findViewById(R.id.RegisterPhoneField);
-
+        Functions functions = new Functions(this);
         Button CreateAccbtn = findViewById(R.id.Createaccountbtn);
         TextView signin = findViewById(R.id.Signinbtn);
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         CreateAccbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Userfield.getText().toString() == "" || Userfield.getText().toString().length()<6)
+                if(Userfield.getText().toString() == "" || Userfield.getText().toString().length()<6 || Userfield.getText().toString().length()>18)
                 {
-                    Toast.makeText(getApplicationContext(),"Username field can't be empty and must be at least 6 Character long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Username field can't be empty and must be between 6-18 Character long",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -46,6 +47,10 @@ public class Register extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(),"Email can't be empty",Toast.LENGTH_SHORT).show();
                     return;
+                }
+                if(!Emailfield.getText().toString().matches(emailPattern))
+                {
+                   functions.showToast("Email not Valid");
                 }
                 if(Passwordfield.getText().toString() == null || Passwordfield.getText().toString().length()<6)
                 {

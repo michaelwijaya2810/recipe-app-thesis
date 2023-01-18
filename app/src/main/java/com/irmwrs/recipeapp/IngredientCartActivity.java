@@ -75,6 +75,7 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
                             cartItem.name = ingredients.get(j).ingredientName;
                             cartItem.image = ingredients.get(j).ingredientImage;
                             cartItem.price = ingredients.get(j).ingredientPrice;
+//                            cartItem.uom = ingredients.get(j).uom;
                         }
                     }
                     cartItem.ingredientId = ids.get(i);

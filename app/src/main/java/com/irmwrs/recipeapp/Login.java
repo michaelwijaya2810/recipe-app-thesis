@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
             });
 
 
+
         TextView registertxt = findViewById(R.id.CreateAccountTxt);
 
             registertxt.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +80,8 @@ public class Login extends AppCompatActivity {
                             if(response.body().errorreason != null)
                             {
                                 Toast.makeText(getApplicationContext(),response.body().errorreason,Toast.LENGTH_SHORT).show();
+                                functions.dismissLoading();
+                                return;
                             }
                             else
                             {
@@ -105,8 +108,11 @@ public class Login extends AppCompatActivity {
                                         functions.dismissLoading();
                                         functions.showToast(t.getMessage());
                                     }
+
                                 });
                             }
+
+
 
 
                         }
@@ -122,4 +128,8 @@ public class Login extends AppCompatActivity {
 
 
         }
+
+
+
+
 }

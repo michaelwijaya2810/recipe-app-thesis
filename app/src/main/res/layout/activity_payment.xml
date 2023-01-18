@@ -30,7 +30,7 @@
         <Button
             android:id="@+id/btnBcaVA"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:backgroundTint="@color/link_blue"
+            android:backgroundTint="@color/yellow"
             android:layout_width="match_parent"
             android:textColor="@color/white"
             android:layout_height="70dp"
@@ -40,7 +40,7 @@
         <Button
             android:id="@+id/btnMandiriVA"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:backgroundTint="#FFC300"
+            android:backgroundTint="@color/yellow"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:text="Mandiri Virtual Account"

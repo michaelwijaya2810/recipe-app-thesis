@@ -1,10 +1,13 @@
 package com.irmwrs.recipeapp.payment.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +33,8 @@ public class PaymentActivity extends AppCompatActivity {
     MaterialButtonToggleGroup tbPaymentOption;
     TextView tvTotalPrice3;
     Button btnPay;
+    Button btnBcaVa;
+    Button btnMandiriVa;
 
     int paymentMethod = 0;
     int totalPrice;
@@ -71,6 +76,8 @@ public class PaymentActivity extends AppCompatActivity {
         tbPaymentOption = findViewById(R.id.tbPaymentOption);
         tvTotalPrice3 = findViewById(R.id.tvTotalPrice3);
         btnPay = findViewById(R.id.btnPay);
+        btnBcaVa = findViewById(R.id.btnBcaVA);
+        btnMandiriVa = findViewById(R.id.btnMandiriVA);
 
         // text init
         tvTotalPrice3.setText(functions.toRupiah((double) totalPrice));
@@ -82,15 +89,21 @@ public class PaymentActivity extends AppCompatActivity {
                 if (isChecked){
                     if (checkedId == R.id.btnBcaVA){
                         paymentMethod = 1;
+                        btnBcaVa.setBackgroundColor(getColor(R.color.link_blue));
+                        btnMandiriVa.setBackgroundColor(getColor(R.color.yellow));
                     }
                     else if(checkedId == R.id.btnMandiriVA)
                     {
                         paymentMethod = 2;
+                        btnBcaVa.setBackgroundColor(getColor(R.color.yellow));
+                        btnMandiriVa.setBackgroundColor(getColor(R.color.link_blue));
                     }
 
                 }
                 else {
                     paymentMethod = 0;
+                    btnBcaVa.setBackgroundColor(getColor(R.color.yellow));
+                    btnMandiriVa.setBackgroundColor(getColor(R.color.yellow));
                 }
             }
         });

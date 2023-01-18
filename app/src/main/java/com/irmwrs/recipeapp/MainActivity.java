@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         context = getApplicationContext();
         sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
         userId = sharepref.getInt("Userid",0);
+        address = sharepref.getString("Address", "");
         bottomNav = findViewById(R.id.bottom_nav);
 
 

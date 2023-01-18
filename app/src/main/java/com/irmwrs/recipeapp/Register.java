@@ -34,12 +34,18 @@ public class Register extends AppCompatActivity {
         TextView signin = findViewById(R.id.Signinbtn);
 
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String alphanumeric= "^[a-zA-Z0-9]*$";
         CreateAccbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Userfield.getText().toString() == "" || Userfield.getText().toString().length()<6 || Userfield.getText().toString().length()>18)
                 {
                     Toast.makeText(getApplicationContext(),"Username field can't be empty and must be between 6-18 Character long",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!Userfield.getText().toString().matches(alphanumeric))
+                {
+                    functions.showToast("Alphanumeric only");
                     return;
                 }
 
@@ -51,6 +57,7 @@ public class Register extends AppCompatActivity {
                 if(!Emailfield.getText().toString().matches(emailPattern))
                 {
                    functions.showToast("Email not Valid");
+                   return;
                 }
                 if(Passwordfield.getText().toString() == null || Passwordfield.getText().toString().length()<6)
                 {
@@ -66,6 +73,11 @@ public class Register extends AppCompatActivity {
                 if(Addressfield.getText().toString().equals(""))
                 {
                     Toast.makeText(Register.this, "Address can't be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!Addressfield.getText().toString().matches(alphanumeric))
+                {
+                    functions.showToast("Alphanumeric only");
                     return;
                 }
                 if(Phonefield.getText().toString().equals(""))

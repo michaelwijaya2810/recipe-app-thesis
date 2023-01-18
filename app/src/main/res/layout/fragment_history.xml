@@ -23,11 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="15dp"
-        app:singleSelection="true"
-        app:selectionRequired="true"
+        android:layout_marginTop="8dp"
         app:checkedChip="@id/chipAll"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:selectionRequired="true"
+        app:singleSelection="true"
         tools:layout_editor_absoluteX="20dp">
 
         <com.google.android.material.chip.Chip
@@ -37,20 +37,26 @@
             android:checkable="true"
             android:clickable="true"
             android:text="All" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPaymentExpired"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:clickable="true"
+            android:backgroundTint="@color/yellow_cream"
             android:text="Payment Expired" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipDelivered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:clickable="true"
-            android:text="Delivered" />
+            android:text="Delivered"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/confirm_green"
+            />
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView

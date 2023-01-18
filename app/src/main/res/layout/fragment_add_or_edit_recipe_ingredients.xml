@@ -160,6 +160,7 @@
             android:layout_marginVertical="12dp"
             android:text="Add Ingredient"
             android:textAllCaps="false"
+            android:backgroundTint="@color/confirm_green"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,6 +30,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="12dp"
         android:text="Add Step"
+        android:backgroundTint="@color/confirm_green"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

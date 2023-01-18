@@ -91,6 +91,7 @@
             android:layout_height="wrap_content"
             android:text="Login"
             android:id="@+id/Loginbtn"
+            android:backgroundTint="@color/confirm_green"
 
             ></Button>
 

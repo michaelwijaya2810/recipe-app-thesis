@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Create Account"
+            android:backgroundTint="@color/confirm_green"
             android:id="@+id/Createaccountbtn"
             ></Button>
 

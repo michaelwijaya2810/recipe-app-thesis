@@ -49,7 +49,7 @@
                 >
                 <ImageView
                     android:background="@drawable/round_style"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/yellow_cream"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:padding="8dp"
@@ -74,7 +74,7 @@
                 >
                 <ImageView
                     android:background="@drawable/round_style"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/confirm_green"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:padding="8dp"
@@ -99,7 +99,7 @@
                 >
                 <ImageView
                     android:background="@drawable/round_style"
-                    android:backgroundTint="@color/gray"
+                    android:backgroundTint="@color/purple_500"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:padding="8dp"

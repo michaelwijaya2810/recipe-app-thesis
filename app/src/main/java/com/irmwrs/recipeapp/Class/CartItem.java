@@ -9,6 +9,7 @@ public class CartItem {
     public String name;
     public String image;
     public double price;
+    public String uom;
     public int qty;
     public long ingredientId;
 

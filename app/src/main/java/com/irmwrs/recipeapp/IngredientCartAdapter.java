@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.irmwrs.recipeapp.Class.CartItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -28,9 +30,10 @@ public class IngredientCartAdapter extends RecyclerView.Adapter<IngredientCartAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CartItem cartItem = cartItemList.get(position);
-        holder.cbCart.setText(cartItem.name);
+        holder.ingredientname.setText(cartItem.name);
         holder.tvIngredientPrice.setText(cartItem.getStringPrice());
         holder.etIngredientQty.setText(String.valueOf(cartItem.qty));
+        Picasso.get().load(cartItem.image).into(holder.image);
     }
 
     @Override
@@ -53,10 +56,16 @@ public class IngredientCartAdapter extends RecyclerView.Adapter<IngredientCartAd
         CheckBox cbCart;
         TextView tvIngredientPrice;
         EditText etIngredientQty;
+        TextView ingredientname;
         OnCheckListener onCheckListener;
+        ImageView image;
+
         public ViewHolder(@NonNull View itemView, OnCheckListener onCheckListener) {
             super(itemView);
             cbCart = itemView.findViewById(R.id.cbCart);
+            ingredientname = itemView.findViewById(R.id.Ingredientcarttext);
+            image = itemView.findViewById(R.id.Ingredientccartimage);
+
             cbCart.setChecked(true);
             cbCart.setOnClickListener(new View.OnClickListener() {
                 @Override

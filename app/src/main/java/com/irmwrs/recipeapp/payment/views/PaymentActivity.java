@@ -96,7 +96,8 @@ public class PaymentActivity extends AppCompatActivity {
         });
         btnPay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 if(paymentMethod == 0){
                     functions.showToast("Please select a payment method");
                 }
@@ -112,38 +113,43 @@ public class PaymentActivity extends AppCompatActivity {
                                 return;
                             }
                             String auth = response.body().value;
-                            server.postCheckout(userId, auth, totalPrice,paymentMethod, orderList).enqueue(new Callback<PaymentResponse>() {
-                                @Override
-                                public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
-                                    if (!response.isSuccessful()){
-                                        functions.dismissLoading();
+
+
+                                server.postCheckout(userId, auth, totalPrice,paymentMethod, orderList).enqueue(new Callback<PaymentResponse>() {
+                                    @Override
+                                    public void onResponse(Call<PaymentResponse> call, Response<PaymentResponse> response) {
+                                        if (!response.isSuccessful()){
+                                            functions.dismissLoading();
+                                            functions.showToast(String.valueOf(response.body().response.errorReason));
+
+                                            return;
+                                        }
+
+                                        if(response.body().response== null)
+                                        {
+                                            Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
+                                            intent.putExtra("amount", totalPrice);
+                                            intent.putExtra("bankName", response.body().paymentInfo.bankName);
+                                            intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
+                                            functions.dismissLoading();
+                                            startActivity(intent);
+                                        }
                                         functions.showToast(String.valueOf(response.body().response.errorReason));
-                                        return;
-                                    }
-
-                                    if(response.body().response.errorReason.equals(""))
-                                    {
-                                        Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
-                                        intent.putExtra("amount", totalPrice);
-                                        intent.putExtra("bankName", response.body().paymentInfo.bankName);
-                                        intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
                                         functions.dismissLoading();
-                                        startActivity(intent);
+
                                     }
-                                    functions.showToast(String.valueOf(response.body().response.errorReason));
 
-                                }
+                                    @Override
+                                    public void onFailure(Call<PaymentResponse> call, Throwable t) {
+                                        functions.dismissLoading();
+                                        functions.showToast(t.getMessage());
 
-                                @Override
-                                public void onFailure(Call<PaymentResponse> call, Throwable t) {
-                                    functions.dismissLoading();
-                                    functions.showToast(t.getMessage());
+                                    }
 
-                                }
-                            });
-                        }
+                                });
 
-                        @Override
+                            }
+                  @Override
                         public void onFailure(Call<Key> call, Throwable t) {
                             functions.dismissLoading();
                             functions.showToast(t.getMessage());
@@ -151,6 +157,8 @@ public class PaymentActivity extends AppCompatActivity {
                     });
                 }
             }
+
         });
+        functions.dismissLoading();
     }
 }

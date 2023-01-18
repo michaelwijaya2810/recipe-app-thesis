@@ -8,13 +8,34 @@
     android:layout_marginTop="13px"
     android:layout_marginBottom="13px"
     >
+
+
     <CheckBox
         android:id="@+id/cbCart"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Ingredient"
         >
     </CheckBox>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/Ingredientccartimage"
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        ></ImageView>
+    <TextView
+        android:layout_marginLeft="10dp"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:text="Ingredient"
+        android:id="@+id/Ingredientcarttext"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+
+        ></TextView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

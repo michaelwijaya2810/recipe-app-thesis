@@ -19,7 +19,7 @@ public class Ingredient {
     @SerializedName("UOM")
     @Expose
     public int uom;
-    @SerializedName("IngredientImage")
+    @SerializedName("Image")
     @Expose
     public String ingredientImage;
 }

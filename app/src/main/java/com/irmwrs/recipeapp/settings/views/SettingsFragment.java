@@ -126,7 +126,7 @@ public class SettingsFragment extends Fragment {
                             editor.putString("Address", changeAddress.address);
                             editor.apply();
                             functions.dismissLoading();
-                            functions.showToast("Password changed successfully!");
+                            functions.showToast("Address changed successfully!");
                             refreshSettings();
                         }
 

@@ -121,19 +121,18 @@ public class PaymentActivity extends AppCompatActivity {
                                         return;
                                     }
 
-                                    if(response.body().response.errorReason.equals(""))
-                                    {
-                                        Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
-                                        intent.putExtra("amount", totalPrice);
-                                        intent.putExtra("bankName", response.body().paymentInfo.bankName);
-                                        intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
+                                    if(response.body().response != null){
                                         functions.dismissLoading();
-                                        startActivity(intent);
+                                        functions.showToast(response.body().response.errorReason);
+                                        return;
                                     }
-                                    functions.showToast(String.valueOf(response.body().response.errorReason));
-
+                                    Intent intent = new Intent(PaymentActivity.this, WaitingForPaymentActivity.class);
+                                    intent.putExtra("amount", totalPrice);
+                                    intent.putExtra("bankName", response.body().paymentInfo.bankName);
+                                    intent.putExtra("accNumber", response.body().paymentInfo.virtualAccNumber);
+                                    functions.dismissLoading();
+                                    startActivity(intent);
                                 }
-
                                 @Override
                                 public void onFailure(Call<PaymentResponse> call, Throwable t) {
                                     functions.dismissLoading();

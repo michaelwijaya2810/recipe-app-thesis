@@ -7,7 +7,7 @@ public class LoginResponse {
     @SerializedName("userid")
     @Expose
     public Integer userid;
-    @SerializedName("Errorreason")
+    @SerializedName("ErrorReason")
     @Expose
     public String errorreason;
     @SerializedName("username")

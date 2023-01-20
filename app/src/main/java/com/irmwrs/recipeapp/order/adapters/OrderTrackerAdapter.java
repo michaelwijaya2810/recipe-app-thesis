@@ -118,7 +118,8 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 functions.dismissLoading();
-                functions.showToast(t.getMessage());
+                functions.showToast("Order Complete!");
+                onOrderTrackerListener.onOrderTrackerClick(0, true);
             }
         });
     }

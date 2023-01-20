@@ -44,7 +44,6 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:clickable="true"
-            android:backgroundTint="@color/yellow_cream"
             android:text="Payment Expired" />
 
         <com.google.android.material.chip.Chip
@@ -54,8 +53,6 @@
             android:checkable="true"
             android:clickable="true"
             android:text="Delivered"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/confirm_green"
             />
     </com.google.android.material.chip.ChipGroup>
 

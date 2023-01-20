@@ -33,6 +33,7 @@ public class Register extends AppCompatActivity {
         Button CreateAccbtn = findViewById(R.id.Createaccountbtn);
         TextView signin = findViewById(R.id.Signinbtn);
 
+
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         String alphanumeric= "^[a-zA-Z0-9]*$";
         CreateAccbtn.setOnClickListener(new View.OnClickListener() {
@@ -54,14 +55,19 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Email can't be empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!Emailfield.getText().toString().matches(emailPattern))
+                if(!Emailfield.getText().toString().matches(emailPattern) || !Emailfield.getText().toString().matches(alphanumeric))
                 {
                    functions.showToast("Email not Valid");
                    return;
                 }
-                if(Passwordfield.getText().toString() == null || Passwordfield.getText().toString().length()<6)
+                if(Passwordfield.getText().toString() == null || Passwordfield.getText().toString().length()<6 || Passwordfield.getText().toString().length()>22)
                 {
-                    Toast.makeText(getApplicationContext(),"Password field can't be empty and must be at least 6 Character long",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Password field can't be empty and must be at least 6 Character long and max 22 character",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!Passwordfield.getText().toString().matches(alphanumeric))
+                {
+                    functions.showToast("Alphanumeric only");
                     return;
                 }
                 if(!Confirmfield.getText().toString().equals(Passwordfield.getText().toString()) )
@@ -98,19 +104,22 @@ public class Register extends AppCompatActivity {
                 userregister.firstName = "";
                 userregister.lastName = "";
 
+                functions.showLoading();
                 server.postRegister(userregister).enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         if(response.body().errorreason == null)
                         {
                             Toast.makeText(getApplicationContext(),"Register Success",Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                         else
                         {
                             Toast.makeText(Register.this, response.body().errorreason, Toast.LENGTH_SHORT).show();
+                            functions.dismissLoading();
                             return;
                         }
-                        finish();
+
                     }
 
                     @Override

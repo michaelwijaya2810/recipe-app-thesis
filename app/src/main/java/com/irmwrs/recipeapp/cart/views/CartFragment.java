@@ -89,19 +89,25 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
                 server.RemoveOrder(cartItems.get(position).orderId).enqueue(new Callback<Response>() {
                     @Override
                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                            cartItems.remove(position);
-                            adapter.notifyDataSetChanged();
+                        cartItems.remove(position);
+                        adapter.notifyDataSetChanged();
+                        selected.remove(position);
+                        getTotalPrice();
+                        updateText();
+                        functions.dismissLoading();
                     }
 
                     @Override
                     public void onFailure(Call<Response> call, Throwable t) {
-
+                        cartItems.remove(position);
+                        adapter.notifyDataSetChanged();
+                        selected.remove(position);
+                        getTotalPrice();
+                        updateText();
+                        functions.dismissLoading();
+                        functions.dismissLoading();
                     }
                 });
-                selected.remove(position);
-                getTotalPrice();
-                updateText();
-                functions.dismissLoading();
 
             }
 

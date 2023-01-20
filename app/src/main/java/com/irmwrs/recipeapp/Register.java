@@ -55,7 +55,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Email can't be empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!Emailfield.getText().toString().matches(emailPattern) || !Emailfield.getText().toString().matches(alphanumeric))
+                if(!Emailfield.getText().toString().matches(emailPattern))
                 {
                    functions.showToast("Email not Valid");
                    return;

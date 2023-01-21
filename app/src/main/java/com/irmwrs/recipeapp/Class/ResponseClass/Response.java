@@ -13,7 +13,7 @@ public class Response {
     public int userid;
     @SerializedName("ErrorReason")
     @Expose
-    public String errorReason;
+    public String errorReason = "";
     @SerializedName("Response")
     @Expose
     public String response;

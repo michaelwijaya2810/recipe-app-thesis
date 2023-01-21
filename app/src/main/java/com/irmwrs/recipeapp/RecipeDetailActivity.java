@@ -80,7 +80,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
                         functions.showToast(String.valueOf(response.code()));
                         return;
                     }
-                    if(response.body().response.errorReason != null){
+                    if(!response.body().response.errorReason.equals("")){
                         functions.dismissLoading();
                         functions.showToast(response.body().response.errorReason);
                         return;

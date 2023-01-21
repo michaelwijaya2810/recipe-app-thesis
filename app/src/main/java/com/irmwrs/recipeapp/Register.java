@@ -104,7 +104,7 @@ public class Register extends AppCompatActivity {
                 server.postRegister(userregister).enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                        if(response.body().errorreason == null)
+                        if(response.body().errorreason.matches(""))
                         {
                             Toast.makeText(getApplicationContext(),"Register Success",Toast.LENGTH_SHORT).show();
                             finish();

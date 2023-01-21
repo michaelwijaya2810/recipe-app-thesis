@@ -37,6 +37,7 @@ public class Login extends AppCompatActivity {
             SharedPreferences sharedPref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             Functions functions = new Functions(Login.this);
+            TextView forgotpass = findViewById(R.id.forgotpassword);
 
             int Userid = 0;
             Userid = sharedPref.getInt("Userid",Userid);
@@ -127,6 +128,41 @@ public class Login extends AppCompatActivity {
                         public void onFailure(Call<LoginResponse> call, Throwable t) {
                             functions.dismissLoading();
                             functions.showToast(t.getMessage());
+                        }
+                    });
+                }
+            });
+
+
+            forgotpass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    functions.showLoading();
+                    if(usernamefield.getText().toString().equals(""))
+                    {
+                        functions.showToast("please input username");
+                        functions.dismissLoading();
+                        return;
+                    }
+
+                    server.getForgotPassword(usernamefield.getText().toString()).enqueue(new Callback<com.irmwrs.recipeapp.Class.ResponseClass.Response>() {
+                        @Override
+                        public void onResponse(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Response<com.irmwrs.recipeapp.Class.ResponseClass.Response> response) {
+                            if(!response.body().errorReason.equals(""))
+                            {
+                                functions.showToast(response.body().errorReason);
+                                functions.dismissLoading();
+                                return;
+                            }
+                            functions.showToast("please check your email");
+                            functions.dismissLoading();
+                            return;
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<com.irmwrs.recipeapp.Class.ResponseClass.Response> call, Throwable t) {
+                        functions.dismissLoading();
                         }
                     });
                 }

@@ -30,6 +30,10 @@ public class OrderHistoryResponse {
     @Expose
     public List<OrderDetail> orderDetail = null;
 
+    @SerializedName("BankName")
+    @Expose
+    public String paymentMehod;
+
     public String getQtyAndNameSummary(){
         String qty_name = "";
         for (int i = 0; i < orderDetail.size(); i++){

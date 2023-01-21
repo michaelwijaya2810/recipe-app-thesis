@@ -3,6 +3,7 @@ package com.irmwrs.recipeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,8 +35,8 @@ public class Register extends AppCompatActivity {
         TextView signin = findViewById(R.id.Signinbtn);
 
 
-        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-        String alphanumeric= "^[a-zA-Z0-9]*$";
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+.";
+        String alphanumeric= "^[a-zA-Z0-9._@]*$";
         CreateAccbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +47,7 @@ public class Register extends AppCompatActivity {
                 }
                 if(!Userfield.getText().toString().matches(alphanumeric))
                 {
-                    functions.showToast("Alphanumeric only");
+                    functions.showToast("Username Alphanumeric only");
                     return;
                 }
 
@@ -55,7 +56,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Email can't be empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(!Emailfield.getText().toString().matches(emailPattern))
+                if( !Patterns.EMAIL_ADDRESS.matcher(Emailfield.getText().toString()).matches())
                 {
                    functions.showToast("Email not Valid");
                    return;
@@ -67,7 +68,7 @@ public class Register extends AppCompatActivity {
                 }
                 if(!Passwordfield.getText().toString().matches(alphanumeric))
                 {
-                    functions.showToast("Alphanumeric only");
+                    functions.showToast("Password Alphanumeric only");
                     return;
                 }
                 if(!Confirmfield.getText().toString().equals(Passwordfield.getText().toString()) )
@@ -75,22 +76,17 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Password not Match", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(Phonefield.getText().toString().equals("") || Phonefield.getText().toString().length()>15)
+                {
+                    Toast.makeText(Register.this, "Phone can't be empty and max 16 character", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(Addressfield.getText().toString().equals("") || Addressfield.getText().toString().length()<5)
+                {
+                    Toast.makeText(Register.this, "Address can't be empty and at least 5 character", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                if(Addressfield.getText().toString().equals(""))
-                {
-                    Toast.makeText(Register.this, "Address can't be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(!Addressfield.getText().toString().matches(alphanumeric))
-                {
-                    functions.showToast("Alphanumeric only");
-                    return;
-                }
-                if(Phonefield.getText().toString().equals(""))
-                {
-                    Toast.makeText(Register.this, "Phone can't be empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
 
 

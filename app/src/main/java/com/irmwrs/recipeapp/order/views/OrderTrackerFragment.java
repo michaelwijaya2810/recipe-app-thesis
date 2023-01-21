@@ -66,7 +66,7 @@ public class OrderTrackerFragment extends Fragment implements OrderTrackerAdapte
         if(orderTracker.status.equals("Checkout") && !isDelivered){
             Intent intent = new Intent(getActivity(), WaitingForPaymentActivity.class);
             intent.putExtra("amount", orderTracker.order.totalPrice + deliveryFee);
-            intent.putExtra("bankName", "BCA Virtual Account");
+            intent.putExtra("bankName", orderTracker.paymentMehod);
             intent.putExtra("accNumber", orderTracker.virtualNumber);
             startActivity(intent);
         }

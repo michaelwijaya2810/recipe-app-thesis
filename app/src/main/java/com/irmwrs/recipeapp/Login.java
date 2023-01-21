@@ -73,11 +73,17 @@ public class Login extends AppCompatActivity {
             loginbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                if(usernamefield.getText().toString().equals("") || passwordfield.getText().toString().equals(""))
+                {
+                    functions.showToast("Please Input Username and Password");
+                    return;
+                }
+
                     functions.showLoading();
                     server.postLogin(usernamefield.getText().toString(),passwordfield.getText().toString()).enqueue(new Callback<LoginResponse>(){
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                            if(response.body().errorreason != null)
+                        if(!response.body().errorreason.equals(""))
                             {
                                 Toast.makeText(getApplicationContext(),response.body().errorreason,Toast.LENGTH_SHORT).show();
                                 functions.dismissLoading();

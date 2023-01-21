@@ -9,7 +9,7 @@ public class LoginResponse {
     public Integer userid;
     @SerializedName("ErrorReason")
     @Expose
-    public String errorreason;
+    public String errorreason = "";
     @SerializedName("username")
     @Expose
     public String username;

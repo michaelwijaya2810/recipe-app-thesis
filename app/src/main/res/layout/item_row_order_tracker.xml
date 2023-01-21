@@ -68,7 +68,7 @@
         android:backgroundTint="@color/confirm_green"
         android:text="Confirm Delivery"
         android:textColor="@color/white"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -91,7 +91,7 @@ public class RatingActivity extends AppCompatActivity {
                                         functions.showToast(String.valueOf(response.code()));
                                         return;
                                     }
-                                    if(response.body().errorReason != null){
+                                    if(!response.body().errorReason.equals("")){
                                         functions.dismissLoading();
                                         functions.showToast(response.body().errorReason);
                                         return;

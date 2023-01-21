@@ -134,7 +134,7 @@ public class PaymentActivity extends AppCompatActivity {
                                         return;
                                     }
 
-                                    if(response.body().response != null){
+                                    if(!response.body().response.errorReason.equals("")){
                                         functions.dismissLoading();
                                         functions.showToast(response.body().response.errorReason);
                                         return;

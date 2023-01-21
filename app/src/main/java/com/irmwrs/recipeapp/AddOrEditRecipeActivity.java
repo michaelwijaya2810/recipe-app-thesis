@@ -139,7 +139,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                         functions.showToast(String.valueOf(response.code()));
                         return;
                     }
-                    if(response.body().response.errorReason != null){
+                    if(!response.body().response.errorReason.equals("")){
                         functions.dismissLoading();
                         functions.showToast(String.valueOf(response.body().response.errorReason));
                         return;
@@ -259,7 +259,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                             functions.showToast(String.valueOf(response.code()));
                             return;
                         }
-                        if(response.body().errorReason != null){
+                        if(!response.body().errorReason.equals("")){
                             functions.dismissLoading();
                             functions.showToast(response.body().errorReason);
                             return;

@@ -43,6 +43,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.tvOrderDate.setText(history.order.requestedDate);
         holder.tvPrice.setText(functions.toRupiah((double) (history.order.totalPrice + deliveryFee)));
         holder.tvStatus.setText(history.status);
+        holder.TvINVCODE.setText(history.invoiceNumber);
         if(history.status.equals("Payment Expired")){
             holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
         }
@@ -62,6 +63,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         TextView tvPrice;
         TextView tvStatus;
         TextView tvSummary;
+        TextView TvINVCODE;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -70,6 +72,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tvPrice = itemView.findViewById(R.id.tvPriceOrderTracker);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvSummary = itemView.findViewById(R.id.tvSummary);
+            TvINVCODE = itemView.findViewById(R.id.TvINVCode);
         }
     }
 

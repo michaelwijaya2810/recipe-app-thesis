@@ -4,13 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +11,26 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.irmwrs.recipeapp.AddOrEditRecipeActivity;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.MainActivity;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RecipeDetailActivity;
 import com.irmwrs.recipeapp.home.adapters.HomeAdapter;
-import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
-import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class HomeFragment extends Fragment implements HomeAdapter.ViewHolder.OnRecipeListener {
 
-    TextView tvWelcome;
+    TextView tvUsername;
     LinearLayout llSearchRecipe;
     LinearLayout llCreateRecipe;
     LinearLayout llSurpriseMe;
@@ -87,7 +83,7 @@ public class HomeFragment extends Fragment implements HomeAdapter.ViewHolder.OnR
 
     void init(View view){
         // widget init
-        tvWelcome = view.findViewById(R.id.tvWelcome);
+        tvUsername = view.findViewById(R.id.tvUsername);
         llSearchRecipe = view.findViewById(R.id.llSearchRecipe);
         llCreateRecipe = view.findViewById(R.id.llCreateRecipe);
         llSurpriseMe = view.findViewById(R.id.llSurpriseMe);
@@ -104,12 +100,12 @@ public class HomeFragment extends Fragment implements HomeAdapter.ViewHolder.OnR
         // texts init
         String welcomeMsg;
         if(isLogin){
-            welcomeMsg = "Welcome chef " + username;
+            welcomeMsg = username;
         }
         else {
-            welcomeMsg = "Welcome chef";
+            welcomeMsg = getString(R.string.template_guest);
         }
-        tvWelcome.setText(welcomeMsg);
+        tvUsername.setText(welcomeMsg);
 
         // recyclerview init
             // Highlighted Recipes

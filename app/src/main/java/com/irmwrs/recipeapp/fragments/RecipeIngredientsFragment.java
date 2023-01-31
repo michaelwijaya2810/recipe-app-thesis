@@ -1,6 +1,7 @@
 package com.irmwrs.recipeapp.fragments;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeIngredientsFragment extends Fragment {
 
@@ -64,27 +66,22 @@ public class RecipeIngredientsFragment extends Fragment {
         TextView order_ingredients_title = view.findViewById(R.id.order_ingredients_title);
         Button btn_order_ingredients = view.findViewById(R.id.btn_order_ingredients);
 
-        if(recipe.recipeImage == ""){
+        if (Objects.equals(recipe.recipeImage, "")) {
             recipe_image.setImageResource(R.drawable.no_image_placeholder);
-        }
-        else {
+        } else {
             Picasso.get().load(recipe.recipeImage).into(recipe_image);
-
-//            byte[] decodedBytes = Base64.decode(recipe.recipeImage, Base64.DEFAULT);
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-//            recipe_image.setImageBitmap(bitmap);
         }
+
         recipe_title_text.setText(recipe.recipeName);
         if (recipe.recipeDifficulty == 1){
-            recipe_subtitle_text.setText("Difficulty: Easy");
+            recipe_subtitle_text.setText(getString(R.string.difficulty_easy));
+        } else if(recipe.recipeDifficulty == 2){
+            recipe_subtitle_text.setText(getString(R.string.difficulty_medium));
+        } else if(recipe.recipeDifficulty == 3){
+            recipe_subtitle_text.setText(getString(R.string.difficulty_hard));
         }
-        else if(recipe.recipeDifficulty == 2){
-            recipe_subtitle_text.setText("Difficulty: Medium");
-        }
-        else if(recipe.recipeDifficulty == 3){
-            recipe_subtitle_text.setText("Difficulty: Hard");
-        }
-        recipe_author_text.setText("By " + author);
+
+        recipe_author_text.setText(String.format(getString(R.string.by_author), author));
         recipe_rating_value.setText(recipe.recipeRating);
         recipe_desc.setText(recipe.recipeDescription);
 
@@ -96,6 +93,8 @@ public class RecipeIngredientsFragment extends Fragment {
             chip.setCheckable(true);
             chip.setClickable(true);
             chip.setChecked(true);
+            chip.setFocusable(true);
+            chip.setChipBackgroundColorResource(R.color.yellow);
             chip.setId(i);
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override

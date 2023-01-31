@@ -57,6 +57,8 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
         holder.tvPrice.setText(functions.toRupiah((double) (orderTracker.order.totalPrice + deliveryFee)));
         holder.tvStatus.setText(orderTracker.status);
         holder.tvSummary.setText(orderTracker.getQtyAndNameSummary());
+        holder.btnConfirmDelivery.setVisibility(View.GONE);
+
         if(orderTracker.status.equals("Delivering")){
             holder.btnConfirmDelivery.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -7,14 +7,15 @@
     tools:context=".cart.views.CartFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:text="@string/cart"
         android:textColor="@color/black"
-        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,41 +23,68 @@
         android:id="@+id/tvSelected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="12dp"
         android:textColor="@color/black"
-        android:textSize="14dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:textSize="14sp"
+        android:text="@string/template_item_selected"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvTotalPrice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvTotalPriceTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvSelected" />
+
+    <TextView
+        android:id="@+id/tvTotalPriceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="@string/total_price_delivery_title"
+        app:layout_constraintBottom_toTopOf="@+id/tvTotalPrice"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        />
 
     <TextView
         android:id="@+id/tvTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="12dp"
         android:textColor="@color/black"
-        android:textSize="24dp"
+        android:textSize="20sp"
+        android:text="@string/template_price"
         app:layout_constraintBottom_toTopOf="@+id/btnOrder"
-        app:layout_constraintStart_toStartOf="parent"
-
-
-
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
         />
 
+    <TextView
+        android:id="@+id/no_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_item_title_string"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/no_item_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/no_item_subtitle_string"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/no_item_title" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:background="@drawable/round_style"
@@ -65,15 +93,11 @@
         android:id="@+id/btnOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="24dp"
-        android:text="Check out"
+        android:textSize="20sp"
+        android:text="@string/checkout"
         android:textColor="@color/white"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

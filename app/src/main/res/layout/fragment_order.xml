@@ -15,12 +15,12 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order Tracker" />
+            android:text="@string/order_tracker" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="History" />
+            android:text="@string/title_history" />
 
     </com.google.android.material.tabs.TabLayout>
 

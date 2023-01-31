@@ -20,7 +20,6 @@ import com.irmwrs.recipeapp.home.views.HomeFragment;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.order.views.OrderFragment;
 import com.irmwrs.recipeapp.settings.views.SettingsFragment;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
     SwipeRefreshLayout refresh;
     int userId;
     Context context;
-    SharedPreferences sharepref;
+    SharedPreferences sharedPref;
     String address;
 
     @Override
@@ -51,12 +50,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
         Intent intent = getIntent();
         pageNumber = intent.getIntExtra("pageNumber", 3);
         context = getApplicationContext();
-        sharepref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
-        userId = sharepref.getInt("Userid",0);
-        address = sharepref.getString("Address", "");
+        sharedPref = context.getSharedPreferences("userinfo",Context.MODE_PRIVATE);
+        userId = sharedPref.getInt("Userid",0);
+        address = sharedPref.getString("Address", "");
         bottomNav = findViewById(R.id.bottom_nav);
-
-
         refresh = findViewById(R.id.refresh);
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -65,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
                 refresh();
             }
         });
-
-
-
 
         if(pageNumber == 1){
             bottomNav.setSelectedItemId(R.id.menu_1);
@@ -89,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
             bottomNav.setSelectedItemId(R.id.menu_5);
             SettingsFragment();
         }
-
         bottomNav.setOnItemSelectedListener(this);
     }
 
@@ -286,38 +279,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarView
 
     public void refresh(){
         recipes.removeAll(recipes);
-        address = sharepref.getString("Address", "");
+        address = sharedPref.getString("Address", "");
 
-        if(pageNumber == 1){
-
+        if (pageNumber == 1) {
             RecipeFragment(false, 1);
             refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 2){
-
+        } else if(pageNumber == 2){
             CartFragment();
             refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 3){
-
+        } else if(pageNumber == 3){
             HomeFragment();
             refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 4){
-
+        } else if(pageNumber == 4){
             OrderFragment();
             refresh.setRefreshing(false);
-
-        }
-        else if(pageNumber == 5){
-
+        } else if(pageNumber == 5){
             SettingsFragment();
             refresh.setRefreshing(false);
-
         }
     }
-
 }

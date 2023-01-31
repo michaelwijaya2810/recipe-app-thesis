@@ -7,10 +7,11 @@
     tools:context=".RecipeDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarAddOrEdit"
+        android:id="@+id/toolbarDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="Recipe Detail"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/recipe_detail"
+        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
@@ -18,29 +19,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="#0000"
-        android:text="Edit"
+        android:background="@android:color/transparent"
+        android:text="@string/edit"
         android:textColor="@color/black"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbarAddOrEdit"
-        app:layout_constraintEnd_toEndOf="@+id/toolbarAddOrEdit"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbarDetail"
+        app:layout_constraintEnd_toEndOf="@+id/toolbarDetail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbarAddOrEdit">
+        app:layout_constraintTop_toBottomOf="@id/toolbarDetail">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredients"/>
+            android:text="@string/ingredients"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Steps"/>
+            android:text="@string/steps"/>
 
     </com.google.android.material.tabs.TabLayout>
 

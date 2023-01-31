@@ -16,20 +16,30 @@
 
         <TextView
             android:id="@+id/tvWelcome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="@string/welcome" />
+
+        <TextView
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24sp"
-            android:layout_marginStart="24sp"
-            android:layout_marginBottom="8dp"
-            android:textSize="24sp"
+            android:layout_marginStart="20dp"
+            android:textSize="32sp"
             android:textColor="@color/black"
-            android:text="Welcome chef username" />
+            android:textStyle="bold"
+            android:text="@string/username"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24sp"
-            android:text="What are we cooking up today?"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/quick_menu_title"
             android:layout_marginBottom="8dp"
             android:textSize="16sp"
             android:textColor="@color/black"
@@ -39,29 +49,31 @@
             android:id="@+id/llSearchRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="8dp"
             android:gravity="center"
             >
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 >
                 <ImageView
                     android:background="@drawable/round_style"
                     android:backgroundTint="@color/yellow_cream"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:padding="8dp"
+                    android:padding="16dp"
                     android:src="@drawable/search"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Search Recipe"
+                    android:text="@string/search_recipe"
                     android:lines="2"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/black"
                     />
             </LinearLayout>
@@ -70,14 +82,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 >
                 <ImageView
                     android:background="@drawable/round_style"
-                    android:backgroundTint="@color/confirm_green"
+                    android:backgroundTint="@color/sage_green"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:padding="8dp"
+                    android:padding="16dp"
                     android:src="@drawable/plus"
                     />
                 <TextView
@@ -86,7 +98,8 @@
                     android:text="Create Recipe"
                     android:lines="2"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/black"
                     />
             </LinearLayout>
@@ -95,14 +108,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 >
                 <ImageView
                     android:background="@drawable/round_style"
-                    android:backgroundTint="@color/purple_500"
+                    android:backgroundTint="@color/light_beige"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:padding="8dp"
+                    android:padding="16dp"
                     android:src="@drawable/question_mark"
                     />
                 <TextView
@@ -111,7 +124,8 @@
                     android:text="Surprise Me"
                     android:lines="2"
                     android:textAlignment="center"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/black"
                     />
             </LinearLayout>
@@ -121,7 +135,8 @@
             android:layout_height="wrap_content"
             app:justifyContent="space_between"
             android:paddingHorizontal="24dp"
-            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
+            app:alignItems="center"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -138,21 +153,21 @@
                 android:text="See More"
                 android:textSize="12sp"
                 android:textColor="@color/black"
-                android:gravity="bottom"
                 />
         </com.google.android.flexbox.FlexboxLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHighlightedRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:paddingHorizontal="12dp"
             />
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:justifyContent="space_between"
             android:paddingHorizontal="24dp"
-            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
+            app:alignItems="center"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -176,14 +191,15 @@
             android:id="@+id/rvTopRated"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:paddingHorizontal="12dp"
             />
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:justifyContent="space_between"
             android:paddingHorizontal="24dp"
-            android:layout_marginVertical="8dp"
+            android:paddingVertical="8dp"
+            app:alignItems="center"
             >
             <TextView
                 android:layout_width="wrap_content"
@@ -207,7 +223,8 @@
             android:id="@+id/rvRecentlyMade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:paddingHorizontal="12dp"
+            android:layout_marginBottom="40dp"
             />
     </LinearLayout>
 

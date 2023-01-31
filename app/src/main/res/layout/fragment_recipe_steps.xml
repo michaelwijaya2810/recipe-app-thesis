@@ -10,20 +10,21 @@
         android:id="@+id/recipe_steps_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_complete_recipe"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_complete_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="12dp"
-        android:text="I've finished all steps!"
+        android:layout_margin="20dp"
+        android:padding="12dp"
+        android:text="@string/steps_finished"
         android:textColor="@color/white"
         android:backgroundTint="@color/confirm_green"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/recipe_steps_list"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

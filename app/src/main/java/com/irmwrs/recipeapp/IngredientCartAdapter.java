@@ -63,8 +63,8 @@ public class IngredientCartAdapter extends RecyclerView.Adapter<IngredientCartAd
         public ViewHolder(@NonNull View itemView, OnCheckListener onCheckListener) {
             super(itemView);
             cbCart = itemView.findViewById(R.id.cbCart);
-            ingredientname = itemView.findViewById(R.id.Ingredientcarttext);
-            image = itemView.findViewById(R.id.Ingredientccartimage);
+            ingredientname = itemView.findViewById(R.id.tvIngredientCartText);
+            image = itemView.findViewById(R.id.ingredientCartImage);
 
             cbCart.setChecked(true);
             cbCart.setOnClickListener(new View.OnClickListener() {

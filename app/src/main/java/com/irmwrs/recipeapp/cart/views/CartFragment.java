@@ -36,7 +36,12 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
 
     TextView tvSelected;
     RecyclerView rvCart;
+    TextView tvTotalPriceTitle;
     TextView tvTotalPrice;
+
+    TextView noItemTitle;
+    TextView noItemSubtitle;
+
     Button btnCheckout;
 
     CartAdapter adapter;
@@ -118,7 +123,12 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
         // widgets init
         tvSelected = view.findViewById(R.id.tvSelected);
         rvCart = view.findViewById(R.id.rvCart);
+        tvTotalPriceTitle = view.findViewById(R.id.tvTotalPriceTitle);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
+
+        noItemTitle = view.findViewById(R.id.no_item_title);
+        noItemSubtitle = view.findViewById(R.id.no_item_subtitle);
+
         btnCheckout = view.findViewById(R.id.btnOrder);
 
         // buttons init
@@ -152,10 +162,36 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     }
 
     void updateText(){
-        String selectedItems = selected.size() + "/" + cartItems.size() + " selected items";
-        tvSelected.setText(selectedItems);
-        String totalPrice = "Total price + Delivery Fee\n" + getTotalPrice();
-        tvTotalPrice.setText(totalPrice);
+        if (cartItems.isEmpty()) {
+            tvSelected.setVisibility(View.GONE);
+            rvCart.setVisibility(View.GONE);
+            btnCheckout.setVisibility(View.GONE);
+            tvTotalPriceTitle.setVisibility(View.GONE);
+            tvTotalPrice.setVisibility(View.GONE);
+
+            noItemTitle.setVisibility(View.VISIBLE);
+            noItemSubtitle.setVisibility(View.VISIBLE);
+        } else {
+            tvSelected.setVisibility(View.VISIBLE);
+            rvCart.setVisibility(View.VISIBLE);
+            btnCheckout.setVisibility(View.VISIBLE);
+
+            noItemTitle.setVisibility(View.GONE);
+            noItemSubtitle.setVisibility(View.GONE);
+
+            String selectedItems = selected.size() + "/" + cartItems.size() + " selected items";
+            tvSelected.setText(selectedItems);
+
+            if (selected.isEmpty()) {
+                tvTotalPriceTitle.setVisibility(View.GONE);
+                tvTotalPrice.setVisibility(View.GONE);
+            } else {
+                tvTotalPriceTitle.setVisibility(View.VISIBLE);
+                tvTotalPrice.setVisibility(View.VISIBLE);
+                String totalPrice = getTotalPrice();
+                tvTotalPrice.setText(totalPrice);
+            }
+        }
     }
 
     String getTotalPrice(){

@@ -34,7 +34,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(ctx).inflate(R.layout.item_recipe_viewholder, parent, false);
+        View v = LayoutInflater.from(ctx).inflate(R.layout.item_recipe_fixed_width_viewholder, parent, false);
         return new HomeAdapter.ViewHolder(v, onRecipeListener, recipes);
     }
 

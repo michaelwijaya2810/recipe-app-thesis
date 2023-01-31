@@ -35,10 +35,10 @@ public class OrderHistoryResponse {
     public String paymentMehod;
 
     public String getQtyAndNameSummary(){
-        String qty_name = "";
+        StringBuilder qty_name = new StringBuilder();
         for (int i = 0; i < orderDetail.size(); i++){
-            qty_name += orderDetail.get(i).ingredientQty + "x " + orderDetail.get(i).ingredientName + "\n";
+            qty_name.append(orderDetail.get(i).ingredientQty).append("x ").append(orderDetail.get(i).ingredientName).append("\n");
         }
-        return qty_name;
+        return qty_name.toString();
     }
 }

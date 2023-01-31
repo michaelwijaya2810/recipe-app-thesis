@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+    android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="240dp"
             android:src="@drawable/no_image_placeholder"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/recipe_image_string" />
 
         <TextView
             android:id="@+id/recipe_title_text"
@@ -26,74 +28,98 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="12dp"
-            android:text="Recipe Name"
+            android:text="@string/template_recipe_title"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             app:layout_constraintTop_toBottomOf="@id/recipe_image"/>
-
-        <TextView
-            android:id="@+id/recipe_subtitle_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:text="Easy | 4 Servings | Prep: 30 Minutes | Cook: 10 Minutes"
-            app:layout_constraintTop_toBottomOf="@id/recipe_title_text"/>
 
         <TextView
             android:id="@+id/recipe_author_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="By Username"
-            app:layout_constraintStart_toStartOf="@id/recipe_subtitle_text"
-            app:layout_constraintTop_toBottomOf="@id/recipe_subtitle_text"/>
+            android:text="@string/by_username_string"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/recipe_title_text"
+            app:layout_constraintStart_toStartOf="@id/recipe_title_text"/>
 
         <ImageView
             android:id="@+id/recipe_rating_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_star_24"
+            app:tint="@color/yellow"
             android:layout_marginStart="12dp"
             app:layout_constraintStart_toEndOf="@id/recipe_author_text"
             app:layout_constraintTop_toTopOf="@id/recipe_author_text"
-            app:layout_constraintBottom_toBottomOf="@id/recipe_author_text"/>
+            app:layout_constraintBottom_toBottomOf="@id/recipe_author_text"
+            android:contentDescription="@string/stars_string" />
 
         <TextView
             android:id="@+id/recipe_rating_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="3.5"
+            android:text="@string/template_rating_value"
             app:layout_constraintStart_toEndOf="@id/recipe_rating_icon"
             app:layout_constraintTop_toTopOf="@id/recipe_rating_icon"
             app:layout_constraintBottom_toBottomOf="@id/recipe_rating_icon"/>
+
+        <TextView
+            android:id="@+id/recipe_subtitle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/difficulty_easy"
+            app:layout_constraintTop_toBottomOf="@id/recipe_author_text"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/recipe_detail_divider1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@id/recipe_subtitle_text"/>
 
         <TextView
             android:id="@+id/recipe_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:text="lorem ipsum doasdfaoilsfhiasldhgfnlkajsdgfhlaksjdghfkayuisdgfda dahgfjghsdi flhaweulid fkgasdfl kasdj"
-            app:layout_constraintTop_toBottomOf="@id/recipe_author_text"/>
+            android:layout_marginTop="12dp"
+            android:text="@string/recipe_description"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/recipe_detail_divider1"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/recipe_detail_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@id/recipe_desc"/>
 
         <TextView
             android:id="@+id/recipe_ingredients_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingredients"
+            android:text="@string/ingredients"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/recipe_desc"/>
+            app:layout_constraintTop_toBottomOf="@id/recipe_detail_divider2"/>
 
         <TextView
             android:id="@+id/recipe_ingredients_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="8dp"
-            android:text="Tap to check if you dont have the ingredients"
+            android:layout_marginTop="4dp"
+            android:text="@string/order_ingredients_guide"
             app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_title"
             tools:layout_editor_absoluteX="24dp" />
 
@@ -105,17 +131,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/order_ingredients_title"
-            app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_subtitle"
-            tools:layout_editor_absoluteX="20dp">
-
-<!--            <com.google.android.material.chip.Chip-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                style="@style/Widget.MaterialComponents.Chip.Filter"-->
-<!--                android:text="+" />-->
+            app:layout_constraintTop_toBottomOf="@id/recipe_ingredients_subtitle">
 
         </com.google.android.material.chip.ChipGroup>
-
 
         <TextView
             android:id="@+id/order_ingredients_title"
@@ -123,9 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="18dp"
-            android:text="Don’t worry, we’ll help you order these ingredients so you can cook this recipe properly"
-            app:layout_constraintBottom_toTopOf="@id/btn_order_ingredients"
-            tools:layout_editor_absoluteX="20dp" />
+            android:text="@string/order_ingredients_desc"
+            app:layout_constraintBottom_toTopOf="@id/btn_order_ingredients"/>
 
         <Button
             android:id="@+id/btn_order_ingredients"
@@ -136,7 +153,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="47dp"
-            android:text="Order Missing Ingredients"
+            android:text="@string/order_missing_ingredients"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

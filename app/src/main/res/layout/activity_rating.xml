@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/ivCancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="9dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
         android:src="@drawable/cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,9 +31,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Recipe Finished!"
+        android:text="@string/recipe_finished"
         android:textColor="@color/black"
-        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -42,10 +43,10 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Give this recipe a rating, please!"
+        android:layout_marginTop="16dp"
+        android:text="@string/give_this_recipe_a_rating_please"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -57,6 +58,9 @@
         android:layout_marginTop="15dp"
         android:numStars="5"
         android:stepSize="1"
+        android:backgroundTint="@color/yellow"
+        android:progressTint="@color/yellow"
+        android:secondaryProgressTint="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -81,18 +85,19 @@
         app:layout_constraintBottom_toTopOf="@+id/btnDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rbRecipe" />
+        app:layout_constraintTop_toBottomOf="@+id/rbRecipe"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDone"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/round_style"
         android:backgroundTint="@color/confirm_green"
-        android:text="Done"
+        android:text="@string/done"
+        android:textSize="16sp"
         android:textColor="@color/white"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"

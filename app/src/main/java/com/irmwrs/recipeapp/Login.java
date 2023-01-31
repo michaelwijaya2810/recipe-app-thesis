@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.ResponseClass.LoginResponse;
 import com.irmwrs.recipeapp.Class.ResponseClass.UserResponse;
-import com.irmwrs.recipeapp.Class.Validate;
-import com.irmwrs.recipeapp.settings.views.SettingsFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +27,7 @@ public class Login extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_login);
-            Button loginbtn = findViewById(R.id.Loginbtn);
+            Button loginbtn = findViewById(R.id.loginBtn);
             Server server = new Server();
             EditText usernamefield = findViewById(R.id.UsernameField);
             EditText passwordfield = findViewById(R.id.PasswordField);
@@ -48,7 +46,7 @@ public class Login extends AppCompatActivity {
                 finish();
             }
 
-            Button loginguess = findViewById(R.id.LoginGuessbtn);
+            Button loginguess = findViewById(R.id.LoginGuessBtn);
 
             loginguess.setOnClickListener(new View.OnClickListener() {
                 @Override

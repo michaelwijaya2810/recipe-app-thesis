@@ -10,18 +10,18 @@
         android:id="@+id/rvSteps"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toTopOf="@+id/etStepInstruction"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="20dp" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
         android:id="@+id/etStepInstruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginHorizontal="20dp"
-        android:hint="Step instruction"
+        android:hint="@string/step_instruction"
+        app:layout_constraintTop_toBottomOf="@id/rvSteps"
         app:layout_constraintBottom_toTopOf="@+id/btnAddSteps" />
     <Button
         android:id="@+id/btnAddSteps"
@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginVertical="12dp"
-        android:text="Add Step"
+        android:padding="12dp"
+        android:text="@string/add_step"
         android:backgroundTint="@color/confirm_green"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"/>

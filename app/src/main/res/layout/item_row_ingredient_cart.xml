@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llRowCart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/round_style"
-    android:backgroundTint="@color/gray"
-    android:layout_marginTop="13px"
-    android:layout_marginBottom="13px"
-    >
+    android:layout_margin="12dp"
+    android:elevation="4dp"
+    android:background="@drawable/round_style">
 
-
-    <CheckBox
-        android:id="@+id/cbCart"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        >
-    </CheckBox>
-    <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/Ingredientccartimage"
-        android:gravity="center"
-        android:scaleType="fitXY"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        ></ImageView>
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginLeft="10dp"
-    android:gravity="center_vertical"
-    >
-
-    <TextView
-
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="Ingredient"
-        android:id="@+id/Ingredientcarttext"
-        android:gravity="center_vertical"
-        android:textColor="@color/black"
-
-        ></TextView>
-    <TextView
-        android:id="@+id/tvIngredientPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello"
-        android:textColor="@color/black"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp"
-        />
-
-
-</LinearLayout>
-
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="vertical"
-        android:layout_marginEnd="12dp"
-        android:layout_gravity="center_vertical"
-        >
+        android:layout_height="wrap_content">
 
+        <CheckBox
+            android:id="@+id/cbCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        </CheckBox>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/ingredientCartImage"
+            android:scaleType="centerCrop"
+            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="8dp"
+            android:src="@drawable/no_image_placeholder"
+            app:layout_constraintStart_toEndOf="@id/cbCart"
+            app:layout_constraintEnd_toStartOf="@id/tvIngredientCartText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/template_ingredient_image_string" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/template_ingredient_title"
+            android:id="@+id/tvIngredientCartText"
+            android:textColor="@color/black"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/ingredientCartImage"
+            app:layout_constraintBottom_toTopOf="@id/tvIngredientPrice"
+            app:layout_constraintStart_toEndOf="@id/ingredientCartImage"
+            app:layout_constraintEnd_toStartOf="@id/etIngredientQty"/>
+
+        <TextView
+            android:id="@+id/tvIngredientPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/template_price"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/tvIngredientCartText"
+            app:layout_constraintBottom_toBottomOf="@id/ingredientCartImage"
+            app:layout_constraintStart_toStartOf="@id/tvIngredientCartText"
+            app:layout_constraintEnd_toEndOf="@id/tvIngredientCartText"/>
 
         <EditText
             android:id="@+id/etIngredientQty"
-            android:layout_width="32dp"
-            android:layout_height="25dp"
-            android:text="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/template_qty"
             android:inputType="number"
             android:textAlignment="center"
-            android:background="@drawable/round_style"
-            android:backgroundTint="@color/white"
-            android:layout_marginBottom="12dp"
-            />
-    </LinearLayout>
+            android:background="@drawable/input_field"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:layout_margin="8dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/tvIngredientCartText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:importantForAutofill="no" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

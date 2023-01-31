@@ -1,133 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="20dp"
     android:orientation="vertical"
+    android:gravity="center"
     tools:context=".Login">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
+        android:src="@drawable/recipe"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:layout_marginTop="70dp"
-        >
+        android:text="@string/app_name"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textAppearance="@style/SatisfyCursive"
+        android:textSize="36sp"
+        android:textStyle="bold"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/recipe"
-
-            >
-
-        </ImageView>
-
-        <TextView
-            android:layout_marginTop="60dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome To Resepin"
-            android:textColor="@color/black"
-            android:textSize="26dp"
-            >
-
-        </TextView>
-
-    </LinearLayout>
-
-<!--    input field-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical"
-        android:padding="20dp"
-        >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/input_field"
-        android:hint="Username"
-        android:padding="10dp"
+        android:hint="@string/username"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="32dp"
         android:id="@+id/UsernameField"
         android:textColor="@color/black"
-        >
+        android:autofillHints=""
+        android:inputType="text" />
 
-    </EditText>
+    <EditText
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input_field"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        android:id="@+id/PasswordField"
+        android:textColor="@color/black"
+        android:autofillHints="" />
 
-        <EditText
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:textStyle=""
+        android:layout_marginVertical="4dp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:textColor="@color/link_blue"
+        android:id="@+id/forgotpassword" />
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:layout_marginVertical="4dp"
+        android:text="@string/login"
+        android:id="@+id/loginBtn" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:layout_marginVertical="4dp"
+        android:strokeWidth="5"
+        android:text="@string/login_as_guest"
+        android:id="@+id/LoginGuessBtn"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/input_field"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:id="@+id/PasswordField"
-            android:textColor="@color/black"
-            >
+            android:layout_marginEnd="4dp"
+            android:textSize="16sp"
+            android:text="@string/don_t_have_an_account_yet"
+            android:textColor="@color/black" />
 
-        </EditText>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Forgot Password?"
-                android:gravity="right"
-                android:textColor="@color/link_blue"
-                android:id="@+id/forgotpassword"
-                ></TextView>
-
-            </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:id="@+id/Loginbtn"
-            android:backgroundTint="@color/confirm_green"
-
-            ></Button>
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login As Guest"
-            android:id="@+id/LoginGuessbtn"
-
-            ></Button>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't Have an Account Yet? "
-                android:textColor="@color/black"
-                ></TextView>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Create an Account"
-                android:textColor="@color/link_blue"
-                android:id="@+id/CreateAccountTxt"
-                ></TextView>
-
-
-
-        </LinearLayout>
-
+            android:text="@string/create_an_account"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/link_blue"
+            android:id="@+id/CreateAccountTxt" />
     </LinearLayout>
-
 </LinearLayout>

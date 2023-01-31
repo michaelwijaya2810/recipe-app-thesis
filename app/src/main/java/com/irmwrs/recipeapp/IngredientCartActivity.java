@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class IngredientCartActivity extends AppCompatActivity implements IngredientCartAdapter.ViewHolder.OnCheckListener {
 
     List<CartItem> selected = new ArrayList<>();
+    TextView tvTotalPriceTitle;
     TextView tvTotalPrice;
     TextView tvSelected;
     List<Ingredient> ingredients;
@@ -40,6 +41,12 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_cart);
         Context context = getApplicationContext();
+
+        tvSelected = findViewById(R.id.tvSelected);
+        RecyclerView rvCart = findViewById(R.id.rvCart);
+        tvTotalPriceTitle = findViewById(R.id.tvTotalPriceTitle);
+        tvTotalPrice = findViewById(R.id.tvTotalPrice);
+        Button btnOrder = findViewById(R.id.btnOrder);
 
         functions = new Functions(IngredientCartActivity.this);
         SharedPreferences sp = context.getSharedPreferences("userinfo",context.MODE_PRIVATE);
@@ -98,7 +105,7 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
                 rvCart.setLayoutManager(linearLayoutManager);
                 rvCart.setAdapter(adapter);
 
-                String totalPrice = "Total price\n" + functions.toRupiah(getTotalPrice());
+                String totalPrice = functions.toRupiah(getTotalPrice());
                 tvTotalPrice.setText(totalPrice);
 
                 btnOrder.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +179,15 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
         else {
             cartItemList.get(position).qty = qty;
         }
-        String totalPrice = "Total price\n" + functions.toRupiah(getTotalPrice());
-        tvTotalPrice.setText(totalPrice);
+
+        if (selected.isEmpty()) {
+            tvTotalPriceTitle.setVisibility(View.GONE);
+            tvTotalPrice.setVisibility(View.GONE);
+        } else {
+            tvTotalPriceTitle.setVisibility(View.VISIBLE);
+            tvTotalPrice.setVisibility(View.VISIBLE);
+            String totalPrice = functions.toRupiah(getTotalPrice());
+            tvTotalPrice.setText(totalPrice);
+        }
     }
 }

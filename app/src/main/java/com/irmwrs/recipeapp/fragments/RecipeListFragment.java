@@ -164,7 +164,7 @@ public class RecipeListFragment extends Fragment implements OnRecipeListener {
             if(recipe.isHighlighted){
                 highlightedList.add(recipe);
             }
-            if(Integer.parseInt(recipe.recipeRating) >= 4){
+            if(Double.parseDouble(recipe.recipeRating) >= 4){
                 topRatedList.add(recipe);
             }
         }

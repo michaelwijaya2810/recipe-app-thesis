@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.material.chip.Chip;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.MainActivity;
+import com.irmwrs.recipeapp.OnRecipeListener;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RecipeDetailActivity;
 import com.irmwrs.recipeapp.adapters.RecipeListAdapter;
@@ -30,7 +31,7 @@ import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeListFragment extends Fragment implements RecipeViewHolder.OnRecipeListener {
+public class RecipeListFragment extends Fragment implements OnRecipeListener {
 
     private RecyclerView rvRecipeList;
     private SearchView svRecipeList;

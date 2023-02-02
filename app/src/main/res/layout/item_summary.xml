@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tvQtyAndName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/qty_string"
+        android:textColor="@color/black"
+        android:layout_weight="2"
+        android:layout_marginEnd="4dp"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/template_price"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        android:layout_weight="1"
+        android:layout_marginStart="4dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+</LinearLayout>

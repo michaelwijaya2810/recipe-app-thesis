@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.CartItem;
 import com.irmwrs.recipeapp.Class.Ingredient;
+import com.irmwrs.recipeapp.adapters.IngredientCartAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IngredientCartActivity extends AppCompatActivity implements IngredientCartAdapter.ViewHolder.OnCheckListener {
+public class IngredientCartActivity extends AppCompatActivity implements OnCheckListener {
 
     List<CartItem> selected = new ArrayList<>();
     TextView tvTotalPriceTitle;
@@ -143,21 +144,21 @@ public class IngredientCartActivity extends AppCompatActivity implements Ingredi
     }
 
     void setSummaryIntent(Intent intent){
-        String qty_name = "";
-        String price = "";
+        StringBuilder qty_name = new StringBuilder();
+        StringBuilder price = new StringBuilder();
         ids = new ArrayList<>();
         qtys = new ArrayList<>();
         double delivery_cost = 10000; // default value
         for (int i = 0; i < selected.size(); i++){
-            qty_name += selected.get(i).qty + "x " + selected.get(i).name + "\n";
-            price += selected.get(i).getStringPrice() + "\n";
+            qty_name.append(selected.get(i).qty).append("x ").append(selected.get(i).name).append("\n");
+            price.append(selected.get(i).getStringPrice()).append("\n");
             ids.add((int) selected.get(i).ingredientId);
             qtys.add(selected.get(i).qty);
         }
-        qty_name += "Biaya Kirim";
-        price += functions.toRupiah(delivery_cost);
-        intent.putExtra("qty_name", qty_name);
-        intent.putExtra("price", price);
+        qty_name.append("Biaya Kirim");
+        price.append(functions.toRupiah(delivery_cost));
+        intent.putExtra("qty_name", qty_name.toString());
+        intent.putExtra("price", price.toString());
         intent.putExtra("total", functions.toRupiah(getTotalPrice() + delivery_cost));
         intent.putIntegerArrayListExtra("ids", ids);
         intent.putIntegerArrayListExtra("qtys", qtys);

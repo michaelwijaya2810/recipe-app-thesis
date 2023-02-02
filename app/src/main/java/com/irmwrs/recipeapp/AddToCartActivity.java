@@ -1,6 +1,8 @@
 package com.irmwrs.recipeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -17,8 +19,11 @@ import android.widget.Toast;
 import com.irmwrs.recipeapp.Class.Key;
 import com.irmwrs.recipeapp.Class.Order;
 import com.irmwrs.recipeapp.Class.OrderIngredient;
+import com.irmwrs.recipeapp.adapters.SummaryListAdapter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -47,8 +52,6 @@ public class AddToCartActivity extends AppCompatActivity {
         tvAddress.setText(address);
 
         Button btnDatePicker = findViewById(R.id.btnDatePicker);
-        TextView tvQtyAndName = findViewById(R.id.tvQtyAndName);
-        TextView tvPrice = findViewById(R.id.tvPrice);
         TextView tvTotalPrice2 = findViewById(R.id.tvTotalPrice2);
         Button btnToPayment = findViewById(R.id.btnToPayment);
 
@@ -99,11 +102,19 @@ public class AddToCartActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-        tvQtyAndName.setText(intent.getStringExtra("qty_name"));
-        tvPrice.setText(intent.getStringExtra("price"));
+
+        String[] qtyName = intent.getStringExtra("qty_name").split("\n");
+        ArrayList<String> qtyNameList = new ArrayList<>(Arrays.asList(qtyName));
+        String[] prices = intent.getStringExtra("price").split("\n");
+        ArrayList<String> priceList = new ArrayList<>(Arrays.asList(prices));
+
+        RecyclerView rvSummaryList = findViewById(R.id.summary_list);
+        SummaryListAdapter summaryListAdapter = new SummaryListAdapter(qtyNameList, priceList);
+        rvSummaryList.setAdapter(summaryListAdapter);
+        rvSummaryList.setLayoutManager(new LinearLayoutManager(this));
+
         String price = intent.getStringExtra("total");
-        String totalPrice = "Total price\n" + price;
-        tvTotalPrice2.setText(totalPrice);
+        tvTotalPrice2.setText(price);
 
         btnToPayment.setOnClickListener(new View.OnClickListener() {
             @Override

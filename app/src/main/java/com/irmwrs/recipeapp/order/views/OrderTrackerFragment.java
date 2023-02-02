@@ -1,6 +1,7 @@
 package com.irmwrs.recipeapp.order.views;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,9 @@ import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 import com.irmwrs.recipeapp.waiting_for_payment.WaitingForPaymentActivity;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class OrderTrackerFragment extends Fragment implements OrderTrackerAdapter.OnOrderTrackerListener {
@@ -34,6 +38,7 @@ public class OrderTrackerFragment extends Fragment implements OrderTrackerAdapte
     public OrderTrackerFragment(List<OrderHistoryResponse> orderTrackerList) {
         // Required empty public constructor
         this.orderTrackerList = orderTrackerList;
+        Collections.reverse(orderTrackerList);
     }
 
     @Override

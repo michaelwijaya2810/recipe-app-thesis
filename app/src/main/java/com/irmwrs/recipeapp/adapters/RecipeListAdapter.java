@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.MainActivity;
+import com.irmwrs.recipeapp.OnRecipeListener;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 import com.squareup.picasso.Picasso;
@@ -56,9 +57,9 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     }
 
     List<Recipe> recipes;
-    RecipeViewHolder.OnRecipeListener onRecipeListener;
+    OnRecipeListener onRecipeListener;
 
-    public RecipeListAdapter(List<Recipe> recipes, RecipeViewHolder.OnRecipeListener onRecipeListener){
+    public RecipeListAdapter(List<Recipe> recipes, OnRecipeListener onRecipeListener){
         this.onRecipeListener = onRecipeListener;
         this.recipes = recipes;
         notifyDataSetChanged();

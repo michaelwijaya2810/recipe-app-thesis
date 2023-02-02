@@ -106,6 +106,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                         functions.showToast(String.valueOf(response.code()));
                         return;
                     }
+                    functions.dismissLoading();
                     tabLayout = findViewById(R.id.tlAddOrEdit);
                     recipeAddOrEditPager = findViewById(R.id.vpAddOrEdit);
                     recipeAddOrEditAdapter = new AddOrEditRecipeAdapter(getSupportFragmentManager(), getLifecycle(), response.body(), null, btnSave, AddOrEditRecipeActivity.this, AddOrEditRecipeActivity.this);
@@ -119,7 +120,6 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                                 }
                             });
                     mediator.attach();
-                    functions.dismissLoading();
                 }
 
                 @Override
@@ -154,6 +154,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                                 functions.showToast(String.valueOf(response.code()));
                                 return;
                             }
+                            functions.dismissLoading();
                             tabLayout = findViewById(R.id.tlAddOrEdit);
                             recipeAddOrEditPager = findViewById(R.id.vpAddOrEdit);
                             recipeAddOrEditAdapter = new AddOrEditRecipeAdapter(getSupportFragmentManager(), getLifecycle(), response.body(), singleRecipeResponse, btnSave, AddOrEditRecipeActivity.this, AddOrEditRecipeActivity.this);
@@ -167,7 +168,6 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                                         }
                                     });
                             mediator.attach();
-                            functions.dismissLoading();
                         }
 
                         @Override
@@ -190,7 +190,6 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
     UpdateRecipe updateRecipe;
     Gson gson = new Gson();
     boolean isValid;
-    Server server = new Server();
 
     @Override
     public void getIngredientData(UpdateRecipe updateRecipe, boolean saveIsPressed) {
@@ -201,7 +200,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             this.updateRecipe.creatorId =creatorId;
             isValid = validate(updateRecipe);
             if(isValid){
-                showErrorToast("Sending data...");
+                functions.showToast("Sending data...");
                 sendData();
             }
             Log.i("recipeTest", gson.toJson(updateRecipe));
@@ -219,7 +218,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
             updateRecipe.creatorId = creatorId;
             isValid = validate(this.updateRecipe);
             if(isValid){
-                showErrorToast("Sending data...");
+                functions.showToast("Sending data...");
                 sendData();
             }
             Log.i("recipeTest", gson.toJson(updateRecipe.stepList));
@@ -293,34 +292,29 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
 
     boolean validate(UpdateRecipe updateRecipe){
         if(updateRecipe.recipeImage.equals("")){
-            showErrorToast("Recipe image can't be empty");
+            functions.showToast("Recipe image can't be empty");
             return false;
         }
         else if(updateRecipe.recipeName.equals("")){
-            showErrorToast("Recipe name can't be empty");
+            functions.showToast("Recipe name can't be empty");
             return false;
         }
         else if(updateRecipe.recipeDifficulty == 0){
-            showErrorToast("Please pick a difficulty");
+            functions.showToast("Please pick a difficulty");
             return false;
         }
         else if(updateRecipe.recipeDescription.equals("")){
-            showErrorToast("Recipe description can't be empty");
+            functions.showToast("Recipe description can't be empty");
             return false;
         }
         else if(updateRecipe.ingredientList.size() == 0){
-            showErrorToast("Please add at least one ingredient");
+            functions.showToast("Please add at least one ingredient");
             return false;
         }
         else if(updateRecipe.stepList.size() == 0){
-            showErrorToast("Please add at least one step");
+            functions.showToast("Please add at least one step");
             return false;
         }
         return true;
-    }
-
-
-    void showErrorToast(String errorMsg){
-        functions.showToast(errorMsg);
     }
 }

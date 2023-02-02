@@ -1,6 +1,7 @@
 package com.irmwrs.recipeapp.fragments;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,11 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.irmwrs.recipeapp.Class.Step;
 import com.irmwrs.recipeapp.MainActivity;
-import com.irmwrs.recipeapp.OnAllStepsChecked;
+import com.irmwrs.recipeapp.OnStepsCheckedChangeListener;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RatingActivity;
 import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
@@ -25,14 +27,17 @@ import com.irmwrs.recipeapp.adapters.RecipeStepsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeStepsFragment extends Fragment implements OnAllStepsChecked {
+public class RecipeStepsFragment extends Fragment implements OnStepsCheckedChangeListener {
 
-    private RecyclerView recipeStepsList;
     private Button btnCompleteRecipe;
+    TextView progressCount;
+    private ProgressBar progressBar;
+    RecipeStepsAdapter adapter;
     List<Step> steps;
     boolean showRatingPage;
     int userId;
     int recipeId;
+    int stepsCount;
 
     public RecipeStepsFragment(List<Step> steps, boolean showRatingPage, int userId, int recipeId) {
         // Required empty public constructor
@@ -52,11 +57,13 @@ public class RecipeStepsFragment extends Fragment implements OnAllStepsChecked {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recipeStepsList = view.findViewById(R.id.recipe_steps_list);
+        RecyclerView recipeStepsList = view.findViewById(R.id.recipe_steps_list);
         btnCompleteRecipe = view.findViewById(R.id.btn_complete_recipe);
+        progressCount = view.findViewById(R.id.steps_count);
+        progressBar = view.findViewById(R.id.determinateBar);
 
         recipeStepsList.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        RecipeStepsAdapter adapter = new RecipeStepsAdapter(steps, this);
+        adapter = new RecipeStepsAdapter(steps, this);
         recipeStepsList.setAdapter(adapter);
 
         btnCompleteRecipe.setOnClickListener(new View.OnClickListener() {
@@ -75,14 +82,33 @@ public class RecipeStepsFragment extends Fragment implements OnAllStepsChecked {
                 }
             }
         });
+
+        progressBar.setMax(steps.size());
+        updateProgressBar();
     }
 
     @Override
-    public void onAllChecked(int checkCount) {
-        if (checkCount == recipeStepsList.getAdapter().getItemCount()) {
+    public void onCheckedChange(int position, boolean isChecked) {
+        if (isChecked) {
+            stepsCount++;
+        } else {
+            stepsCount--;
+        }
+        updateProgressBar();
+
+        if (stepsCount == steps.size()) {
             btnCompleteRecipe.setVisibility(View.VISIBLE);
         } else {
             btnCompleteRecipe.setVisibility(View.GONE);
+        }
+    }
+
+    public void updateProgressBar() {
+        progressCount.setText(String.format(getString(R.string.step_count), stepsCount, steps.size()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            progressBar.setProgress(stepsCount, true);
+        } else {
+            progressBar.setProgress(stepsCount);
         }
     }
 }

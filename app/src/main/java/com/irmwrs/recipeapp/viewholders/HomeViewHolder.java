@@ -7,32 +7,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
+import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.OnRecipeListener;
 import com.irmwrs.recipeapp.R;
 
-public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    public MaterialCardView recipeCard;
+import java.util.List;
+
+public class HomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView recipeImage;
     public TextView recipeTitle;
-    public ImageView recipeRatingIcon;
     public TextView recipeRating;
-    public OnRecipeListener onRecipeListener;
+    OnRecipeListener onRecipeListener;
+    List<Recipe> recipes;
 
-    public RecipeViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener) {
+    public HomeViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener, List<Recipe> recipes) {
         super(itemView);
-        recipeCard = itemView.findViewById(R.id.recipe_card);
         recipeImage = itemView.findViewById(R.id.recipe_image);
         recipeTitle = itemView.findViewById(R.id.recipe_title);
-        recipeRatingIcon = itemView.findViewById(R.id.recipe_rating_icon);
         recipeRating = itemView.findViewById(R.id.recipe_rating);
 
         this.onRecipeListener = onRecipeListener;
         itemView.setOnClickListener(this);
+
+        this.recipes = recipes;
     }
 
     @Override
     public void onClick(View view) {
-        onRecipeListener.onRecipeClick(getAdapterPosition());
+        onRecipeListener.onRecipeClick(recipes.get(getAdapterPosition()).id);
     }
 }

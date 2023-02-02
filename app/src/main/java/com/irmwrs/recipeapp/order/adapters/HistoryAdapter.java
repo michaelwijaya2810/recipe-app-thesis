@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.irmwrs.recipeapp.Functions;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
+import com.irmwrs.recipeapp.viewholders.HistoryViewHolder;
 
 import java.util.List;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
 
     Context ctx;
     List<OrderHistoryResponse> historyList;
@@ -31,13 +32,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @NonNull
     @Override
-    public HistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.item_row_history, parent, false);
-        return new ViewHolder(v);
+        return new HistoryViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         functions = new Functions(null);
         OrderHistoryResponse history = historyList.get(position);
         holder.tvOrderDate.setText(history.order.requestedDate);
@@ -58,22 +59,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return historyList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvOrderDate;
-        TextView tvPrice;
-        TextView tvStatus;
-        TextView tvSummary;
-        TextView TvINVCODE;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
+    static class ViewHolder  {
 
-            // widget init
-            tvOrderDate = itemView.findViewById(R.id.tvOrderDate);
-            tvPrice = itemView.findViewById(R.id.tvPriceOrderTracker);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvSummary = itemView.findViewById(R.id.tvSummary);
-            TvINVCODE = itemView.findViewById(R.id.TvINVCode);
-        }
     }
 
     public void updateList(List<OrderHistoryResponse> historyList){

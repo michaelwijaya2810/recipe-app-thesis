@@ -21,32 +21,16 @@
             >
         </CheckBox>
 
-        <TextView
-            android:id="@+id/tvQtyAndName"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/item_list_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/quantity"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintEnd_toStartOf="@id/tvPrice"
-            app:layout_constraintStart_toStartOf="@id/cbCart"
-            app:layout_constraintTop_toBottomOf="@id/cbCart" />
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/template_price"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintHorizontal_weight="1.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
+            android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/cbCart"
-            app:layout_constraintEnd_toEndOf="@id/cbCart"
-            app:layout_constraintStart_toEndOf="@id/tvQtyAndName"/>
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

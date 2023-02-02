@@ -1,5 +1,6 @@
 package com.irmwrs.recipeapp.order.views;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,8 @@ import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
@@ -40,6 +43,7 @@ public class HistoryFragment extends Fragment {
     public HistoryFragment(List<OrderHistoryResponse> historyList) {
         // Required empty public constructor
         this.historyList = historyList;
+        Collections.reverse(historyList);
 
     }
 

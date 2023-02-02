@@ -14,18 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.irmwrs.recipeapp.Class.Recipe;
+import com.irmwrs.recipeapp.OnRecipeListener;
 import com.irmwrs.recipeapp.R;
+import com.irmwrs.recipeapp.viewholders.HomeViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     Context ctx;
     List<Recipe> recipes;
-    ViewHolder.OnRecipeListener onRecipeListener;
+    OnRecipeListener onRecipeListener;
 
-    public HomeAdapter(Context ctx, List<Recipe> recipes, ViewHolder.OnRecipeListener onRecipeListener){
+    public HomeAdapter(Context ctx, List<Recipe> recipes, OnRecipeListener onRecipeListener){
         this.ctx = ctx;
         this.recipes = recipes;
         this.onRecipeListener = onRecipeListener;
@@ -33,13 +35,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(ctx).inflate(R.layout.item_recipe_fixed_width_viewholder, parent, false);
-        return new HomeAdapter.ViewHolder(v, onRecipeListener, recipes);
+        return new HomeViewHolder(v, onRecipeListener, recipes);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         Recipe recipe = recipes.get(position);
         holder.recipeTitle.setText(recipe.recipeName);
         if(recipe.recipeImage.equals("")){
@@ -64,35 +66,5 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return recipes.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView recipeImage;
-        TextView recipeTitle;
-        TextView recipeRating;
-        OnRecipeListener onRecipeListener;
-        List<Recipe> recipes;
-
-        public ViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener, List<Recipe> recipes) {
-            super(itemView);
-            recipeImage = itemView.findViewById(R.id.recipe_image);
-            recipeTitle = itemView.findViewById(R.id.recipe_title);
-            recipeRating = itemView.findViewById(R.id.recipe_rating);
-
-            this.onRecipeListener = onRecipeListener;
-            itemView.setOnClickListener(this);
-
-            this.recipes = recipes;
-        }
-
-        @Override
-        public void onClick(View view) {
-            onRecipeListener.onRecipeClick(recipes.get(getAdapterPosition()).id);
-        }
-
-        public interface OnRecipeListener {
-            void onRecipeClick(int id);
-        }
-
     }
 }

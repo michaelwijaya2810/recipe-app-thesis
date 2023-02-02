@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.irmwrs.recipeapp.AddOrEditRecipeActivity;
 import com.irmwrs.recipeapp.Class.Recipe;
 import com.irmwrs.recipeapp.MainActivity;
+import com.irmwrs.recipeapp.OnRecipeListener;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.RecipeDetailActivity;
 import com.irmwrs.recipeapp.home.adapters.HomeAdapter;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class HomeFragment extends Fragment implements HomeAdapter.ViewHolder.OnRecipeListener {
+public class HomeFragment extends Fragment implements OnRecipeListener {
 
     TextView tvUsername;
     LinearLayout llSearchRecipe;

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.irmwrs.recipeapp.Class.ResponseClass.Response;
 import com.irmwrs.recipeapp.Functions;
+import com.irmwrs.recipeapp.OnCheckListener;
 import com.irmwrs.recipeapp.Server;
 import com.irmwrs.recipeapp.cart.models.CartOrderResponse;
 import com.irmwrs.recipeapp.cart.adapters.CartAdapter;
@@ -27,12 +28,15 @@ import com.irmwrs.recipeapp.payment.views.PaymentActivity;
 import com.irmwrs.recipeapp.R;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnCheckListener {
+public class CartFragment extends Fragment implements OnCheckListener {
 
     TextView tvSelected;
     RecyclerView rvCart;
@@ -51,13 +55,14 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     Activity activity;
     Functions functions;
     List<CartOrderResponse> selected = new ArrayList<>();
-    int deliveryFee = 10000;
+    final int deliveryFee = 10000;
     double totalPrice;
 
     public CartFragment(List<CartOrderResponse> cartItems, Activity activity) {
         this.cartItems = cartItems;
         this.activity = activity;
         selected.addAll(cartItems);
+        Collections.reverse(cartItems);
     }
 
     @Override
@@ -153,6 +158,9 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
 
         // recyclerview init
         linearLayoutManager = new LinearLayoutManager(getContext());
+
+
+
         adapter = new CartAdapter(getContext(), cartItems, this);
         rvCart.setLayoutManager(linearLayoutManager);
         rvCart.setAdapter(adapter);
@@ -204,7 +212,7 @@ public class CartFragment extends Fragment implements CartAdapter.ViewHolder.OnC
     }
 
     @Override
-    public void onCheckClick(int position, boolean isChecked) {
+    public void onCheckClick(int position, boolean isChecked, int qty) {
         if(isChecked){
             selected.add(cartItems.get(position));
         }

@@ -43,6 +43,7 @@ import com.squareup.picasso.Target;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class AddOrEditRecipeIngredientsFragment extends Fragment {
@@ -155,18 +156,25 @@ public class AddOrEditRecipeIngredientsFragment extends Fragment {
             ingredientsName.add(ingredients.get(i).ingredientName);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, ingredientsName);
+        adapter.sort(new Comparator<String>() {
+            @Override
+            public int compare(String s, String t1) {
+                return s.compareTo(t1);
+            }
+        });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinnerIngredient.setAdapter(adapter);
         btnAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(etQty.getText().toString().equals("")){
-                    Toast.makeText(getContext(), "Qty can't be empty", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                    Toast.makeText(getContext(), "Qty can't be empty!", Toast.LENGTH_SHORT).show();
+                } else if (spinnerIngredient.getSelectedItem().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Ingredient name can't be empty!", Toast.LENGTH_SHORT).show();
+                } else {
                     if(!chipExist(spinnerIngredient.getSelectedItem().toString(), view)){ // check if chip already exist
-                        String chipText = spinnerIngredient.getSelectedItem().toString() + " " + etQty.getText().toString();
                         createChip(spinnerIngredient.getSelectedItem().toString(), Integer.parseInt(etQty.getText().toString()), view);
+                        etQty.getText().clear();
                     }
                 }
             }

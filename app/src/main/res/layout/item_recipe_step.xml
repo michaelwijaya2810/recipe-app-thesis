@@ -18,7 +18,9 @@
             android:id="@+id/checkbox_step"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/template_step_description"/>
+            android:padding="4dp"
+            android:text="@string/template_step_description"
+            android:textSize="16sp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,7 +1,9 @@
 package com.irmwrs.recipeapp.order.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +65,26 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
             holder.btnConfirmDelivery.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    confirmDelivery(orderTracker, holder);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                    builder.setCancelable(true);
+                    builder.setTitle("Confirm Delivery");
+                    builder.setMessage("Order status will be changed to Delivered");
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    confirmDelivery(orderTracker, holder);
+                                }
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             });
             holder.btnConfirmDelivery.setVisibility(View.VISIBLE);
@@ -75,7 +96,7 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
         return orderTrackerList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tvOrderDate;
         TextView tvPrice;
         TextView tvStatus;

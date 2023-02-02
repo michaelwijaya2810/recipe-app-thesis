@@ -90,7 +90,7 @@
     <string name="done">Done</string>
     <string name="waiting_payment">Waiting Payment</string>
     <string name="waiting_payment_template">Please pay Rp60.000 to:</string>
-    <string name="back_to_home">Back to Home</string>
+    <string name="payment_finish">Back to Home</string>
     <string name="va_template">1900800000024472</string>
     <string name="loading">Loading…</string>
     <string name="order_date">Order Date</string>

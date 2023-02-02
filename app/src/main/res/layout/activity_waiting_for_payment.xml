@@ -63,7 +63,7 @@
         android:background="@drawable/round_style"
         android:backgroundTint="@color/confirm_green"
         android:textColor="@color/white"
-        android:text="@string/back_to_home"
+        android:text="@string/payment_finish"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

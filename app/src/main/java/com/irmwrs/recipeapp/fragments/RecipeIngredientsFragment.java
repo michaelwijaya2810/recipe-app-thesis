@@ -26,6 +26,7 @@ import com.irmwrs.recipeapp.Class.SingleRecipeIngredient;
 import com.irmwrs.recipeapp.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -82,7 +83,12 @@ public class RecipeIngredientsFragment extends Fragment {
         }
 
         recipe_author_text.setText(String.format(getString(R.string.by_author), author));
-        recipe_rating_value.setText(recipe.recipeRating);
+
+        Double ratingDecimal = Double.parseDouble(recipe.recipeRating);
+        DecimalFormat df = new DecimalFormat("#.#");
+        String finalRating = df.format(ratingDecimal);
+
+        recipe_rating_value.setText(finalRating);
         recipe_desc.setText(recipe.recipeDescription);
 
         String ingredientText;

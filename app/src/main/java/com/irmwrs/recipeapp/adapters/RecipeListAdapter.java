@@ -22,6 +22,7 @@ import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.BitSet;
 import java.util.List;
 
@@ -46,7 +47,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
             rating = "No rating yet";
         }
         else {
-            rating = recipe.recipeRating + " / 5";
+            Double ratingDecimal = Double.parseDouble(recipe.recipeRating);
+            DecimalFormat df = new DecimalFormat("#.#");
+            String finalRating = df.format(ratingDecimal);
+            rating = finalRating + " / 5";
         }
         holder.recipeRating.setText(rating);
     }

@@ -265,7 +265,7 @@ public class AddOrEditRecipeActivity extends AppCompatActivity implements AddOrE
                         }
                         functions.dismissLoading();
                         if(updateRecipe.recipeId == 0){
-                            functions.showToast("Recipe added");
+                            functions.showLongToast("Recipe submitted, your recipe will be available after admin approval!");
                         }
                         else {
                             functions.showToast("Recipe edited");

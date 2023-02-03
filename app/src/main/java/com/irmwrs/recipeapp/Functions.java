@@ -28,6 +28,10 @@ public class Functions {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public void showLongToast(String msg){
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show();
+    }
+
     public void showLoading(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         LayoutInflater inflater = activity.getLayoutInflater();

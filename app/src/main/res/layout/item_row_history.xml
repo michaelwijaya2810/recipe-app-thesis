@@ -38,6 +38,7 @@ android:layout_margin="12dp">
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textAlignment="textEnd"
         app:layout_constraintHorizontal_weight="1.5"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintStart_toEndOf="@id/tvOrderDate"

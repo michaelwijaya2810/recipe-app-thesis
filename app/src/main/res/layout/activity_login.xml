@@ -78,7 +78,7 @@
         android:layout_marginVertical="4dp"
         android:strokeWidth="5"
         android:text="@string/login_as_guest"
-        android:id="@+id/LoginGuessBtn"/>
+        android:id="@+id/LoginGuestBtn"/>
 
     <LinearLayout
         android:layout_width="match_parent"

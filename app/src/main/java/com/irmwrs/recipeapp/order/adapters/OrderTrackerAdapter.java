@@ -67,8 +67,8 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                     builder.setCancelable(true);
-                    builder.setTitle("Confirm Delivery");
-                    builder.setMessage("Order status will be changed to Delivered");
+                    builder.setTitle("Confirm Delivery Received");
+                    builder.setMessage("Order status will be changed to Completed. Proceed?");
                     builder.setPositiveButton("Confirm",
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -134,14 +134,14 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
             @Override
             public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                 functions.dismissLoading();
-                functions.showToast("Order Complete!");
+                functions.showToast("Order Completed!");
                 onOrderTrackerListener.onOrderTrackerClick(0, true);
             }
 
             @Override
             public void onFailure(Call<Response> call, Throwable t) {
                 functions.dismissLoading();
-                functions.showToast("Order Complete!");
+                functions.showToast("Order Completed!");
                 onOrderTrackerListener.onOrderTrackerClick(0, true);
             }
         });

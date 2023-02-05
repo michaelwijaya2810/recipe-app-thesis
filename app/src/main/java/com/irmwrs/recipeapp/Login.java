@@ -46,9 +46,9 @@ public class Login extends AppCompatActivity {
                 finish();
             }
 
-            Button loginguess = findViewById(R.id.LoginGuessBtn);
+            Button loginguest = findViewById(R.id.LoginGuestBtn);
 
-            loginguess.setOnClickListener(new View.OnClickListener() {
+            loginguest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

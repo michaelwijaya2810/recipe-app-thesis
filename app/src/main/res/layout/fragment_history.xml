@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginVertical="12dp"
         app:checkedChip="@id/chipAll"
         app:layout_constraintTop_toTopOf="parent"
         app:selectionRequired="true"
         app:singleSelection="true"
-        tools:layout_editor_absoluteX="20dp">
+        app:layout_constraintBottom_toTopOf="@id/rvHistory">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAll"
@@ -39,12 +39,12 @@
             android:focusable="true" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipDelivered"
+            android:id="@+id/chipCompleted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="true"
             android:clickable="true"
-            android:text="@string/delivered"
+            android:text="@string/completed"
             app:chipBackgroundColor="@color/light_beige"
             android:focusable="true" />
     </com.google.android.material.chip.ChipGroup>
@@ -53,8 +53,8 @@
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

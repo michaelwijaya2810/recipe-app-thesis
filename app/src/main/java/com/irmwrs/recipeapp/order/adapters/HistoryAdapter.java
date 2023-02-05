@@ -48,8 +48,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
         if(history.status.equals("Payment Expired")){
             holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
         }
-        else if(history.status.equals("Delivered")){
-            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));
+        else if(history.status.equals("Completed")){
+            holder.tvStatus.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.sage_green));
         }
         holder.tvSummary.setText(history.getQtyAndNameSummary());
     }

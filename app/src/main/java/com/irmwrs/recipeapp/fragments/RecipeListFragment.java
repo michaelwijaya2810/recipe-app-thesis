@@ -2,6 +2,7 @@ package com.irmwrs.recipeapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.irmwrs.recipeapp.adapters.RecipeListAdapter;
 import com.irmwrs.recipeapp.viewholders.RecipeViewHolder;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RecipeListFragment extends Fragment implements OnRecipeListener {
@@ -167,6 +169,14 @@ public class RecipeListFragment extends Fragment implements OnRecipeListener {
             if(Double.parseDouble(recipe.recipeRating) >= 4){
                 topRatedList.add(recipe);
             }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            topRatedList.sort(new Comparator<Recipe>() {
+                @Override
+                public int compare(Recipe r1, Recipe r2) {
+                    return r2.recipeRating.compareTo(r1.recipeRating);
+                }
+            });
         }
     }
 

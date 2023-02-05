@@ -52,7 +52,7 @@ public class OrderAdapter extends FragmentStateAdapter {
     void separateList(){
         for(int i = 0; i < orders.size(); i++){
             OrderHistoryResponse order = orders.get(i);
-            if(order.status.equals("Payment Expired") || order.status.equals("Delivered")){
+            if(order.status.equals("Payment Expired") || order.status.equals("Completed")){
                 historyList.add(order);
             }
             else {

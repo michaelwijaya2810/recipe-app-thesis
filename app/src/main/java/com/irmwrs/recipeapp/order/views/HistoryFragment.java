@@ -1,6 +1,5 @@
 package com.irmwrs.recipeapp.order.views;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,19 +16,17 @@ import android.widget.CompoundButton;
 import com.google.android.material.chip.Chip;
 import com.irmwrs.recipeapp.R;
 import com.irmwrs.recipeapp.order.adapters.HistoryAdapter;
-import com.irmwrs.recipeapp.order.adapters.OrderTrackerAdapter;
 import com.irmwrs.recipeapp.order.models.OrderHistoryResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
     List<OrderHistoryResponse> historyList;
     List<OrderHistoryResponse> paymentExpiredList = new ArrayList<>();
-    List<OrderHistoryResponse> deliveredList = new ArrayList<>();
+    List<OrderHistoryResponse> completedList = new ArrayList<>();
 
     HistoryAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -37,7 +34,7 @@ public class HistoryFragment extends Fragment {
     RecyclerView rvHistory;
     Chip chipAll;
     Chip chipPaymentExpired;
-    Chip chipDelivered;
+    Chip chipCompleted;
 
 
     public HistoryFragment(List<OrderHistoryResponse> historyList) {
@@ -66,7 +63,7 @@ public class HistoryFragment extends Fragment {
         rvHistory = view.findViewById(R.id.rvHistory);
         chipAll = view.findViewById(R.id.chipAll);
         chipPaymentExpired = view.findViewById(R.id.chipPaymentExpired);
-        chipDelivered = view.findViewById(R.id.chipDelivered);
+        chipCompleted = view.findViewById(R.id.chipCompleted);
 
         // recycler view init
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -91,11 +88,11 @@ public class HistoryFragment extends Fragment {
                 }
             }
         });
-        chipDelivered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        chipCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(checked){
-                    filterList(chipDelivered.getText().toString());
+                    filterList(chipCompleted.getText().toString());
                 }
             }
         });
@@ -107,8 +104,8 @@ public class HistoryFragment extends Fragment {
             if(history.status.equals("Payment Expired")){
                 paymentExpiredList.add(history);
             }
-            else if(history.status.equals("Delivered")){
-                deliveredList.add(history);
+            else if(history.status.equals("Completed")){
+                completedList.add(history);
             }
 
         }
@@ -121,8 +118,8 @@ public class HistoryFragment extends Fragment {
         else if(filter.equals("Payment Expired")){
             adapter.updateList(paymentExpiredList);
         }
-        else if(filter.equals("Delivered")){
-            adapter.updateList(deliveredList);
+        else if(filter.equals("Completed")){
+            adapter.updateList(completedList);
         }
 
     }

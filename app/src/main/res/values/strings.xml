@@ -52,7 +52,7 @@
     <string name="order_tracker">Order Tracker</string>
     <string name="all">All</string>
     <string name="payment_expired">Payment Expired</string>
-    <string name="delivered">Delivered</string>
+    <string name="completed">Completed</string>
     <string name="change_delivery_address">Change Delivery Address</string>
     <string name="hint_new_address">New Address</string>
     <string name="save_address">Save Address</string>
@@ -82,7 +82,7 @@
     <string name="stars_string">Stars</string>
     <string name="bca_virtual_account">BCA Virtual Account</string>
     <string name="mandiri_virtual_account">Mandiri Virtual Account</string>
-    <string name="complete_payment">Complete Payment</string>
+    <string name="pay_with_selected_payment_method">Pay with Selected Method</string>
     <string name="select_one_of_payment_method_options">Select one of payment method options:</string>
     <string name="recipe_finished">Recipe Finished!</string>
     <string name="give_this_recipe_a_rating_please">Give this recipe a rating, please!</string>

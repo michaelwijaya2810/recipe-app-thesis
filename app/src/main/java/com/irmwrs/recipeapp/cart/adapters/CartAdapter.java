@@ -67,7 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
-        CartOrderResponse curr = cartItems.get(position);
+        CartOrderResponse curr = cartItems.get(holder.getAdapterPosition());
         holder.cbRecipeName.setClickable(false); // clickable function already managed by ViewHolder
         holder.cbRecipeName.setText(curr.recipeName);
 

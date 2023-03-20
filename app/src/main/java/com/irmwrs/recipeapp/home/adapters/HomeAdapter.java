@@ -43,13 +43,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
-        Recipe recipe = recipes.get(position);
+        Recipe recipe = recipes.get(holder.getAdapterPosition());
         holder.recipeTitle.setText(recipe.recipeName);
         if(recipe.recipeImage.equals("")){
             holder.recipeImage.setImageResource(R.drawable.no_image_placeholder);
         }
         else {
-            Picasso.get().load(recipes.get(position).recipeImage).into(holder.recipeImage);
+            Picasso.get().load(recipes.get(holder.getAdapterPosition()).recipeImage).into(holder.recipeImage);
 //            byte[] decodedBytes = Base64.decode(recipe.recipeImage, Base64.DEFAULT);
 //            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
 //            holder.recipeImage.setImageBitmap(bitmap);

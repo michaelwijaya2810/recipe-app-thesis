@@ -34,7 +34,7 @@ public class IngredientCartAdapter extends RecyclerView.Adapter<IngredientCartAd
 
     @Override
     public void onBindViewHolder(@NonNull IngredientCartViewHolder holder, int position) {
-        CartItem cartItem = cartItemList.get(position);
+        CartItem cartItem = cartItemList.get(holder.getAdapterPosition());
         holder.cbCart.setClickable(false);
         holder.ingredientname.setText(cartItem.name);
         holder.tvIngredientPrice.setText(cartItem.getStringPrice());

@@ -54,7 +54,7 @@ public class OrderTrackerAdapter extends RecyclerView.Adapter<OrderTrackerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         functions = new Functions(activity);
-        OrderHistoryResponse orderTracker = orderTrackerList.get(position);
+        OrderHistoryResponse orderTracker = orderTrackerList.get(holder.getAdapterPosition());
         holder.tvOrderDate.setText(orderTracker.order.requestedDate);
         holder.tvPrice.setText(functions.toRupiah((double) (orderTracker.order.totalPrice + deliveryFee)));
         holder.tvStatus.setText(orderTracker.status);

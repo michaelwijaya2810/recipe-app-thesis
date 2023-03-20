@@ -17,8 +17,6 @@ import com.irmwrs.recipeapp.R;
 import java.util.List;
 
 public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.RecipeStepViewHolder>{
-    SparseBooleanArray checkedStatus = new SparseBooleanArray();
-    OnStepsCheckedChangeListener listener;
     @NonNull
     @Override
     public RecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,8 +26,6 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
-        Step step = steps.get(holder.getAdapterPosition());
-        holder.checkBoxStep.setText(step.recipeSteps);
         holder.bind(holder.getAdapterPosition());
     }
 
@@ -42,31 +38,35 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
     }
 
     List<Step> steps;
+    SparseBooleanArray checkedStatus = new SparseBooleanArray();
+    OnStepsCheckedChangeListener listener;
 
     public RecipeStepsAdapter(List<Step> steps, OnStepsCheckedChangeListener listener){
         this.steps = steps;
         this.listener = listener;
     }
 
-    class RecipeStepViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener{
+    class RecipeStepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public MaterialCheckBox checkBoxStep;
 
         public RecipeStepViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBoxStep = itemView.findViewById(R.id.checkbox_step);
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(int position) {
+        void bind(int position) {
             if (!checkedStatus.get(position, false)) {
                 checkBoxStep.setChecked(false);
             } else {
                 checkBoxStep.setChecked(true);
             }
-            checkBoxStep.setOnCheckedChangeListener(this);
+            checkBoxStep.setText(steps.get(position).recipeSteps);
+            checkBoxStep.setOnClickListener(this);
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             if (!checkedStatus.get(adapterPosition, false)) {
                 checkBoxStep.setChecked(true);

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.irmwrs.recipeapp.R;
+import com.irmwrs.recipeapp.adapters.AddOrEditRecipeStepsAdapter;
 
 public class AddOrEditRecipeStepViewHolder extends RecyclerView.ViewHolder implements View.OnTouchListener, GestureDetector.OnGestureListener {
     public EditText etSteps;
@@ -19,13 +20,19 @@ public class AddOrEditRecipeStepViewHolder extends RecyclerView.ViewHolder imple
     GestureDetector gestureDetector;
     ItemTouchHelper itemTouchHelper;
 
-    public AddOrEditRecipeStepViewHolder(@NonNull View itemView, ItemTouchHelper itemTouchHelper) {
+    public AddOrEditRecipeStepsAdapter.AddOrEditRecipeStepsEditTextListener recipeStepsEditTextListener;
+
+    public AddOrEditRecipeStepViewHolder(@NonNull View itemView,
+                                            ItemTouchHelper itemTouchHelper,
+                                            AddOrEditRecipeStepsAdapter.AddOrEditRecipeStepsEditTextListener recipeStepsEditTextListener) {
         super(itemView);
         etSteps = itemView.findViewById(R.id.etSteps);
 
         gestureDetector = new GestureDetector(itemView.getContext(), this);
         this.itemTouchHelper = itemTouchHelper;
+        this.recipeStepsEditTextListener = recipeStepsEditTextListener;
         itemView.setOnTouchListener(this);
+        etSteps.addTextChangedListener(recipeStepsEditTextListener);
     }
 
     @Override

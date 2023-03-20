@@ -40,7 +40,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         functions = new Functions(null);
-        OrderHistoryResponse history = historyList.get(position);
+        OrderHistoryResponse history = historyList.get(holder.getAdapterPosition());
         holder.tvOrderDate.setText(history.order.requestedDate);
         holder.tvPrice.setText(functions.toRupiah((double) (history.order.totalPrice + deliveryFee)));
         holder.tvStatus.setText(history.status);

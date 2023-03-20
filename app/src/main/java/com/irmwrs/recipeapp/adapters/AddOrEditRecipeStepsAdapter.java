@@ -2,7 +2,6 @@ package com.irmwrs.recipeapp.adapters;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,36 +21,14 @@ public class AddOrEditRecipeStepsAdapter extends RecyclerView.Adapter<AddOrEditR
     @Override
     public AddOrEditRecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_or_edit_recipe_step, parent, false);
-        return new AddOrEditRecipeStepViewHolder(view, itemTouchHelper);
+        return new AddOrEditRecipeStepViewHolder(view, itemTouchHelper, new AddOrEditRecipeStepsEditTextListener());
     }
 
     @Override
     public void onBindViewHolder(@NonNull AddOrEditRecipeStepViewHolder holder, int position) {
-        Step step = steps.get(position);
+        holder.recipeStepsEditTextListener.updatePosition(holder.getAdapterPosition());
+        Step step = steps.get(holder.getAdapterPosition());
         holder.etSteps.setText(step.recipeSteps);
-        holder.etSteps.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (editable.length() != 0){
-                    for (int i = 0; i < steps.size(); i++){
-                        if(steps.get(i).rvId.equals(step.rvId)){
-                            steps.get(i).recipeSteps = editable.toString();
-                            data.sendSteps(steps);
-                        }
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -98,5 +75,36 @@ public class AddOrEditRecipeStepsAdapter extends RecyclerView.Adapter<AddOrEditR
 
     public interface sendData{
         void sendSteps(List<Step> steps);
+    }
+
+    public class AddOrEditRecipeStepsEditTextListener implements TextWatcher {
+        private int position;
+
+        public void updatePosition(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            //LEAVE EMPTY
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            steps.get(position).recipeSteps = charSequence.toString();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editable.length() != 0){
+                Step step = steps.get(position);
+                for (int i = 0; i < steps.size(); i++){
+                    if(steps.get(i).rvId.equals(step.rvId)){
+                        steps.get(i).recipeSteps = editable.toString();
+                        data.sendSteps(steps);
+                    }
+                }
+            }
+        }
     }
 }

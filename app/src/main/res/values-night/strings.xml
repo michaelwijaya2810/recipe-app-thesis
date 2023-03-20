@@ -72,7 +72,7 @@
     <string name="edit">Edit</string>
     <string name="order_missing_ingredients">Order Missing Ingredients</string>
     <string name="order_ingredients_desc">Don’t worry, we’ll help you order these ingredients so you can cook this recipe properly</string>
-    <string name="order_ingredients_guide">Tap to check if you have the ingredients already</string>
+    <string name="order_ingredients_guide">Tap to uncheck if you have the ingredients already</string>
     <string name="recipe_description">Recipe Description</string>
     <string name="recipe_image_string">Recipe Image</string>
     <string name="difficulty_easy">Difficulty: Easy</string>

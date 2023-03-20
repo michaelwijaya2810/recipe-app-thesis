@@ -31,8 +31,8 @@ public class SummaryListAdapter extends RecyclerView.Adapter<SummaryViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull SummaryViewHolder holder, int position) {
-        holder.tvQtyAndName.setText(qtyNameList.get(position));
-        holder.tvPrice.setText(priceList.get(position));
+        holder.tvQtyAndName.setText(qtyNameList.get(holder.getAdapterPosition()));
+        holder.tvPrice.setText(priceList.get(holder.getAdapterPosition()));
     }
 
     @Override

@@ -38,10 +38,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe recipe = recipes.get(position);
+        Recipe recipe = recipes.get(holder.getAdapterPosition());
         holder.recipeTitle.setText(recipe.recipeName);
 
-        Picasso.get().load(recipes.get(position).recipeImage).into(holder.recipeImage);
+        Picasso.get().load(recipes.get(holder.getAdapterPosition()).recipeImage).into(holder.recipeImage);
         String rating;
         if(recipe.recipeRating.equals("0")){
             rating = "No rating yet";
